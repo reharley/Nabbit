@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NabbitManager.Views.CategoryEditPage">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Cancel" Clicked="CancelPressed" />
+		<ToolbarItem Text="Save" Clicked="SavePressed" />
+	</ContentPage.ToolbarItems>
+	<ContentPage.Content>
+		<StackLayout Margin="{StaticResource PageMargin}">
+			<ScrollView>
+				<StackLayout Spacing="20" Padding="15">
+					<Label Text="Name" FontSize="Medium" />
+					<Entry Text="{Binding ProductCategory.Name}" FontSize="Small" />
+					<Label Text="Rank" FontSize="Medium" />
+					<Editor Text="{Binding ProductCategory.Rank}" FontSize="Small" Margin="0" />
+					<Label Text="Enabled" FontSize="Medium" />
+					<Editor Text="{Binding ProductCategory.Enabled}" FontSize="Small" Margin="0" />
+
+
+					<Label Text="Products:" FontSize="Large" FontAttributes="Bold" />
+					<StackLayout BindableLayout.ItemsSource="{Binding Products}">
+						<BindableLayout.ItemTemplate>
+							<DataTemplate>
+								<StackLayout Orientation="Horizontal">
+									<Switch IsToggled="{Binding Selected}" />
+									<Label Text="{Binding Item.Name}" />
+									<Label Text="{Binding Item.Price}" />
+								</StackLayout>
+							</DataTemplate>
+						</BindableLayout.ItemTemplate>
+					</StackLayout>
+
+					<Label Text="Addon Groups:" FontSize="Large" FontAttributes="Bold" />
+					<StackLayout BindableLayout.ItemsSource="{Binding AddonGroups}">
+						<BindableLayout.ItemTemplate>
+							<DataTemplate>
+								<StackLayout Orientation="Horizontal">
+									<Switch IsToggled="{Binding Selected}" />
+									<Label Text="{Binding Item.Name}" />
+									<Label Text="{Binding Item.SelectType}" />
+								</StackLayout>
+							</DataTemplate>
+						</BindableLayout.ItemTemplate>
+					</StackLayout>
+					
+					<Button x:Name="deleteButton" BackgroundColor="Red" Text="Delete" Clicked="DeletePressed" />
+					<Button Style="{StaticResource saveButtonStyle}" Text="Save" Clicked="SavePressed" />
+				</StackLayout>
+			</ScrollView>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

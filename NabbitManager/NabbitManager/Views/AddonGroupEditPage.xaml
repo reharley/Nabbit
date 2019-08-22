@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="NabbitManager.Views.AddonGroupEditPage"
+			 Title="{Binding AddonGroup.Name}">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Cancel" Clicked="CancelPressed" />
+		<ToolbarItem Text="Save" Clicked="SavePressed" />
+	</ContentPage.ToolbarItems>
+	<ContentPage.Content>
+		<ScrollView>
+			<StackLayout Margin="{StaticResource PageMargin}">
+				<Label Text="{Binding AddonGroup.Name}" FontSize="Large"/>
+				<Picker x:Name="groupPicker"
+						Title="Selection Type" 
+						ItemsSource="{Binding PickerTypes}" 
+						SelectedItem="{Binding AddonGroup.SelectType}"/>
+
+			
+				<Label Text="Addons:" FontSize="Large" FontAttributes="Bold" />
+				<StackLayout BindableLayout.ItemsSource="{Binding Addons}">
+					<BindableLayout.ItemTemplate>
+						<DataTemplate>
+							<StackLayout Orientation="Horizontal">
+								<Switch IsToggled="{Binding Selected}" />
+								<Label Text="{Binding Item.Name}" Style="{StaticResource managerNameLabelStyle}" />
+								<Label Text="{Binding Item.Price}" Style="{StaticResource managerPriceLabelStyle}"/>
+							</StackLayout>
+						</DataTemplate>
+					</BindableLayout.ItemTemplate>
+				</StackLayout>
+
+				<Button x:Name="deleteButton" BackgroundColor="Red" Text="Delete" Clicked="DeletePressed" />
+				<Button Style="{StaticResource saveButtonStyle}" Text="Save" Clicked="SavePressed" />
+			</StackLayout>
+		</ScrollView>
+	</ContentPage.Content>
+</ContentPage>

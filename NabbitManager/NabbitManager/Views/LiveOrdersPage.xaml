@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="NabbitManager.Views.LiveOrdersPage">
+	<ContentPage.Content>
+		<StackLayout Margin="{StaticResource PageMargin}">
+			<ListView x:Name="orderList"
+            ItemTapped="OrderPressed"
+            CachingStrategy="RecycleElement"
+					  HasUnevenRows="True">
+
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<StackLayout>
+								<StackLayout Orientation="Horizontal">
+									<Label Text="{Binding FirstName}" 
+								   Style="{DynamicResource ListItemTextStyle}" />
+									<Label Text="{Binding LastName}" 
+								   Style="{DynamicResource ListItemDetailTextStyle}"/>
+								</StackLayout>
+								<Label Text="{Binding PickupTime, StringFormat='{0:ddd, MMM d, hh:mm tt}'}"
+							   Style="{DynamicResource ListItemDetailTextStyle}"/>
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+			<Button Text="Refresh" Clicked="RefreshQueue" />
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

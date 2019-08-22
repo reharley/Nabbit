@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="NabbitManager.Views.AddonEditPage">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Cancel" Clicked="CancelPressed" />
+		<ToolbarItem Text="Save" Clicked="SavePressed" />
+	</ContentPage.ToolbarItems>
+	<ContentPage.Content>
+		<StackLayout Margin="{StaticResource PageMargin}">
+			<Label Text="Name:" FontSize="Large" />
+			<Label Text="{Binding Name}" Style="{StaticResource managerNameLabelStyle}" />
+			<Label Text="Price:" FontSize="Large" />
+			<Label Text="{Binding Price}" Style="{StaticResource managerPriceLabelStyle}"/>
+
+			<Button x:Name="deleteButton" BackgroundColor="Red" Text="Delete" Clicked="DeletePressed" />
+			<Button Style="{StaticResource saveButtonStyle}" Text="Save" Clicked="SavePressed" />
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

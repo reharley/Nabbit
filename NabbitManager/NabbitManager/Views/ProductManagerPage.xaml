@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NabbitManager.Views.ProductManagerPage">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Add Product" Clicked="AddItemPressed">
+			<ToolbarItem.Icon>
+				<OnPlatform x:TypeArguments="FileImageSource">
+					<On Platform="UWP" Value="add.png"/>
+				</OnPlatform>
+			</ToolbarItem.Icon>
+		</ToolbarItem>
+	</ContentPage.ToolbarItems>
+	<ContentPage.Content>
+		<StackLayout Margin="{StaticResource PageMargin}">
+			<Picker x:Name="picker" SelectedIndexChanged="OnCategoryIndexChanged"/>
+			<ListView x:Name="productListView"
+					  ItemTapped="HandleItemPressed">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<StackLayout Orientation="Horizontal">
+								<Label Text="{Binding Name}" Style="{StaticResource managerNameLabelStyle}"/>
+								<Label Text="{Binding Price, StringFormat='{0:C}'}" Style="{StaticResource managerPriceLabelStyle}"/>
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>
