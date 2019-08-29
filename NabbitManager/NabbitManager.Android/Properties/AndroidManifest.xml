@@ -8,17 +8,12 @@
 				<category android:name="com.nabbit.NabbitManager" />
 			</intent-filter>
 		</receiver>
-
 		<activity android:name="com.microsoft.identity.client.BrowserTabActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
-
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-
-				<data
-            android:host="auth"
-            android:scheme="msal21aafc72-dffd-4669-bd97-0b8e7e2b2a63" />
+				<data android:host="auth" android:scheme="msal21aafc72-dffd-4669-bd97-0b8e7e2b2a63" />
 			</intent-filter>
 		</activity>
 	</application>

@@ -15,7 +15,6 @@ namespace Nabbit.ViewModels {
 		}
 
 		public async Task BuildCategoryProducts() {
-
 			if (await LocalGlobals.PullObjects() == 0) {
 				foreach (var menu in LocalGlobals.Restaurant.Menus) {
 					foreach (var category in LocalGlobals.Restaurant.ProductCategories

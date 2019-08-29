@@ -24,7 +24,7 @@ namespace Nabbit {
 
 		protected override void OnStart() {
 			// Handle when your app starts
-			_ = LocalGlobals.PullObjects();
+			//_ = LocalGlobals.PullObjects();
 			Cart.OrderItems = new List<OrderItem>();
 
 
