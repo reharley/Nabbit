@@ -24,12 +24,11 @@ namespace Nabbit.Views {
 			//	IsEnabled = false
 			//};
 			//Shell.SetBackButtonBehavior(this, backButtonBehavior);
-			NavigationPage.SetHasBackButton(this, false);
+			//NavigationPage.SetHasBackButton(this, false);
 			BindingContext = viewModel = new HomeViewModel();
-
-			FillCollections();
 		}
 
+        /*
 		private void ConstructMenu() {
 			grid.Children.Clear();
 			grid.RowDefinitions = new RowDefinitionCollection();
@@ -107,10 +106,7 @@ namespace Nabbit.Views {
 				}
 			}
 		}
+        */
 
-		async void FillCollections() {
-			await viewModel.BuildCategoryProducts();
-			ConstructMenu();
-		}
 	}
 }

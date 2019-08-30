@@ -4,14 +4,20 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-			 Visual="Material"
+             Visual="Material"
              x:Class="Nabbit.Views.MenuPage">
-	<ContentPage.Content>
-		<StackLayout>
-			<Label x:Name="restaurantName"/>
-			<ScrollView x:Name="scroll">
-				<Grid x:Name="grid" VerticalOptions="FillAndExpand"/>
-			</ScrollView>
-		</StackLayout>
-	</ContentPage.Content>
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="restaurantName" />
+            <StackLayout BindableLayout.ItemsSource="{Binding pcProducts}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Label Text="{Binding CategoryName}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

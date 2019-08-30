@@ -23,15 +23,14 @@ namespace Nabbit {
 		}
 
 		protected override void OnStart() {
-			// Handle when your app starts
-			//_ = LocalGlobals.PullObjects();
-			Cart.OrderItems = new List<OrderItem>();
+            // Handle when your app starts
+            LocalGlobals.PullObjects().Wait();
+            Cart.OrderItems = new List<OrderItem>();
 
 
 			AppCenter.Start("android=e0554b49-7cd0-4e03-992d-b7fe395fbc19;" + 
 				"ios=2297da99-c2fd-4ead-abfb-930c804e2b79;",
 				  typeof(Analytics), typeof(Crashes), typeof(Auth));
-			
 		}
 
 		protected override void OnSleep() {
