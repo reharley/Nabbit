@@ -6,13 +6,43 @@
              mc:Ignorable="d"
              x:Class="Nabbit.App">
     <Application.Resources>
-		<Thickness x:Key="PageMargin">20</Thickness>
+        <ResourceDictionary>
+            <OnPlatform x:TypeArguments="x:String"
+                        x:Key="FontAwesomeBrands">
+                <On Platform="Android"
+                    Value="fa-brands-400.ttf#Regular" />
+                <On Platform="iOS"
+                    Value="FontAwesome5Brands-Regular" />
+            </OnPlatform>
+
+            <OnPlatform x:TypeArguments="x:String"
+                        x:Key="FontAwesomeSolid">
+                <On Platform="Android"
+                    Value="fa-solid-900.ttf#Solid" />
+                <On Platform="iOS"
+                    Value="FontAwesome5Free-Solid" />
+            </OnPlatform>
+
+            <OnPlatform x:TypeArguments="x:String"
+                        x:Key="FontAwesomeRegular">
+                <On Platform="Android"
+                    Value="fa-regular-400.ttf#Regular" />
+                <On Platform="iOS"
+                    Value="FontAwesome5Free-Regular" />
+            </OnPlatform>
+
+            <Thickness x:Key="PageMargin">15</Thickness>
 
 
-		<Style x:Key="orderNameLabelStyle" TargetType="Label">
-			<Setter Property="FontSize" Value="Large" />
-			<Setter Property="HorizontalOptions" Value="Start" />
-			<Setter Property="VerticalOptions" Value="Center" />
-		</Style>
-	</Application.Resources>
+            <Style x:Key="orderNameLabelStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Large" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

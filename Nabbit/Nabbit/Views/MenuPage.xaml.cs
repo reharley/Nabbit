@@ -20,93 +20,22 @@ namespace Nabbit.Views {
 
 		public MenuPage() {
 			InitializeComponent();
-			//BackButtonBehavior backButtonBehavior = new BackButtonBehavior() {
-			//	IsEnabled = false
-			//};
-			//Shell.SetBackButtonBehavior(this, backButtonBehavior);
-			//NavigationPage.SetHasBackButton(this, false);
 			BindingContext = viewModel = new HomeViewModel();
+			AdjustGroupListHeight();
 		}
 
-        /*
-		private void ConstructMenu() {
-			grid.Children.Clear();
-			grid.RowDefinitions = new RowDefinitionCollection();
+		void AdjustGroupListHeight () {
+			for (int i = 0; i < groupList.Children.Count; i++) {
+				var stackLayout = groupList.Children[i] as StackLayout;
+				var collectionView = stackLayout.Children[1] as CollectionView;
 
-			if (gridDefined == false) {
-				// Product/category name and info
-				grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-				grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(15, GridUnitType.Star) });
-				// product/category price and count
-				grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(4, GridUnitType.Star) });
-				// Button to add the item to cart
-				grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(4, GridUnitType.Star) });
-				grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+				int productCount = collectionView.ItemsSource.OfType<Product>().Count();
+				int labelHeight = 30, space = 10;
+				if (Device.RuntimePlatform == Device.Android)
+					labelHeight = 55;
 
-				gridDefined = true;
-			}
-
-
-			int row = 0;
-			for (int i = 0; i < viewModel.pcProducts.Count; i++) {
-				grid.RowDefinitions.Add(new RowDefinition());
-				var catProds = viewModel.pcProducts[i];
-
-				var catNameLabel = new Label() {
-					Text = catProds.CategoryName,
-					FontSize = 22,
-					//TextColor = Color.White,
-					BackgroundColor = Color.FromHex("#B00020")
-				};
-
-				var catCountLabel = new Label() {
-					Text = catProds.Products.Count.ToString(),
-					BackgroundColor = Color.LightGray
-				};
-
-				grid.Children.Add(catNameLabel, 1, row);
-				grid.Children.Add(catCountLabel, 2, row);
-				row++;
-
-				foreach (var prod in catProds.Products) {
-					grid.RowDefinitions.Add(new RowDefinition());
-
-					var prodNameLabel = new Label() {
-						Text = prod.Name,
-						FontSize = 16
-						//TextColor = Color.White
-						//BackgroundColor = Color.LightGoldenrodYellow
-					};
-
-					var prodPriceLabel = new Label() {
-						Text = String.Format("{0:C}", prod.Price),
-						FontAttributes = FontAttributes.Bold
-						//TextColor = Color.White
-						//BackgroundColor = Color.LightSeaGreen
-					};
-
-					var prodButton = new ImageButton() {
-						Source = "round_add_button.png",
-						WidthRequest = 15,
-						HeightRequest = 40,
-						BackgroundColor = Color.FromHex("#6200EE"),
-						CornerRadius = 5
-					};
-
-					prodButton.Clicked += async (sender, args) => {
-						string name = string.Format("pd?name=Hello", prod.Name);
-						await Navigation.PushModalAsync(new NavigationPage(new OrderItemEditPage(prod.ProductId)));
-						//await Shell.Current.GoToAsync($"orderitem?productId={prod.ProductId.ToString()}");
-					};
-
-					grid.Children.Add(prodNameLabel, 1, row);
-					grid.Children.Add(prodPriceLabel, 2, row);
-					grid.Children.Add(prodButton, 3, row);
-					row++;
-				}
+				collectionView.HeightRequest = (productCount * labelHeight) + (productCount * space);
 			}
 		}
-        */
-
 	}
 }

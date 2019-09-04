@@ -6,18 +6,109 @@
              mc:Ignorable="d"
              Visual="Material"
              x:Class="Nabbit.Views.MenuPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="menuCategoryNameStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Title" />
+                <Setter Property="HorizontalOptions"
+                        Value="FillAndExpand" />
+                <Setter Property="HorizontalTextAlignment"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="BackgroundColor"
+                        Value="#e9ded5" />
+                <Setter Property="TextColor"
+                        Value="#6f5c53" />
+            </Style>
+            <Style x:Key="menuItemNameStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Title" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="#341404" />
+            </Style>
+            <Style x:Key="menuItemPriceStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Medium" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="#341404" />
+            </Style>
+            <Style x:Key="menuItemDescriptionStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Subtitle" />
+                <Setter Property="HorizontalOptions"
+                        Value="Center" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="#705b53" />
+            </Style>
+            <Style x:Key="menuItemArrowStyle"
+                   TargetType="Label">
+                <Setter Property="HorizontalOptions"
+                        Value="EndAndExpand" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource FontAwesomeSolid}" />
+                <Setter Property="FontSize"
+                        Value="Title" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="restaurantName" />
-            <StackLayout BindableLayout.ItemsSource="{Binding pcProducts}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout>
-                            <Label Text="{Binding CategoryName}" />
-                        </StackLayout>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </StackLayout>
+            <ScrollView>
+                <StackLayout x:Name="groupList"
+                             BindableLayout.ItemsSource="{Binding pcProducts}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Label Text="{Binding CategoryName}"
+                                       Style="{StaticResource menuCategoryNameStyle}" />
+
+                                <CollectionView ItemsSource="{Binding Products}"
+                                                VerticalOptions="Start"
+                                                Margin="{StaticResource PageMargin}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Name}"
+                                                           Style="{StaticResource menuItemNameStyle}" />
+                                                    <Label Text="{Binding Price, StringFormat='{0:c}'}"
+                                                           Style="{StaticResource menuItemPriceStyle}" />
+                                                    <Label Text="&#xf054;"
+                                                           Style="{StaticResource menuItemArrowStyle}" />
+                                                </StackLayout>
+                                                <Label Text="{Binding Description}"
+                                                       Style="{StaticResource menuItemDescriptionStyle}"/>
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </StackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </ScrollView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -70,7 +70,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\fa-regular-400.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -116,6 +115,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\round_add_button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\fa-brands-400.ttf" />
+    <AndroidAsset Include="Assets\fa-regular-400.ttf" />
+    <AndroidAsset Include="Assets\fa-solid-900.ttf" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

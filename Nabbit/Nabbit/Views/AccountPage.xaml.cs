@@ -40,7 +40,7 @@ namespace Nabbit.Views {
 		}
 
 		private async void OrderHistoryClicked(object sender, EventArgs e) {
-			await App.Current.MainPage.Navigation.PushModalAsync(new OrderHistoryPage());
+			await Shell.Current.GoToAsync("orderHistory");
 		}
 	}
 }

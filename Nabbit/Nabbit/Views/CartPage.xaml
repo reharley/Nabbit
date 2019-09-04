@@ -5,31 +5,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Nabbit.Views.CartPage">
-	<ContentPage.Content>
-			<StackLayout Margin="{StaticResource PageMargin}">
-			<ListView x:Name="cartCollection"
-					  ItemTapped="HandleItemPressed"
-					  ItemsSource="{Binding Cart}"
-					  HasUnevenRows="True"
-					  SeparatorVisibility="None">
-				<ListView.ItemTemplate>
-					<DataTemplate>
-						<ViewCell>
-							<StackLayout>
-								<Label Text="{Binding Product.Name}" FontSize="Large"/>
-								<Label FontSize="Large"
-										   Text="{Binding Quantity,
-											StringFormat='Quantity: {0}'}"/>
-								<Label Text="{Binding Instructions}"/>
-								<Label Text="Addons"/>
-							</StackLayout>
-						</ViewCell>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>
-			<Label Text="{Binding OrderTotal, StringFormat='Order Total: {0:c}'}"
-				   FontSize="Medium"/>
-			<Button Text="Checkout" Clicked="CheckoutClicked"/>
-		</StackLayout>
-	</ContentPage.Content>
+    <ContentPage.Content>
+        <StackLayout Margin="{StaticResource PageMargin}">
+            <ListView x:Name="cartCollection"
+                      ItemTapped="HandleItemPressed"
+                      ItemsSource="{Binding Cart}"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding Product.Name}"
+                                       FontSize="Large" />
+                                <Label FontSize="Large"
+                                       Text="{Binding Quantity,
+											StringFormat='Quantity: {0}'}" />
+                                <Label Text="{Binding Instructions}" />
+                                <Label Text="Addons" />
+                                <!--<StackLayout BindableLayout.ItemsSource="{Binding Addons}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Label Text=""
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>-->
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Text="{Binding OrderTotal, StringFormat='Order Total: {0:c}'}"
+                   FontSize="Medium" />
+            <Button Text="Checkout"
+                    Clicked="CheckoutClicked" />
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>
