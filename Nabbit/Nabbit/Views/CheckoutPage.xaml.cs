@@ -1,6 +1,5 @@
 ﻿using Nabbit.Services;
 using Nabbit.ViewModels;
-using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
