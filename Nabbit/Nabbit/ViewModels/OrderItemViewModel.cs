@@ -9,6 +9,7 @@ using Xamarin.Forms;
 
 namespace Nabbit.ViewModels {
 	public class OrderItemEditViewModel : BaseViewModel {
+		public bool InCart { get; set; }
 		OrderItem orderItem;
 		public OrderItem OrderItem {
 			get { return orderItem; }
@@ -27,16 +28,21 @@ namespace Nabbit.ViewModels {
 
 		public List<AddonGroupAddons> AddonGroups { get; set; }
 
-		public OrderItemEditViewModel(Guid id, bool cartId = false) {
-			if (cartId)
-				OrderItem = Cart.OrderItems.First(o => o.OrderItemId == id);
-			else
+		public OrderItemEditViewModel(Guid id) {
+			InCart = false;
+			var item = Cart.OrderItems.FirstOrDefault(x => x.OrderItemId == id);
+
+			if (item != null) {
+				OrderItem = item;
+				InCart = true;
+			} else {
 				OrderItem = new OrderItem() {
 					OrderItemId = Guid.NewGuid(),
 					Product = LocalGlobals.Restaurant.Products.FirstOrDefault(p => p.ProductId == id),
 					Quantity = 1,
 					Instructions = ""
 				};
+			}
 
 			BuildViewModel();
 		}

@@ -42,8 +42,8 @@ namespace Nabbit.Views {
 			// When you want to show the modal page, just call this method
 			// add the event handler for to listen for the modal popping event:
 			App.Current.ModalPopping += HandleModalPopping;
-			orderItemPage = new OrderItemEditPage(orderItemId, true);
-			await App.Current.MainPage.Navigation.PushModalAsync(orderItemPage);
+			orderItemPage = new OrderItemEditPage(orderItemId);
+			await App.Current.MainPage.Navigation.PushAsync(orderItemPage);
 			await Shell.Current.GoToAsync("menu");
 		}
 
@@ -63,7 +63,7 @@ namespace Nabbit.Views {
 				await DisplayAlert("Login", "Please create an account before making an order.", "OK");
 				await App.Current.MainPage.Navigation.PushModalAsync(new SignInPage());
 			} else if (Cart.OrderItems.Count > 0)
-					await App.Current.MainPage.Navigation.PushModalAsync(new CheckoutPage());
+				await App.Current.MainPage.Navigation.PushModalAsync(new CheckoutPage());
 		}
 	}
 }

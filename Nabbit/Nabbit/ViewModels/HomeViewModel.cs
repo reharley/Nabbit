@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Nabbit.ViewModels {
 	public class HomeViewModel : BaseViewModel {

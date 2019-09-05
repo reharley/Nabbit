@@ -16,11 +16,18 @@ namespace Nabbit.Views {
 		public OrderItemEditViewModel viewModel;
 		bool inCart;
 
-		public OrderItemEditPage(Guid id, bool cartId = false) {
+		public OrderItemEditPage(Guid itemId) {
 			InitializeComponent();
-			BindingContext = viewModel = new OrderItemEditViewModel(id, cartId);
-			inCart = cartId;
-			if (cartId) {
+			NavigationPage.SetHasNavigationBar(this, true);
+			NavigationPage.SetHasBackButton(this, true);
+
+			BindingContext = viewModel = new OrderItemEditViewModel(itemId);
+			BuildPage();
+		}
+
+		void BuildPage () {
+			inCart = viewModel.InCart;
+			if (inCart) {
 				ChangeActionButtons();
 				SumAddonPrices();
 				RegisterSelectedItems();
@@ -34,7 +41,7 @@ namespace Nabbit.Views {
 				Cart.OrderItems.Remove(orderItem);
 			}
 
-			await Navigation.PopModalAsync();
+			await Navigation.PopAsync();
 		}
 
 		private async void AddCartPressed(object sender, EventArgs e) {
@@ -47,7 +54,7 @@ namespace Nabbit.Views {
 			}
 
 			Cart.OrderItems.Add(viewModel.OrderItem);
-			await Navigation.PopModalAsync();
+			await Navigation.PopAsync();
 		}
 
 		void AdjustGroupListHeight() {

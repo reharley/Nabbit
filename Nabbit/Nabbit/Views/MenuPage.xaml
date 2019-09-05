@@ -75,6 +75,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="Testing9" />
             <ScrollView>
                 <StackLayout x:Name="groupList"
                              BindableLayout.ItemsSource="{Binding pcProducts}">
@@ -86,7 +87,9 @@
 
                                 <CollectionView ItemsSource="{Binding Products}"
                                                 VerticalOptions="Start"
-                                                Margin="{StaticResource PageMargin}">
+                                                Margin="{StaticResource PageMargin}"
+                                                SelectionMode="Single"
+                                                SelectionChanged="OnItemSelected">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
                                             <StackLayout>
@@ -99,7 +102,7 @@
                                                            Style="{StaticResource menuItemArrowStyle}" />
                                                 </StackLayout>
                                                 <Label Text="{Binding Description}"
-                                                       Style="{StaticResource menuItemDescriptionStyle}"/>
+                                                       Style="{StaticResource menuItemDescriptionStyle}" />
                                             </StackLayout>
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>

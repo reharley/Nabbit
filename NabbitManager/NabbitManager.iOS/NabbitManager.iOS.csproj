@@ -139,7 +139,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\NabbitManager\NabbitManager.csproj">
-      <Project>{3D53351D-28A6-45E0-9957-6BE6580A5E68}</Project>
+      <Project>{7F555FDE-9169-4F8F-BDB4-8333EB495957}</Project>
       <Name>NabbitManager</Name>
     </ProjectReference>
   </ItemGroup>

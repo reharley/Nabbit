@@ -37,5 +37,19 @@ namespace Nabbit.Views {
 				collectionView.HeightRequest = (productCount * labelHeight) + (productCount * space);
 			}
 		}
+
+		 async void OnItemSelected (object sender, SelectionChangedEventArgs e) {
+			if (e.CurrentSelection.Count == 0)
+				return;
+
+			var product = e.CurrentSelection[0] as Product;
+			if (product == null)
+				return;
+
+			await App.Current.MainPage.Navigation.PushAsync(new OrderItemEditPage(product.ProductId));
+
+			var collection = sender as CollectionView;
+			collection.SelectedItem = null;
+		}
 	}
 }
