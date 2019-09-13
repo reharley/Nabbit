@@ -16,7 +16,6 @@ namespace Nabbit.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MenuPage : ContentPage {
 		public HomeViewModel viewModel;
-		bool gridDefined = false;
 
 		public MenuPage() {
 			InitializeComponent();
@@ -30,9 +29,9 @@ namespace Nabbit.Views {
 				var collectionView = stackLayout.Children[1] as CollectionView;
 
 				int productCount = collectionView.ItemsSource.OfType<Product>().Count();
-				int labelHeight = 30, space = 10;
+				int labelHeight = 63, space = 10;
 				if (Device.RuntimePlatform == Device.Android)
-					labelHeight = 55;
+					labelHeight = 63;
 
 				collectionView.HeightRequest = (productCount * labelHeight) + (productCount * space);
 			}

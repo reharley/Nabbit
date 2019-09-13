@@ -20,42 +20,29 @@ namespace Nabbit.Views {
 		public CartPage() {
 			InitializeComponent();
 			BindingContext = viewModel = new CartViewModel();
-			viewModel.Cart = Cart.OrderItems;
+			var thiccness = (Thickness) App.Current.Resources["PageMargin"];
+			cartList.Margin = new Thickness(thiccness.HorizontalThickness, 0);
 		}
 
 		protected override void OnAppearing() {
 			base.OnAppearing();
-			viewModel.Cart = Cart.OrderItems;
-			cartCollection.ItemsSource = new List<OrderItem>(viewModel.Cart);
+			viewModel.RefreshCart();
 		}
 
-		async void HandleItemPressed(object sender, ItemTappedEventArgs e) {
-			if (e.Item == null)
+		async void HandleItemPressed(object sender, SelectionChangedEventArgs e) {
+			if (e.CurrentSelection.Count == 0)
 				return;
 
-			await ShowModalPage(((OrderItem)e.Item).OrderItemId);
-			((ListView)sender).SelectedItem = null;
-			OnAppearing();
+			var orderItem = e.CurrentSelection[0] as OrderItemView;
+			if (orderItem == null)
+				return;
+
+			await App.Current.MainPage.Navigation.PushAsync(new OrderItemEditPage(orderItem.OrderItemId));
+
+			var collection = sender as CollectionView;
+			collection.SelectedItem = null;
 		}
 
-		private async Task ShowModalPage(Guid orderItemId) {
-			// When you want to show the modal page, just call this method
-			// add the event handler for to listen for the modal popping event:
-			App.Current.ModalPopping += HandleModalPopping;
-			orderItemPage = new OrderItemEditPage(orderItemId);
-			await App.Current.MainPage.Navigation.PushAsync(orderItemPage);
-			await Shell.Current.GoToAsync("menu");
-		}
-
-		private void HandleModalPopping(object sender, ModalPoppingEventArgs e) {
-			if (e.Modal == orderItemPage) {
-				// now we can retrieve that phone number:
-				orderItemPage = null;
-				OnAppearing();
-				// remember to remove the event handler:
-				App.Current.ModalPopping -= HandleModalPopping;
-			}
-		}
 
 		private async void CheckoutClicked(object sender, EventArgs e) {
 			var user = LocalGlobals.User;

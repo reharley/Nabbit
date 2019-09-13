@@ -32,8 +32,10 @@ namespace Nabbit.ViewModels {
 					foreach (var category in LocalGlobals.Restaurant.ProductCategories
 													.Where(pc => menu.ProductCategoryIds.Contains(pc.ProductCategoryId))
 													.OrderBy(pc => pc.Rank)) {
-						var products = LocalGlobals.Restaurant.Products.Where(p => category.ProductIds.Contains(p.ProductId)).ToList();
-
+						var products = LocalGlobals.Restaurant.Products.Where(p => category.ProductIds.Contains(p.ProductId))
+										.Select(x => new ProductView(x))
+										.ToList();
+						products[0].SeparatorOn = false;
 						var pcProduct = new ProductCategoryProducts {
 							CategoryName = category.Name,
 							MenuName = menu.Name,
@@ -45,6 +47,27 @@ namespace Nabbit.ViewModels {
 					}
 				}
 			}
+		}
+
+		public class ProductView : Product {
+			public ProductView (Product x) {
+				ProductId = x.ProductId;
+				Name = x.Name;
+				Price = x.Price;
+				Description = x.Description;
+				AddonGroupIds = x.AddonGroupIds;
+				SeparatorOn = true;
+			}
+			public bool SeparatorOn { get; set; }
+		}
+
+		public class ProductCategoryProducts {
+			public string CategoryName { get; set; }
+			public string MenuName { get; set; }
+			public string MenuDescription { get; set; }
+			public bool SeparatorOn { get; set; }
+
+			public List<ProductView> Products { get; set; }
 		}
 	}
 }

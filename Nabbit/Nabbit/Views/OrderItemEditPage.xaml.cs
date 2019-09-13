@@ -16,7 +16,7 @@ namespace Nabbit.Views {
 		public OrderItemEditViewModel viewModel;
 		bool inCart;
 
-		public OrderItemEditPage(Guid itemId) {
+		public OrderItemEditPage (Guid itemId) {
 			InitializeComponent();
 			NavigationPage.SetHasNavigationBar(this, true);
 			NavigationPage.SetHasBackButton(this, true);
@@ -29,22 +29,26 @@ namespace Nabbit.Views {
 			inCart = viewModel.InCart;
 			if (inCart) {
 				ChangeActionButtons();
-				SumAddonPrices();
+				CalculateItemCost();
 				RegisterSelectedItems();
 			}
 			AdjustGroupListHeight();
 		}
 
-		private async void CancelPressed(object sender, EventArgs e) {
+		private async void CancelPressed (object sender, EventArgs e) {
 			if (inCart) {
 				var orderItem = Cart.OrderItems.First(o => o.OrderItemId == viewModel.OrderItem.OrderItemId);
 				Cart.OrderItems.Remove(orderItem);
 			}
 
-			await Navigation.PopAsync();
+			await App.Current.MainPage.Navigation.PopAsync();
 		}
 
-		private async void AddCartPressed(object sender, EventArgs e) {
+		void QuantityChanged (object sender, ValueChangedEventArgs e) {
+			CalculateItemCost();
+		}
+
+		private async void AddCartPressed (object sender, EventArgs e) {
 			var addons = GetSelectedAddons();
 			viewModel.OrderItem.Addons = new List<Addon>(addons);
 
@@ -54,35 +58,37 @@ namespace Nabbit.Views {
 			}
 
 			Cart.OrderItems.Add(viewModel.OrderItem);
-			await Navigation.PopAsync();
+			await App.Current.MainPage.Navigation.PopAsync();
 		}
 
-		void AdjustGroupListHeight() {
+		void AdjustGroupListHeight () {
 			for (int i = 0; i < groupList.Children.Count; i++) {
 				var stackLayout = groupList.Children[i] as StackLayout;
 				var collectionView = stackLayout.Children[1] as CollectionView;
 
 				int addonCount = collectionView.ItemsSource.OfType<Addon>().Count();
 				int addonHeight = 60, space = 10;
-				
+
 				collectionView.HeightRequest = (addonCount * addonHeight) + (addonCount * space);
 			}
 		}
 
-		void SumAddonPrices(object sender, EventArgs e) {
-			SumAddonPrices();
+		void CalculatePricesEvent (object sender, EventArgs e) {
+			CalculateItemCost();
 		}
 
-		void SumAddonPrices() {
+		void CalculateItemCost () {
+			var productCost = viewModel.OrderItem.Product.Price;
+			var quantity = viewModel.OrderItem.Quantity;
 			var addons = GetSelectedAddons();
 
-			decimal sum = viewModel.OrderItem.Product.Price;
+			var addonPrice = 0m;
 			foreach (var addon in addons)
-				sum += addon.Price;
-			viewModel.Price = sum;
+				addonPrice += addon.Price;
+			viewModel.Price = (addonPrice + productCost) * quantity;
 		}
 
-		List<Addon> GetSelectedAddons() {
+		List<Addon> GetSelectedAddons () {
 			var addons = new List<Addon>();
 			for (int i = 0; i < groupList.Children.Count; i++) {
 				var stackLayout = groupList.Children[i] as StackLayout;
@@ -100,7 +106,7 @@ namespace Nabbit.Views {
 		/// <summary>
 		/// Tells the CollectionView groupList what items are already selected by the user previously
 		/// </summary>
-		void RegisterSelectedItems() {
+		void RegisterSelectedItems () {
 			var addonIds = viewModel.OrderItem.Addons.Select(a => a.AddonId);
 			for (int i = 0; i < groupList.Children.Count; i++) {
 				var stackLayout = groupList.Children[i] as StackLayout;
@@ -114,7 +120,7 @@ namespace Nabbit.Views {
 			}
 		}
 
-		void ChangeActionButtons() {
+		void ChangeActionButtons () {
 			cancelRemoveButton.BackgroundColor = Color.Red;
 			cancelRemoveButton.Text = "Delete";
 

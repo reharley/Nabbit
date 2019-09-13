@@ -8,6 +8,7 @@
              x:Class="Nabbit.Views.MenuPage">
     <ContentPage.Resources>
         <ResourceDictionary>
+
             <Style x:Key="menuCategoryNameStyle"
                    TargetType="Label">
                 <Setter Property="FontSize"
@@ -19,49 +20,27 @@
                 <Setter Property="VerticalOptions"
                         Value="Center" />
                 <Setter Property="BackgroundColor"
-                        Value="#e9ded5" />
+                        Value="{StaticResource secondaryColor}" />
                 <Setter Property="TextColor"
-                        Value="#6f5c53" />
+                        Value="{StaticResource secondaryTextColor}" />
             </Style>
-            <Style x:Key="menuItemNameStyle"
-                   TargetType="Label">
-                <Setter Property="FontSize"
-                        Value="Title" />
-                <Setter Property="FontAttributes"
-                        Value="Bold" />
-                <Setter Property="HorizontalOptions"
-                        Value="Start" />
-                <Setter Property="VerticalOptions"
-                        Value="Center" />
-                <Setter Property="TextColor"
-                        Value="#341404" />
-            </Style>
+            
             <Style x:Key="menuItemPriceStyle"
                    TargetType="Label">
                 <Setter Property="FontSize"
                         Value="Medium" />
                 <Setter Property="HorizontalOptions"
-                        Value="Center" />
+                        Value="EndAndExpand" />
                 <Setter Property="VerticalOptions"
                         Value="Center" />
                 <Setter Property="TextColor"
-                        Value="#341404" />
+                        Value="{StaticResource secondaryDarkColor}" />
             </Style>
-            <Style x:Key="menuItemDescriptionStyle"
-                   TargetType="Label">
-                <Setter Property="FontSize"
-                        Value="Subtitle" />
-                <Setter Property="HorizontalOptions"
-                        Value="Center" />
-                <Setter Property="VerticalOptions"
-                        Value="Center" />
-                <Setter Property="TextColor"
-                        Value="#705b53" />
-            </Style>
+            
             <Style x:Key="menuItemArrowStyle"
                    TargetType="Label">
                 <Setter Property="HorizontalOptions"
-                        Value="EndAndExpand" />
+                        Value="End" />
                 <Setter Property="VerticalOptions"
                         Value="Center" />
                 <Setter Property="FontAttributes"
@@ -75,7 +54,6 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Testing9" />
             <ScrollView>
                 <StackLayout x:Name="groupList"
                              BindableLayout.ItemsSource="{Binding pcProducts}">
@@ -87,13 +65,15 @@
 
                                 <CollectionView ItemsSource="{Binding Products}"
                                                 VerticalOptions="Start"
-                                                Margin="{StaticResource PageMargin}"
                                                 SelectionMode="Single"
                                                 SelectionChanged="OnItemSelected">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
-                                            <StackLayout>
-                                                <StackLayout Orientation="Horizontal">
+                                            <StackLayout Style="{StaticResource itemSelectedStyle}">
+                                                <BoxView Style="{StaticResource separatorBoxStyle}"
+                                                         IsVisible="{Binding SeparatorOn}"/>
+                                                <StackLayout Orientation="Horizontal"
+                                                             Margin="{StaticResource PageMargin}">
                                                     <Label Text="{Binding Name}"
                                                            Style="{StaticResource menuItemNameStyle}" />
                                                     <Label Text="{Binding Price, StringFormat='{0:c}'}"
@@ -101,8 +81,6 @@
                                                     <Label Text="&#xf054;"
                                                            Style="{StaticResource menuItemArrowStyle}" />
                                                 </StackLayout>
-                                                <Label Text="{Binding Description}"
-                                                       Style="{StaticResource menuItemDescriptionStyle}" />
                                             </StackLayout>
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>

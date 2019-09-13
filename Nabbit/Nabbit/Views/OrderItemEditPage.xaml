@@ -5,71 +5,100 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="Nabbit.Views.OrderItemEditPage"
-			 Title="{Binding OrderItem.Product.Name}">
-	<ContentPage.Resources>
-		<Style x:Key="addonNameLabelStyle" TargetType="Label">
-			<Setter Property="FontSize" Value="Medium" />
-			<Setter Property="HorizontalOptions" Value="StartAndExpand" />
-			<Setter Property="VerticalOptions" Value="Center" />
-		</Style>
-		<Style x:Key="priceLabelStyle" TargetType="Label">
-			<Setter Property="FontSize" Value="Medium" />
-			<Setter Property="HorizontalOptions" Value="End" />
-			<Setter Property="VerticalOptions" Value="Center" />
-		</Style>
-	</ContentPage.Resources>
-	<ContentPage.Content>
-		<StackLayout Margin="{StaticResource PageMargin}">
-			<Label Text="{Binding OrderItem.Product.Name}" FontSize="Large"/>
-			<Label Text="{Binding OrderItem.Product.Description}" FontSize="Medium"/>
-			<Label Text="{Binding OrderItem.Product.Price, StringFormat='{0:c}'}" FontSize="Medium"/>
-			<StackLayout Orientation="Horizontal">
-				<Label Text="{Binding Source={x:Reference stepperQty},
+             Title="{Binding OrderItem.Product.Name}">
+    <ContentPage.Resources>
+        <Style x:Key="addonNameLabelStyle"
+               TargetType="Label">
+            <Setter Property="FontSize"
+                    Value="Medium" />
+            <Setter Property="HorizontalOptions"
+                    Value="StartAndExpand" />
+            <Setter Property="VerticalOptions"
+                    Value="Center" />
+        </Style>
+        <Style x:Key="priceLabelStyle"
+               TargetType="Label">
+            <Setter Property="FontSize"
+                    Value="Medium" />
+            <Setter Property="HorizontalOptions"
+                    Value="End" />
+            <Setter Property="VerticalOptions"
+                    Value="Center" />
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand">
+            <StackLayout Margin="{StaticResource PageMargin}">
+                <Label Text="{Binding OrderItem.Product.Name}"
+                       FontSize="Large" />
+                <Label Text="{Binding OrderItem.Product.Description}"
+                       FontSize="Medium" />
+                <Label Text="{Binding OrderItem.Product.Price, StringFormat='{0:c}'}"
+                       FontSize="Medium" />
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding Source={x:Reference stepperQty},
 							Path=Value,
 							StringFormat='Quantity: {0}'}"
-					   FontSize="Medium"/>
-				<Stepper Minimum="1"
-						 Maximum="10"
-						 Increment="1"
-						 x:Name="stepperQty"
-						 Value="{Binding OrderItem.Quantity}"/>
-			</StackLayout>
+                           FontSize="Medium" />
+                    <Stepper Minimum="1"
+                             Maximum="10"
+                             Increment="1"
+                             x:Name="stepperQty"
+                             ValueChanged="CalculatePricesEvent"
+                             Value="{Binding OrderItem.Quantity}" />
+                </StackLayout>
 
-			<ScrollView>
-				<StackLayout x:Name="groupList"
-						 BindableLayout.ItemsSource="{Binding AddonGroups}">
-					<BindableLayout.ItemTemplate>
-						<DataTemplate>
-							<StackLayout>
-								<Label Text="{Binding Name}" Style="{StaticResource orderNameLabelStyle}"/>
-								<CollectionView ItemsSource="{Binding Addons}"
-												SelectionMode="{Binding SelectionMode}"
-												SelectedItem="{Binding DefaultAddon}"
-												SelectedItems="{Binding DefaultAddons}"
-												SelectionChanged="SumAddonPrices"
-												VerticalOptions="Start"
-												Margin="0">
-									<CollectionView.ItemTemplate>
-										<DataTemplate>
-											<StackLayout>
-												<Label Style="{StaticResource addonNameLabelStyle}"
-												   Text="{Binding Name}" />
-												<Label Style="{StaticResource priceLabelStyle}"
-												   Text="{Binding Price, StringFormat='{0:c}'}" />
-											</StackLayout>
-										</DataTemplate>
-									</CollectionView.ItemTemplate>
-								</CollectionView>
-							</StackLayout>
-						</DataTemplate>
-					</BindableLayout.ItemTemplate>
-				</StackLayout>
-			</ScrollView>
+                <ScrollView VerticalOptions="FillAndExpand">
+                    <StackLayout x:Name="groupList"
+                                 BindableLayout.ItemsSource="{Binding AddonGroups}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+                                    <Label Text="{Binding Name}"
+                                           Style="{StaticResource orderNameLabelStyle}" />
+                                    <CollectionView ItemsSource="{Binding Addons}"
+                                                    SelectionMode="{Binding SelectionMode}"
+                                                    SelectedItem="{Binding DefaultAddon}"
+                                                    SelectedItems="{Binding DefaultAddons}"
+                                                    SelectionChanged="CalculatePricesEvent"
+                                                    VerticalOptions="Start"
+                                                    Margin="0">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackLayout Style="{StaticResource itemSelectedStyle}">
+                                                    <Label Style="{StaticResource addonNameLabelStyle}"
+                                                           Text="{Binding Name}" />
+                                                    <Label Style="{StaticResource priceLabelStyle}"
+                                                           Text="{Binding Price, StringFormat='{0:c}'}" />
+                                                </StackLayout>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </StackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
+            </StackLayout>
 
-			<Entry Text="{Binding OrderItem.Instructions}" Placeholder="Any special instructions?" FontSize="Medium"/>
-			<Label Text="{Binding Price, StringFormat='{0:c}'}" FontSize="Large" FontAttributes="Bold" />
-			<Button x:Name="cancelRemoveButton" Text="Cancel" BackgroundColor="Silver" Clicked="CancelPressed" />
-			<Button x:Name="addSaveButton" Text="Add To Cart" BackgroundColor="Green" Clicked="AddCartPressed"/>
-		</StackLayout>
-	</ContentPage.Content>
+            <Entry Text="{Binding OrderItem.Instructions}"
+                   Placeholder="Any special instructions?"
+                   FontSize="Medium"
+                   VerticalOptions="EndAndExpand"/>
+            <Label Text="{Binding Price, StringFormat='{0:c}'}"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   VerticalOptions="End" />
+            <Button x:Name="cancelRemoveButton"
+                    Text="Cancel"
+                    Style="{StaticResource secondaryDarkButtonStyle}"
+                    VerticalOptions="End"
+                    Clicked="CancelPressed" />
+            <Button x:Name="addSaveButton"
+                    Text="Add To Cart"
+                    Style="{StaticResource secondaryLightButtonStyle}"
+                    VerticalOptions="End"
+                    Clicked="AddCartPressed" />
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

@@ -4,90 +4,73 @@
        xmlns:d="http://xamarin.com/schemas/2014/forms/design"
        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
        xmlns:controls="clr-namespace:Nabbit.Controls"
-	   mc:Ignorable="d"
+       mc:Ignorable="d"
        xmlns:views="clr-namespace:Nabbit.Views"
        Title="Nabbit"
        x:Class="Nabbit.AppShell"
-	   FlyoutBehavior="Flyout">
+       BackgroundColor="{StaticResource primaryDarkColor}">
 
-	<!-- 
+    <!-- 
         Styles and Resources 
     -->
-	<Shell.Resources>
-		<ResourceDictionary>
-			<Color x:Key="NavigationPrimary">#2196F3</Color>
-			<Style x:Key="BaseStyle" TargetType="Element">
-				<Setter Property="Shell.BackgroundColor" Value="{StaticResource NavigationPrimary}" />
-				<Setter Property="Shell.ForegroundColor" Value="White" />
-				<Setter Property="Shell.TitleColor" Value="White" />
-				<Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-				<Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
-				<Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
-				<Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-				<Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-				<Setter Property="Shell.TabBarTitleColor" Value="White"/>
-			</Style>
-			<Style TargetType="ShellItem" BasedOn="{StaticResource BaseStyle}" />
-			<Style x:Key="MenuShell"
-               TargetType="Element"
-               BasedOn="{StaticResource BaseStyle}">
-				<Setter Property="Shell.BackgroundColor"
-                    Value="#039BE6" />
-			</Style>
-			<Style x:Key="AboutShell"
-               TargetType="Element"
-               BasedOn="{StaticResource BaseStyle}">
-				<Setter Property="Shell.BackgroundColor"
-                    Value="#96d1ff" />
-			</Style>
-		</ResourceDictionary>
-	</Shell.Resources>
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Color x:Key="NavigationPrimary">#2196F3</Color>
+            <Style x:Key="BaseStyle"
+                   TargetType="Element">
+                <Setter Property="Shell.BackgroundColor"
+                        Value="{StaticResource primaryDarkColor}" />
+                <Setter Property="Shell.ForegroundColor"
+                        Value="White" />
+                <Setter Property="Shell.TitleColor"
+                        Value="White" />
+                <Setter Property="Shell.DisabledColor"
+                        Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor"
+                        Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarBackgroundColor"
+                        Value="{StaticResource primaryDarkColor}" />
+                <Setter Property="Shell.TabBarForegroundColor"
+                        Value="White" />
+                <Setter Property="Shell.TabBarUnselectedColor"
+                        Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarTitleColor"
+                        Value="White" />
+            </Style>
+            <Style TargetType="ShellItem"
+                   BasedOn="{StaticResource BaseStyle}" />
+            <Style x:Key="MenuShell"
+                   TargetType="Element"
+                   BasedOn="{StaticResource BaseStyle}">
+            </Style>
+            <Style x:Key="AboutShell"
+                   TargetType="Element"
+                   BasedOn="{StaticResource BaseStyle}">
+                <Setter Property="Shell.BackgroundColor"
+                        Value="Red" />
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
 
-	<!--<Shell.FlyoutHeader>
-		<controls:FlyoutHeader />
-	</Shell.FlyoutHeader>
-
-	<ShellContent x:Name="menuShellItem"
-				  Route="menu"
-					Title="Menu"
-						Icon="restaurant-menu.png"
-						Style="{StaticResource MenuShell}"
-						ContentTemplate="{DataTemplate views:MenuPage}" />
-	<ShellContent Route="cart"
-						Title="Cart"
-						Icon="restaurant-menu.png"
-						Style="{StaticResource MenuShell}"
-						ContentTemplate="{DataTemplate views:CartPage}" />-->
-	
-	<TabBar>
-		<Tab Title="Menu" Icon="tab_feed.png">
-			<ShellContent Title="Menu"
-										Icon="restaurant-menu.png"
-										ContentTemplate="{DataTemplate views:MenuPage}" />
-		</Tab>
-		<Tab Title="Cart" Icon="tab_about.png">
-			<ShellContent Title="Cart"
-										Icon="restaurant-menu.png"
-										ContentTemplate="{DataTemplate views:CartPage}" />
-		</Tab>
-		<Tab Title="Account" Icon="tab_about.png">
-			<ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />
-		</Tab>
-	</TabBar>
-	<!--<ShellContent Route="about"
-                Style="{StaticResource AboutShell}"
-                  Title="About"
-                  Icon="info.png"
-                  ContentTemplate="{DataTemplate views:AboutPage}" />-->
-
-
-
-	<!--<MenuItem Text="Random"
-              Icon="random.png"
-              Command="{Binding RandomPageCommand}" />
-	<MenuItem Text="Help"
-              Icon="help.png"
-              Command="{Binding HelpCommand}"
-              CommandParameter="https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell" />-->
-
+    <TabBar>
+        <Tab Title="Menu"
+             Icon="tab_feed.png"
+             Style="{StaticResource MenuShell}">
+            <ShellContent Title="Menu"
+                          Icon="restaurant-menu.png"
+                          ContentTemplate="{DataTemplate views:MenuPage}" />
+        </Tab>
+        <Tab Title="Cart"
+             Icon="tab_about.png"
+             Style="{StaticResource MenuShell}">
+            <ShellContent Title="Cart"
+                          Icon="restaurant-menu.png"
+                          ContentTemplate="{DataTemplate views:CartPage}" />
+        </Tab>
+        <Tab Title="Account"
+             Icon="tab_about.png"
+             Style="{StaticResource MenuShell}">
+            <ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />
+        </Tab>
+    </TabBar>
 </Shell>

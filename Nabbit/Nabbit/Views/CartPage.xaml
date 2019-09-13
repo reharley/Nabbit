@@ -3,41 +3,67 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:nvm="using:Nabbit.ViewModels"
+             xmlns:nm="using:Nabbit.Models"
              mc:Ignorable="d"
              x:Class="Nabbit.Views.CartPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Margin="{StaticResource PageMargin}">
-            <ListView x:Name="cartCollection"
-                      ItemTapped="HandleItemPressed"
-                      ItemsSource="{Binding Cart}"
-                      HasUnevenRows="True"
-                      SeparatorVisibility="None">
-                <ListView.ItemTemplate>
+        <StackLayout>
+            <CollectionView x:Name="cartList"
+                            ItemsSource="{Binding Cart}"
+                            VerticalOptions="FillAndExpand"
+                            VerticalScrollBarVisibility="Never"
+                            SelectionMode="Single"
+                            SelectionChanged="HandleItemPressed">
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <StackLayout>
+                        <StackLayout Style="{StaticResource itemSelectedStyle}">
+                            <BoxView Style="{StaticResource separatorBoxStyle}" />
+
+                            <StackLayout Orientation="Horizontal">
                                 <Label Text="{Binding Product.Name}"
-                                       FontSize="Large" />
-                                <Label FontSize="Large"
-                                       Text="{Binding Quantity,
-											StringFormat='Quantity: {0}'}" />
-                                <Label Text="{Binding Instructions}" />
-                                <Label Text="Addons" />
-                                <!--<StackLayout BindableLayout.ItemsSource="{Binding Addons}">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate>
-                                            <Label Text=""
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </StackLayout>-->
+                                       Style="{StaticResource menuItemNameStyle}"
+                                       HorizontalOptions="StartAndExpand"
+                                       VerticalOptions="Start"/>
+                                <BoxView HeightRequest="1" WidthRequest="0" />
+                                <Label Text="{Binding OrderItemPrice, StringFormat='{0:c}'}"
+                                       Style="{StaticResource menuItemNameStyle}"
+                                       FontSize="Default"
+                                       HorizontalOptions="EndAndExpand"/>
                             </StackLayout>
-                        </ViewCell>
+
+                            <Label Text="{Binding Quantity,
+											StringFormat='Quantity: {0}'}" />
+                            <Label Text="{Binding Instructions}" />
+                            <Label Text="{Binding AddonText}" />
+                        </StackLayout>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Label Text="{Binding OrderTotal, StringFormat='Order Total: {0:c}'}"
-                   FontSize="Medium" />
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <BoxView Style="{StaticResource separatorBoxStyle}" />
+
+            <StackLayout Margin="{StaticResource PageMargin}"
+                         Orientation="Horizontal">
+                <Label Text="Order Total ......................................................................"
+                       LineBreakMode="TailTruncation"
+                       FontSize="Medium" />
+                <Label Text="{Binding OrderTotal, StringFormat='{0:c}'}"
+                       d:Text="$25.00"
+                       FontSize="Medium"
+                       HorizontalOptions="EndAndExpand"
+                       MinimumWidthRequest="70"
+                       MaxLines="1" />
+            </StackLayout>
+
             <Button Text="Checkout"
+                    Style="{StaticResource secondaryButtonStyle}"
+                    HorizontalOptions="FillAndExpand"
                     Clicked="CheckoutClicked" />
         </StackLayout>
     </ContentPage.Content>
