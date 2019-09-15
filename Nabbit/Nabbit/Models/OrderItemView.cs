@@ -23,6 +23,7 @@ namespace Nabbit.Models {
 
 			AddonCost = 0m;
 			AddonText = "with ";
+			var addonCount = 0;
 			for (int i = 0; i < addonGroups.Count; i++) {
 				if (addonGroups[i].SelectionMode == SelectionMode.Multiple) {
 					if (addonGroups[i].DefaultAddons.Count == 0)
@@ -32,16 +33,18 @@ namespace Nabbit.Models {
 						var addon = addonGroups[i].DefaultAddons[j];
 						AddonText += string.Format("{0}-{1} ({2:c})", addonGroups[i].Name, addon.Name, addon.Price);
 						AddonCost += addon.Price;
-						if (j + 1 != addonGroups[i].DefaultAddons.Count)
+						if (j + 1 != addonGroups[i].DefaultAddons.Count && addonCount + 1 < Addons.Count)
 							AddonText += ",\n";
+						addonCount++;
 					}
 				} else {
 					var addon = addonGroups[i].DefaultAddon;
 					AddonText += string.Format("{0}-{1} ({2:c})", addonGroups[i].Name, addon.Name, addon.Price);
 					AddonCost += addon.Price;
+					addonCount++;
 				}
 
-				if (i + 1 <= Addons.Count)
+				if (i + 1 < Addons.Count)
 					AddonText += ",\n";
 			}
 		}

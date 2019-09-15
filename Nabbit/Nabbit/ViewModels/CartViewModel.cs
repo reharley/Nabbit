@@ -12,8 +12,6 @@ namespace Nabbit.ViewModels {
 	public class CartViewModel : BaseViewModel {
 		public CartViewModel () {
 			RefreshCart();
-
-			OpenOrderEditPageCommand = new Command<string>(async (arg) => await OpenOrderEditPage(arg));
 		}
 
 		decimal orderTotal;
@@ -34,12 +32,6 @@ namespace Nabbit.ViewModels {
 			set {
 				SetProperty(ref cart, value);
 			}
-		}
-
-		public ICommand OpenOrderEditPageCommand { private set; get; }
-
-		async Task OpenOrderEditPage(string orderItemId) {
-			await App.Current.MainPage.Navigation.PushAsync(new ThankYouPage());
 		}
 
 		public void RefreshCart () {

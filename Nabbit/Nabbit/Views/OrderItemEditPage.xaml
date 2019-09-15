@@ -84,21 +84,34 @@
             <Entry Text="{Binding OrderItem.Instructions}"
                    Placeholder="Any special instructions?"
                    FontSize="Medium"
-                   VerticalOptions="EndAndExpand"/>
+                   VerticalOptions="EndAndExpand" />
             <Label Text="{Binding Price, StringFormat='{0:c}'}"
                    FontSize="Large"
                    FontAttributes="Bold"
                    VerticalOptions="End" />
-            <Button x:Name="cancelRemoveButton"
-                    Text="Cancel"
-                    Style="{StaticResource secondaryDarkButtonStyle}"
-                    VerticalOptions="End"
-                    Clicked="CancelPressed" />
-            <Button x:Name="addSaveButton"
-                    Text="Add To Cart"
-                    Style="{StaticResource secondaryLightButtonStyle}"
-                    VerticalOptions="End"
-                    Clicked="AddCartPressed" />
+            <Grid ColumnSpacing="0" RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Button x:Name="cancelRemoveButton"
+                        Text="Cancel"
+                        Style="{StaticResource secondaryDarkButtonStyle}"
+                        VerticalOptions="End"
+                        Clicked="CancelPressed"
+                        Grid.Row="0" Grid.Column="0"/>
+                <Button x:Name="addSaveButton"
+                        Text="Add To Cart"
+                        Style="{StaticResource secondaryLightButtonStyle}"
+                        VerticalOptions="End"
+                        Clicked="AddCartPressed"
+                        Grid.Row="0" Grid.Column="1" />
+            </Grid>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

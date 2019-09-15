@@ -26,27 +26,8 @@ namespace Nabbit.Views {
 				var pickupTime = viewModel.PickupTime;
 				viewModel.Order.PickupTime = new DateTime(pickupDate.Year, pickupDate.Month, pickupDate.Day, pickupTime.Hours, pickupTime.Minutes, pickupTime.Seconds);
 				await LocalGlobals.PostOrder(viewModel.Order);
-				await App.Current.MainPage.Navigation.PushModalAsync(new ThankYouPage());
+				await App.Current.MainPage.Navigation.PushAsync(new ThankYouPage());
 			}
 		}
-
-		//public string CreateStripeToken(string cardNumber, string cardExpMonth, string cardExpYear, string cardCVC) {
-		//	StripeConfiguration.ApiKey = "pk_test_xxxxxxxxxxxxxxxxx";
-
-		//	var tokenOptions = new TokenCreateOptions() {
-		//		Card = new TokenCreateOptions() {
-					
-		//			//Number = cardNumber,
-		//			//ExpirationYear = cardExpYear,
-		//			//ExpirationMonth = cardExpMonth,
-		//			//Cvc = cardCVC
-		//		}
-		//	};
-
-		//	var tokenService = new TokenService();
-		//	Token stripeToken = tokenService.Create(tokenOptions);
-
-		//	return stripeToken.Id; // This is the token
-		//}
 	}
 }

@@ -38,7 +38,8 @@
                         Value="Large" />
                 <Setter Property="HorizontalOptions"
                         Value="FillAndExpand" />
-
+                <Setter Property="CornerRadius"
+                        Value="0" />
             </Style>
 
             <Style x:Key="primaryButtonStyle"

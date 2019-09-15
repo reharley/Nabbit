@@ -50,7 +50,7 @@ namespace Nabbit.Views {
 				await DisplayAlert("Login", "Please create an account before making an order.", "OK");
 				await App.Current.MainPage.Navigation.PushModalAsync(new SignInPage());
 			} else if (Cart.OrderItems.Count > 0)
-				await App.Current.MainPage.Navigation.PushModalAsync(new CheckoutPage());
+				await App.Current.MainPage.Navigation.PushAsync(new CheckoutPage());
 		}
 	}
 }

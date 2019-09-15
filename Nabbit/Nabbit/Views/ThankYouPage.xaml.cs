@@ -18,9 +18,7 @@ namespace Nabbit.Views {
 		}
 
 		private async void ReturnClicked(object sender, EventArgs e) {
-			var pages = Navigation.ModalStack.Count;
-			for(int i = 0; i < pages; i++)
-				Navigation.PopModalAsync();
+			await Navigation.PopToRootAsync();
 		}
 	}
 }
