@@ -42,5 +42,9 @@ namespace Nabbit.Views {
 		private async void OrderHistoryClicked(object sender, EventArgs e) {
 			await Shell.Current.GoToAsync("orderHistory");
 		}
+
+		private async void EnterPaymentClicked (object sender, EventArgs e) {
+			await Navigation.PushAsync(new PaymentInfoPage());
+		}
 	}
 }

@@ -12,6 +12,7 @@
 				<Label x:Name="firstName"/>
 			</StackLayout>
 			<Button Text="View Order History" Clicked="OrderHistoryClicked" />
+            <Button Text="Enter Payment Information" Clicked="EnterPaymentClicked" />
 		</StackLayout>
     </ContentPage.Content>
 </ContentPage>

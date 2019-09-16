@@ -76,6 +76,7 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BaseUrl_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
@@ -137,6 +138,9 @@
     <BundleResource Include="Resources\fa-solid-900.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
+    <BundleResource Include="..\Nabbit.Android\Assets\payment.html">
+      <Link>Resources\payment.html</Link>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -156,5 +160,8 @@
       <Project>{87822ED4-B14C-4E63-B3BA-531A7B12EEEC}</Project>
       <Name>Nabbit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 </Project>
