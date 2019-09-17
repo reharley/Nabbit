@@ -14,6 +14,8 @@ namespace Nabbit.Models {
 		}
 
 		public Guid UserId { get; set; }
+		public Guid PaymentMethodId { get; set; }
+		public Guid CustomerId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }

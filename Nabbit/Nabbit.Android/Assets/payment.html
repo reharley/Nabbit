@@ -393,6 +393,7 @@
                 if (result) {
                     successElement.querySelector('.token').textContent = result.id;
                     successElement.classList.add('visible');
+                    window.location.href = 'http:payment_method?' + result.id;
                 }
                 loaderElement.classList.remove('visible');
             })

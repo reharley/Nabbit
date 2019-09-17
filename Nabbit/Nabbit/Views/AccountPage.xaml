@@ -7,12 +7,15 @@
              x:Class="Nabbit.Views.AccountPage">
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
-			<Label x:Name="test" />
-			<StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand">
-				<Label x:Name="firstName"/>
-			</StackLayout>
-			<Button Text="View Order History" Clicked="OrderHistoryClicked" />
-            <Button Text="Enter Payment Information" Clicked="EnterPaymentClicked" />
-		</StackLayout>
+            <Label x:Name="test" />
+            <Label x:Name="firstName" />
+
+            <Button Text="View Order History"
+                    Clicked="OrderHistoryClicked" />
+            <Button Text="Enter Payment Information"
+                    Clicked="EnterPaymentClicked" />
+            <Button Text="Test Charge"
+                    Clicked="TestChargeClicked" />
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -5,7 +5,7 @@
     x:Class="Nabbit.Views.PaymentInfoPage">
     <ContentPage.Content>
         <StackLayout>
-            <WebView x:Name="webView" WidthRequest="1000" HeightRequest="1000" />
+            <WebView x:Name="webView" WidthRequest="1000" HeightRequest="1000" Navigating="WebViewNavigating" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
