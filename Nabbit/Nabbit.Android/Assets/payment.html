@@ -181,12 +181,20 @@
         }
     </style>
 
+    <script>
+        function passParams(customerId, email_account) {
+            var form = document.querySelector('form');
+            form.querySelector('input[name=email_account]').value = email_account;
+            form.querySelector('input[name=customerId]').value = customerId;
+        }
+    </script>
 </head>
 
 <body>
 
     <form onsubmit="return false;">
-        <!--      Make your own form or copy this one -->
+        <input type="hidden" id="customerId" name="customerId" />
+        <input type="hidden" id="email_account" name="email_account" />
         <div class="group">
             <label>
                 <span>First Name</span>
@@ -233,18 +241,8 @@
             </div>
     </form>
 
-
     <script>
         var tokenizeButton = document.querySelector('#tokenizebutton');
-        var customerId = "";
-        var email = "";
-
-
-        function assignValues(cust_id, _email) {
-            customerId = cust_id;
-            email = _email;
-            return "stop!";
-        }
 
         // Init FattMerchant API
         var fattJs = new FattJs('Nabbit-LLC-e490f98ca4c3', {
@@ -271,7 +269,7 @@
             form.querySelector('input[name=month]').value = 11;
             form.querySelector('input[name=year]').value = 2020;
             form.querySelector('input[name=cardholder-first-name]').value = 'Jon';
-            form.querySelector('input[name=cardholder-last-name]').value = 'Doe';
+            // form.querySelector('input[name=cardholder-last-name]').value = 'Doe';
             form.querySelector('input[name=phone]').value = '+1111111111111111';
         })
             .catch(err => {
@@ -281,14 +279,12 @@
 
         fattJs.on('card_form_complete', (message) => {
             // activate pay button
-            payButton.disabled = false;
             tokenizeButton.disabled = false;
             console.log(message);
         });
 
         fattJs.on('card_form_incomplete', (message) => {
             // deactivate pay button
-            payButton.disabled = true;
             tokenizeButton.disabled = true;
             console.log(message);
         });
@@ -304,19 +300,15 @@
 
             var form = document.querySelector('form');
             var extraDetails = {
-                //total: 1, // 1$
                 firstname: form.querySelector('input[name=cardholder-first-name]').value,
                 lastname: form.querySelector('input[name=cardholder-last-name]').value,
                 month: form.querySelector('input[name=month]').value,
                 year: form.querySelector('input[name=year]').value,
                 phone: form.querySelector('input[name=phone]').value,
+                email: form.querySelector('input[name=email_account]').value,
+                customer_id: form.querySelector('input[name=customerId]').value,
                 url: "https://omni.fattmerchant.com/#/bill/",
                 method: 'card',
-                // validate is optional and can be true or false. 
-                // determines whether or not fattmerchant.js does client-side validation.
-                // the validation follows the sames rules as the api.
-                // check the api documentation for more info:
-                // https://fattmerchant.com/api-documentation/
                 validate: false,
             };
 
@@ -335,9 +327,13 @@
                     errorElement.textContent = err.message;
                     errorElement.classList.add('visible');
                     loaderElement.classList.remove('visible');
+
+                    successElement.querySelector('.token').textContent = "failed";
+                    successElement.classList.add('visible');
                 });
         }
     </script>
+
 </body>
 
 </html>

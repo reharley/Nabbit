@@ -39,6 +39,7 @@ namespace Nabbit.Functions {
                         storageName, accountKey), true);
                 var tableClient = storageAccount.CreateCloudTableClient();
                 var userTable = tableClient.GetTableReference(userTableName);
+				await userTable.CreateIfNotExistsAsync();
                 var upsertUser = TableOperation.InsertOrReplace(new UserEntity(user.UserId.ToString(), requestBody));
 
                 await userTable.ExecuteAsync(upsertUser);

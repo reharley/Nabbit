@@ -34,6 +34,7 @@ namespace Nabbit.MenuUploader {
 		//private const string getRestaurantsUrl = "https://nabbit.azurewebsites.net/api/userId/{userId}/schoolId/{schoolId}?code=ZX45t3u8uyrT24p6bbBFXhepqeQ7KoKGN9N/lbl1p8vakNTHsgw/ng==";
 		private const string postRestaurantUrl = "http://localhost:7071/api/PostRestaurant";
 		private const string postOrderUrl = "http://localhost:7071/api/PostOrder";
+		private const string postUserUrl = "http://localhost:7071/api/PostUser";
 
 		private static HttpClient _client;
 
@@ -63,12 +64,22 @@ namespace Nabbit.MenuUploader {
 			//PullObjects().Wait();
 			//UpdateRestaurant().Wait();
 			//PushToTable().Wait();
-
-			MakeOrder();
+			var user = new User();
+			user.FirstName = "TJ";
+			PostUser(user).Wait();
+			//MakeOrder();
 			//PullUserOrders().Wait();
 
 			Console.WriteLine("Complete");
 			//SendNotification();
+		}
+
+		public static async Task PostUser (User user) {
+			string url = postUserUrl;
+			using (var client = new HttpClient()) {
+				var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+				var result = await client.PostAsync(url, content);
+			}
 		}
 
 		public static void MakeOrder() {
