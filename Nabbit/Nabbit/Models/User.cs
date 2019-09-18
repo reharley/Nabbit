@@ -21,5 +21,7 @@ namespace Nabbit.Models {
 		public string Email { get; set; }
 		public string School { get; set; }
 		public bool LoggedIn { get; set; }
+
+        public List<Guid> UserOrderIds { get; set; }
 	}
 }

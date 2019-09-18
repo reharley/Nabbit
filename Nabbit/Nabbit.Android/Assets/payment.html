@@ -222,9 +222,7 @@
                 </div>
             </label>
         </div>
-        <button id="paybutton">Pay $1</button>
-        <button id="tokenizebutton">Tokenize Card</button>
-        <!-- <button id="verifybutton">verify $1</button> -->
+        <button id="tokenizebutton">Save Card</button>
         <div class="outcome">
             <div class="error"></div>
             <div class="success">
@@ -237,8 +235,16 @@
 
 
     <script>
-        var payButton = document.querySelector('#paybutton');
         var tokenizeButton = document.querySelector('#tokenizebutton');
+        var customerId = "";
+        var email = "";
+
+
+        function assignValues(cust_id, _email) {
+            customerId = cust_id;
+            email = _email;
+            return "stop!";
+        }
 
         // Init FattMerchant API
         var fattJs = new FattJs('Nabbit-LLC-e490f98ca4c3', {
@@ -287,72 +293,6 @@
             console.log(message);
         });
 
-        document.querySelector('#paybutton').onclick = () => {
-            var successElement = document.querySelector('.success');
-            var errorElement = document.querySelector('.error');
-            var loaderElement = document.querySelector('.loader');
-
-            successElement.classList.remove('visible');
-            errorElement.classList.remove('visible');
-            loaderElement.classList.add('visible');
-
-            var form = document.querySelector('form');
-            var extraDetails = {
-                total: 1, // 1$
-                firstname: form.querySelector('input[name=cardholder-first-name]').value,
-                lastname: form.querySelector('input[name=cardholder-last-name]').value,
-                company: '',
-                email: '',
-                month: form.querySelector('input[name=month]').value,
-                year: form.querySelector('input[name=year]').value,
-                phone: form.querySelector('input[name=phone]').value,
-                address_1: '100 S Orange Ave',
-                address_2: '',
-                address_city: 'Orlando',
-                address_state: 'FL',
-                address_zip: '32811',
-                address_country: 'USA',
-                url: "https://omni.fattmerchant.com/#/bill/",
-                method: 'card',
-                // validate is optional and can be true or false. 
-                // determines whether or not fattmerchant.js does client-side validation.
-                // the validation follows the sames rules as the api.
-                // check the api documentation for more info:
-                // https://fattmerchant.com/api-documentation/
-                validate: false,
-                // meta is optional and each field within the POJO is optional also
-                meta: {
-                    reference: 'invoice-reference-num',// optional - will show up in emailed receipts
-                    memo: 'notes about this transaction',// optional - will show up in emailed receipts
-                    otherField1: 'other-value-1', // optional - we don't care
-                    otherField2: 'other-value-2', // optional - we don't care
-                    subtotal: 1, // optional - will show up in emailed receipts
-                    tax: 0, // optional - will show up in emailed receipts
-                    lineItems: [ // optional - will show up in emailed receipts
-                        { "id": "optional-fm-catalog-item-id", "item": "Demo Item", "details": "this is a regular, demo item", "quantity": 10, "price": .1 }
-                    ]
-                }
-            };
-
-            console.log(extraDetails);
-
-            // call pay api
-            fattJs.pay(extraDetails).then((result) => {
-                console.log('pay:');
-                console.log(result);
-                if (result.id) {
-                    successElement.querySelector('.token').textContent = result.payment_method_id;
-                    successElement.classList.add('visible');
-                    loaderElement.classList.remove('visible');
-                }
-            })
-                .catch(err => {
-                    errorElement.textContent = err.message;
-                    errorElement.classList.add('visible');
-                    loaderElement.classList.remove('visible');
-                });
-        }
-
         document.querySelector('#tokenizebutton').onclick = () => {
             var successElement = document.querySelector('.success');
             var errorElement = document.querySelector('.error');
@@ -364,18 +304,12 @@
 
             var form = document.querySelector('form');
             var extraDetails = {
-                total: 1, // 1$
+                //total: 1, // 1$
                 firstname: form.querySelector('input[name=cardholder-first-name]').value,
                 lastname: form.querySelector('input[name=cardholder-last-name]').value,
                 month: form.querySelector('input[name=month]').value,
                 year: form.querySelector('input[name=year]').value,
                 phone: form.querySelector('input[name=phone]').value,
-                address_1: '100 S Orange Ave',
-                address_2: '',
-                address_city: 'Orlando',
-                address_state: 'FL',
-                address_zip: '32811',
-                address_country: 'USA',
                 url: "https://omni.fattmerchant.com/#/bill/",
                 method: 'card',
                 // validate is optional and can be true or false. 

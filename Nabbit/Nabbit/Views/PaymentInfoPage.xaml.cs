@@ -11,6 +11,7 @@ namespace Nabbit.Views {
 		public PaymentInfoPage () {
 			InitializeComponent();
 			webView.Source = DependencyService.Get<IBaseUrl>().Get() + "/payment.html";
+            var tmp = webView.EvaluateJavaScriptAsync("assignValues(4,5)");
 		}
 
 		async void WebViewNavigating(object sender, WebNavigatingEventArgs e) {

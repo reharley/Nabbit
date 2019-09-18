@@ -1,4 +1,5 @@
 ﻿using Microsoft.AppCenter.Auth;
+using Nabbit.Services;
 using Plugin.SecureStorage;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace Nabbit.Views {
 				// Sign-in succeeded.
 				UserInformation userInfo = await Auth.SignInAsync();
 				CrossSecureStorage.Current.SetValue("UserToken", userInfo.IdToken);
+                await LocalGlobals.GetUser();
 
 				signInLabel.Text = "Login Success!";
 				await Navigation.PopModalAsync();
