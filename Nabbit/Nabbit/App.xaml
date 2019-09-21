@@ -8,6 +8,9 @@
     <Application.Resources>
         <ResourceDictionary>
             <Thickness x:Key="PageMargin">15</Thickness>
+            <Thickness x:Key="AndroidPageMargin">35</Thickness>
+
+            <CornerRadius x:Key="FrameRadius">10</CornerRadius>
 
             <!--Colors-->
             <Color x:Key="primaryColor">#1565c0</Color>
@@ -126,16 +129,14 @@
             </OnPlatform>
 
             <!--Menu Item Styles-->
-            <Style x:Key="menuItemDescriptionStyle"
+            <Style x:Key="primarySubtitleLabel"
                    TargetType="Label">
                 <Setter Property="FontSize"
                         Value="Subtitle" />
-                <Setter Property="HorizontalOptions"
-                        Value="Center" />
                 <Setter Property="VerticalOptions"
                         Value="Center" />
                 <Setter Property="TextColor"
-                        Value="{StaticResource primaryTextColor}" />
+                        Value="{StaticResource primaryColor}" />
             </Style>
 
             <Style x:Key="orderNameLabelStyle"
@@ -148,7 +149,7 @@
                         Value="Center" />
             </Style>
 
-            <Style x:Key="menuItemNameStyle"
+            <Style x:Key="primaryDarkBoldTitleLabel"
                    TargetType="Label">
                 <Setter Property="FontSize"
                         Value="Title" />
@@ -162,6 +163,21 @@
                         Value="{StaticResource primaryDarkColor}" />
             </Style>
 
+            <Style x:Key="primaryDarkBoldSubtitleLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Subtitle" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryDarkColor}" />
+            </Style>
+
+            <!--Selection Styles-->
             <Style x:Key="itemSelectedStyle"
                    TargetType="StackLayout">
                 <Setter Property="VisualStateManager.VisualStateGroups">
@@ -172,6 +188,25 @@
                                 <VisualState.Setters>
                                     <Setter Property="BackgroundColor"
                                             Value="{StaticResource secondaryColor}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
+            <Style x:Key="itemSelectedFrame"
+                   TargetType="Frame">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor"
+                                            Value="{StaticResource secondaryColor}" />
+                                    <Setter Property="CornerRadius"
+                                            Value="10" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>

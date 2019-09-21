@@ -22,19 +22,11 @@ namespace Nabbit.Views {
 			InitializeComponent();
 			test.Text = "Click to sign in";
 
+			LocalGlobals.GetUser().Wait();
 			BindingContext = viewModel = new AccountViewModel();
-			if (viewModel.UserInfo.LoggedIn) {
-				test.Text = "Logged In";
-			} else {
-				PushSignInPage();
-			}
+			test.Text = "Logged In";
 		}
 
-		async void PushSignInPage () {
-			await App.Current.MainPage.Navigation.PushModalAsync(new SignInPage());
-			viewModel.UserInfo = LocalGlobals.User;
-			firstName.Text = "Welcome, " + viewModel.UserInfo.FirstName;
-		}
 
 		protected override void OnAppearing () {
 			viewModel.UserInfo = LocalGlobals.User;
@@ -45,8 +37,8 @@ namespace Nabbit.Views {
 			await Shell.Current.GoToAsync("orderHistory");
 		}
 
-		private async void EnterPaymentClicked (object sender, EventArgs e) {
-			await Navigation.PushAsync(new PaymentInfoPage());
+		private async void PaymentMethodsClicked (object sender, EventArgs e) {
+			await Shell.Current.GoToAsync("paymentMethods");
 		}
 
 		private async void TestChargeClicked (object sender, EventArgs e) {
@@ -58,12 +50,11 @@ namespace Nabbit.Views {
 				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
 
 				var obj = "{" +
-						$"\"payment_method_id\": \"{LocalGlobals.User.PaymentMethodId.ToString()}\"," +
+						$"\"payment_method_id\": \"{LocalGlobals.User.PaymentMethodIds[0].ToString()}\"," +
 						"\"meta\": {\"tax\":2,\"subtotal\":10}," + 
 						"\"total\": 12.00," +
 						"\"pre_auth\": 0" +
 					"}";
-				var thing = JObject.Parse(obj);
 				using (var content = new StringContent(obj, System.Text.Encoding.Default, "application/json")) {
 					using (var response = await httpClient.PostAsync("charge", content)) {
 						string responseData = await response.Content.ReadAsStringAsync();

@@ -211,6 +211,28 @@
         </div>
         <div class="group">
             <label>
+                <span>Address 1</span>
+                    <input name="street_address" class="field" placeholder="Street Address" required/>
+            </label>
+            <label>
+                <span>Address 2</span>
+                    <input name="address_2" class="field" placeholder="Apt., ste., bldg." required/>
+            </label>
+            <label>
+                <span>City</span>
+                <input name="city" class="field" placeholder="Seattle" required/>
+            </label>
+            <label>
+                <span>State</span>
+                <input name="state" class="field" placeholder="WA" maxlength="2" required/>
+            </label>
+            <label>
+                <span>Zip Code</span>
+                <input name="zip" class="field" placeholder="98101" required/>
+            </label>
+        </div>
+        <div class="group">
+            <label>
                 <span>Card</span>
                 <div id="card-element" class="field" style="max-width: 280px; margin: 0px; padding: 0px; ">
                     <div id="fattjs-number" style="width:180px; height:40px; display: inline-block; margin:3px"></div>
@@ -220,12 +242,12 @@
             <label>
                 <span>Exp</span>
                 <div style="width:55px; height:35px; display: inline-block;">
-                    <input name="month" size="3" maxlength="2" placeholder="MM"
+                    <input name="month" size="3" maxlength="2" placeholder="MM" required
                         style="margin: 5px 13px 15px 5px; text-align: left; width: 40px; height:30px; border-radius: 3px; border: 1px solid #ccc; padding: .5em .5em; font-size: 91%;">
                 </div>
                 /
                 <div style="width:55px; height:35px; display: inline-block;padding: 0 8px 0 0">
-                    <input name="year" size="5" maxlength="4" placeholder="YYYY"
+                    <input name="year" size="5" maxlength="4" placeholder="YYYY" required
                         style="margin: 5px 0px 15px 2px; width: 55px; height:30px; border-radius: 3px; border: 1px solid #ccc; padding: .5em .5em; font-size: 91%">
                 </div>
             </label>
@@ -269,8 +291,14 @@
             form.querySelector('input[name=month]').value = 11;
             form.querySelector('input[name=year]').value = 2020;
             form.querySelector('input[name=cardholder-first-name]').value = 'Jon';
-            // form.querySelector('input[name=cardholder-last-name]').value = 'Doe';
+            form.querySelector('input[name=cardholder-last-name]').value = 'Doe';
+            form.querySelector('input[name=email_account]').value = 'mannyharley20@gmail.com'
             form.querySelector('input[name=phone]').value = '+1111111111111111';
+            form.querySelector('input[name=street_address]').value = '2211 Douglas Ave';
+            form.querySelector('input[name=address_2]').value = '209';
+            form.querySelector('input[name=city]').value = 'Bellingham';
+            form.querySelector('input[name=state]').value = 'WA';
+            form.querySelector('input[name=zip]').value = '98225';
         })
             .catch(err => {
                 console.log('error init form ' + err);
@@ -283,13 +311,38 @@
             console.log(message);
         });
 
-        fattJs.on('card_form_incomplete', (message) => {
+        fattJs.on('card_form_in complete', (message) => {
             // deactivate pay button
             tokenizeButton.disabled = true;
             console.log(message);
         });
 
+        function validForm() {
+            var form = document.querySelector('form');
+            var vals = [form.querySelector('input[name=cardholder-first-name]').value,
+                form.querySelector('input[name=cardholder-last-name]').value,
+                form.querySelector('input[name=month]').value,
+                form.querySelector('input[name=year]').value,
+                form.querySelector('input[name=phone]').value,
+                form.querySelector('input[name=email_account]').value,
+                form.querySelector('input[name=street_address]').value,
+                form.querySelector('input[name=city]').value,
+                form.querySelector('input[name=state]').value,
+                form.querySelector('input[name=zip]').value];
+            var i;
+            for (i =0; i < vals.length; i++) {
+                if (vals[i] == "")
+                    return false;
+            }
+            
+            return true;
+        }
+
         document.querySelector('#tokenizebutton').onclick = () => {
+            if (validForm() == false) {
+                return;
+            }
+
             var successElement = document.querySelector('.success');
             var errorElement = document.querySelector('.error');
             var loaderElement = document.querySelector('.loader');
@@ -307,11 +360,18 @@
                 phone: form.querySelector('input[name=phone]').value,
                 email: form.querySelector('input[name=email_account]').value,
                 customer_id: form.querySelector('input[name=customerId]').value,
+                address_1: form.querySelector('input[name=street_address]').value,
+                address_2: form.querySelector('input[name=address_2]').value,
+                address_city: form.querySelector('input[name=city]').value,
+                address_state: form.querySelector('input[name=state]').value,
+                address_zip: form.querySelector('input[name=zip]').value,
+                address_country: 'USA',
                 url: "https://omni.fattmerchant.com/#/bill/",
                 method: 'card',
                 validate: false,
             };
 
+            console.log("here");
             // call tokenize api
             fattJs.tokenize(extraDetails).then((result) => {
                 console.log('tokenize:');
@@ -324,12 +384,11 @@
                 loaderElement.classList.remove('visible');
             })
                 .catch(err => {
+                    console.log("here");
+                    console.log(err.message);
                     errorElement.textContent = err.message;
                     errorElement.classList.add('visible');
                     loaderElement.classList.remove('visible');
-
-                    successElement.querySelector('.token').textContent = "failed";
-                    successElement.classList.add('visible');
                 });
         }
     </script>

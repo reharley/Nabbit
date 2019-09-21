@@ -19,6 +19,7 @@ namespace Nabbit {
 			routes.Add("orderitem", typeof(OrderItemEditPage));
 			routes.Add("menu", typeof(MenuPage));
 			routes.Add("orderHistory", typeof(OrderHistoryPage));
+			routes.Add("paymentMethods", typeof(PaymentMethodsPage));
 
 			foreach (var item in routes) {
 				Routing.RegisterRoute(item.Key, item.Value);

@@ -27,12 +27,12 @@
 
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{Binding Product.Name}"
-                                       Style="{StaticResource menuItemNameStyle}"
+                                       Style="{StaticResource primaryDarkBoldTitleLabel}"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="Start"/>
                                 <BoxView HeightRequest="1" WidthRequest="0" />
                                 <Label Text="{Binding OrderItemPrice, StringFormat='{0:c}'}"
-                                       Style="{StaticResource menuItemNameStyle}"
+                                       Style="{StaticResource primaryDarkBoldTitleLabel}"
                                        FontSize="Default"
                                        HorizontalOptions="EndAndExpand"/>
                             </StackLayout>

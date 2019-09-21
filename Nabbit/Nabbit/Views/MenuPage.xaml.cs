@@ -21,6 +21,15 @@ namespace Nabbit.Views {
 			InitializeComponent();
 			BindingContext = viewModel = new HomeViewModel();
 			AdjustGroupListHeight();
+
+			if (LocalGlobals.User.LoggedIn == false) {
+				SignIn();
+			}
+
+		}
+
+		async Task SignIn() {
+			await Navigation.PushModalAsync(new SignInPage());
 		}
 
 		void AdjustGroupListHeight () {
@@ -37,7 +46,7 @@ namespace Nabbit.Views {
 			}
 		}
 
-		 async void OnItemSelected (object sender, SelectionChangedEventArgs e) {
+		async void OnItemSelected (object sender, SelectionChangedEventArgs e) {
 			if (e.CurrentSelection.Count == 0)
 				return;
 

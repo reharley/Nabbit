@@ -17,11 +17,12 @@ namespace Nabbit.Views {
 
 		async void WebViewNavigating(object sender, WebNavigatingEventArgs e) {
 			if (e.Url.Contains("payment_method")) {
-				var paymentMethodId = e.Url.Split('?')[1];
-				LocalGlobals.User.PaymentMethodId = Guid.Parse(paymentMethodId);
 				e.Cancel = true;
 
-				await Navigation.PopAsync();
+				var paymentMethodId = e.Url.Split('?')[1];
+				LocalGlobals.User.PaymentMethodIds.Add(Guid.Parse(paymentMethodId));
+				await LocalGlobals.SaveOrder();
+				await App.Current.MainPage.Navigation.PopAsync();
 			}
 		}
 	}

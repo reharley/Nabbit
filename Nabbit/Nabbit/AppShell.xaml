@@ -8,7 +8,8 @@
        xmlns:views="clr-namespace:Nabbit.Views"
        Title="Nabbit"
        x:Class="Nabbit.AppShell"
-       BackgroundColor="{StaticResource primaryDarkColor}">
+       BackgroundColor="{StaticResource primaryDarkColor}"
+       Visual="Material">
 
     <!-- 
         Styles and Resources 

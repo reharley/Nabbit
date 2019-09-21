@@ -11,10 +11,12 @@ namespace Nabbit.Models {
 	public class User {
 		public User() {
 			LoggedIn = false;
+
+			PaymentMethodIds = new List<Guid>();
 		}
 
 		public Guid UserId { get; set; }
-		public Guid PaymentMethodId { get; set; }
+		public List<Guid> PaymentMethodIds { get; set; }
 		public Guid CustomerId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }

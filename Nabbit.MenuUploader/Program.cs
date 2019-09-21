@@ -34,6 +34,9 @@ namespace Nabbit.MenuUploader {
 		//private const string getRestaurantsUrl = "https://nabbit.azurewebsites.net/api/userId/{userId}/schoolId/{schoolId}?code=ZX45t3u8uyrT24p6bbBFXhepqeQ7KoKGN9N/lbl1p8vakNTHsgw/ng==";
 		private const string postRestaurantUrl = "http://localhost:7071/api/PostRestaurant";
 		private const string postOrderUrl = "http://localhost:7071/api/PostOrder";
+		//private const string getUserUrl = "http://localhost:7071/api/GetUser/userId/{userId}"; https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==
+		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
+
 		private const string postUserUrl = "http://localhost:7071/api/PostUser";
 
 		private static HttpClient _client;
@@ -64,14 +67,31 @@ namespace Nabbit.MenuUploader {
 			//PullObjects().Wait();
 			//UpdateRestaurant().Wait();
 			//PushToTable().Wait();
-			var user = new User();
-			user.FirstName = "TJ";
-			PostUser(user).Wait();
+			//var user = new User();
+			//user.FirstName = "TJ";
+			//PostUser(user).Wait();
+			GetUser().Wait();
 			//MakeOrder();
 			//PullUserOrders().Wait();
 
 			Console.WriteLine("Complete");
 			//SendNotification();
+		}
+
+		public static async Task GetUser () {
+			using (var client = new HttpClient()) {
+				var url = getUserUrl.Replace("{userId}", "5d2b6da2-3f67-4fd0-a3c8-678cbfb9d4f9");
+				string result = "";
+
+				using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+					result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+					// skip new users
+					if (httpResponse.IsSuccessStatusCode) {
+						var user = JsonConvert.DeserializeObject<User>(result);
+					}
+				}
+			}
 		}
 
 		public static async Task PostUser (User user) {

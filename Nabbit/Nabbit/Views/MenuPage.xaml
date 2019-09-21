@@ -75,7 +75,7 @@
                                                 <StackLayout Orientation="Horizontal"
                                                              Margin="{StaticResource PageMargin}">
                                                     <Label Text="{Binding Name}"
-                                                           Style="{StaticResource menuItemNameStyle}" />
+                                                           Style="{StaticResource primaryDarkBoldTitleLabel}" />
                                                     <Label Text="{Binding Price, StringFormat='{0:c}'}"
                                                            Style="{StaticResource menuItemPriceStyle}" />
                                                     <Label Text="&#xf054;"

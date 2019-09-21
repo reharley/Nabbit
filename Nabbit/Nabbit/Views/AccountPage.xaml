@@ -10,10 +10,12 @@
             <Label x:Name="test" />
             <Label x:Name="firstName" />
 
-            <Button Text="View Order History"
+
+
+            <Button Text="Order History"
                     Clicked="OrderHistoryClicked" />
-            <Button Text="Enter Payment Information"
-                    Clicked="EnterPaymentClicked" />
+            <Button Text="Payment Methods"
+                    Clicked="PaymentMethodsClicked" />
             <Button Text="Test Charge"
                     Clicked="TestChargeClicked" />
         </StackLayout>
