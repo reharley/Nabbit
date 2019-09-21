@@ -4,6 +4,52 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Nabbit.Views.PaymentMethodEditPage">
     <ContentPage.Content>
-        
+        <StackLayout>
+            <ScrollView>
+                <StackLayout>
+                    <StackLayout VerticalOptions="Center">
+                        <Label Text="Name on Card"
+                               FontSize="Medium" />
+                        <Entry Text="{Binding PersonName}"
+                               FontSize="Medium" />
+                        <Label Text="Billing Address:"
+                               FontSize="Medium" />
+                        <Entry Text="{Binding BillingAddress}"
+                               FontSize="Medium" />
+                        <Label Text="Card Expire Date:"
+                               FontSize="Medium" />
+                        <Entry Text="{Binding CardExpire}"
+                               FontSize="Medium" />
+                    </StackLayout>
+
+                    <Grid VerticalOptions="EndAndExpand"
+                          ColumnSpacing="0"
+                          RowSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Button x:Name="cancelRemoveButton"
+                                Text="Cancel"
+                                Style="{StaticResource secondaryDarkButtonStyle}"
+                                VerticalOptions="End"
+                                Clicked="DeletePressed"
+                                Grid.Row="0"
+                                Grid.Column="0" />
+                        <Button x:Name="addSaveButton"
+                                Text="Add To Cart"
+                                Style="{StaticResource secondaryLightButtonStyle}"
+                                VerticalOptions="End"
+                                Clicked="SavePressed"
+                                Grid.Row="0"
+                                Grid.Column="1" />
+                    </Grid>
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

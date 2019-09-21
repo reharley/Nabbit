@@ -34,8 +34,7 @@ namespace Nabbit.Views {
 			if (payMethod == null)
 				return;
 
-			await Task.Delay(2000);
-			//await App.Current.MainPage.Navigation.PushAsync(new OrderItemEditPage(payMethod.PaymentMethodId));
+			await Navigation.PushAsync(new PaymentMethodEditPage(payMethod));
 
 			var collection = sender as CollectionView;
 			collection.SelectedItem = null;

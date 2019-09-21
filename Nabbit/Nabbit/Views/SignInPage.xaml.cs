@@ -38,9 +38,6 @@ namespace Nabbit.Views {
 
 				}
 
-
-				
-
 				if (LocalGlobals.User.PaymentMethodIds.Count == 0) {
 					var payPage = new PaymentInfoPage();
 					payPage.Disappearing += async (sender2, e2) => {
@@ -63,9 +60,5 @@ namespace Nabbit.Views {
 		private async void SignInClicked (object sender, EventArgs e) {
 			await SignIn();
 		}
-
-
-
-
 	}
 }

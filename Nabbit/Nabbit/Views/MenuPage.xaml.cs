@@ -25,7 +25,6 @@ namespace Nabbit.Views {
 			if (LocalGlobals.User.LoggedIn == false) {
 				SignIn();
 			}
-
 		}
 
 		async Task SignIn() {
