@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Nabbit.ViewModels {
-	public class CheckoutViewModel {
+	public class CheckoutViewModel : BaseViewModel {
 		public Order Order { get; set; }
 		public User User { get; set; }
+		public List<PaymentMethod> PaymentMethods { get; set; }
 
 		public DateTime PickupDate { get; set; }
 		public TimeSpan PickupTime { get; set; }

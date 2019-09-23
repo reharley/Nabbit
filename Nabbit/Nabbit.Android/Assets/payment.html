@@ -109,6 +109,25 @@
             cursor: default
         }
 
+        .cancelButton {
+            float: left;
+            display: block;
+            background: #8898AA;
+            color: white;
+            box-shadow: 0 7px 14px 0 rgba(49, 49, 93, 0.10),
+                0 3px 6px 0 rgba(0, 0, 0, 0.08);
+            border-radius: 4px;
+            border: 0;
+            margin-top: 20px;
+            font-size: 15px;
+            font-weight: 400;
+            width: 100%;
+            height: 40px;
+            line-height: 38px;
+            outline: none;
+            cursor: pointer
+        }
+
         .outcome {
             float: left;
             width: 100%;
@@ -252,6 +271,7 @@
                 </div>
             </label>
         </div>
+        <button class="cancelButton" id="cancelbutton">Cancel</button>
         <button id="tokenizebutton">Save Card</button>
         <div class="outcome">
             <div class="error"></div>
@@ -336,6 +356,10 @@
             }
             
             return true;
+        }
+
+        document.querySelector('#cancelbutton').onclick = () => {
+            window.location.href = 'http:cancel';
         }
 
         document.querySelector('#tokenizebutton').onclick = () => {

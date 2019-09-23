@@ -21,8 +21,13 @@
             <Color x:Key="secondaryLightColor">#6cffff</Color>
             <Color x:Key="secondaryDarkColor">#00a7c6</Color>
 
+            <Color x:Key="dangerColor">#d50000</Color>
+            <Color x:Key="dangerLightColor">#ff5131</Color>
+            <Color x:Key="dangerDarkColor">#9b0000</Color>
+
             <Color x:Key="primaryTextColor">#ffffff</Color>
             <Color x:Key="secondaryTextColor">#000000</Color>
+            <Color x:Key="dangerTextColor">#ffffff</Color>
 
             <Style x:Key="separatorBoxStyle"
                 TargetType="BoxView">
@@ -103,6 +108,15 @@
                         Value="{StaticResource secondaryTextColor}" />
             </Style>
 
+            <Style x:Key="dangerButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource buttonStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource dangerColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource dangerTextColor}" />
+            </Style>
+
             <!--Fonts-->
             <OnPlatform x:TypeArguments="x:String"
                         x:Key="FontAwesomeBrands">
@@ -175,6 +189,50 @@
                         Value="Center" />
                 <Setter Property="TextColor"
                         Value="{StaticResource primaryDarkColor}" />
+            </Style>
+
+            <Style x:Key="primaryDarkBoldLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Large" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryDarkColor}" />
+            </Style>
+            
+            <Style x:Key="solidFALabel"
+                   TargetType="Label">
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource FontAwesomeSolid}" />
+                <Setter Property="FontSize"
+                        Value="Title" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryColor}" />
+            </Style>
+
+            <Style x:Key="regularFALabel"
+                   TargetType="Label">
+                <Setter Property="HorizontalOptions"
+                        Value="End" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="FontAttributes"
+                        Value="None" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource FontAwesomeRegular}" />
+                <Setter Property="FontSize"
+                        Value="Title" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryColor}" />
             </Style>
 
             <!--Selection Styles-->

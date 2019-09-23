@@ -15,14 +15,16 @@ namespace Nabbit.Views {
 			webView.Eval($"passParams({user.CustomerId.ToString()}, {user.Email});");
 		}
 
-		async void WebViewNavigating(object sender, WebNavigatingEventArgs e) {
+		async void WebViewNavigating (object sender, WebNavigatingEventArgs e) {
 			if (e.Url.Contains("payment_method")) {
 				e.Cancel = true;
 
 				var paymentMethodId = e.Url.Split('?')[1];
 				LocalGlobals.User.PaymentMethodIds.Add(Guid.Parse(paymentMethodId));
-				await LocalGlobals.SaveOrder();
-				await App.Current.MainPage.Navigation.PopAsync();
+				await LocalGlobals.SaveUser();
+				await App.Current.MainPage.Navigation.PopModalAsync();
+			} else if (e.Url.Contains("cancel")) {
+				await App.Current.MainPage.Navigation.PopModalAsync();
 			}
 		}
 	}

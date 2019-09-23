@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nabbit.Models;
+using Nabbit.Services;
 using Nabbit.ViewModels;
 using Xamarin.Forms;
 
@@ -17,13 +18,17 @@ namespace Nabbit.Views {
 				pageStack.Margin = new Thickness(0, thick, 0, 0);
 				addCardButton.WidthRequest = 190;
 			}
+		}
 
+		protected override void OnAppearing () {
+			base.OnAppearing();
+			viewModel.IsBusy = true;
 			PullCustomerIds();
 		}
 
 		async Task PullCustomerIds () {
-			await viewModel.GetPaymentMethods();
-			payMethodsList.ItemsSource = viewModel.PaymentMethods;
+			payMethodsList.ItemsSource = await LocalGlobals.GetPaymentMethods();
+			viewModel.IsBusy = false;
 		}
 
 		async void OnItemSelected (object sender, SelectionChangedEventArgs e) {
@@ -44,7 +49,7 @@ namespace Nabbit.Views {
 			if (e.CurrentSelection.Count == 0)
 				return;
 
-			await App.Current.MainPage.Navigation.PushAsync(new PaymentInfoPage());
+			await App.Current.MainPage.Navigation.PushModalAsync(new PaymentInfoPage());
 
 			var collection = sender as CollectionView;
 			collection.SelectedItem = null;

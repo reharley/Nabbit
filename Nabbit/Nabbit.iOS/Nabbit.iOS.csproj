@@ -141,6 +141,7 @@
     <BundleResource Include="..\Nabbit.Android\Assets\payment.html">
       <Link>Resources\payment.html</Link>
     </BundleResource>
+    <BundleResource Include="Resources\hot_sale.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -82,22 +82,18 @@ namespace Nabbit.Services {
 
 		static void GetUserInfo () {
 			user = new User();
-			if (CrossSecureStorage.Current.HasKey("User")) {
-				var userJson = CrossSecureStorage.Current.GetValue("User");
 
-				user = JsonConvert.DeserializeObject<User>(userJson);
+			//if (CrossSecureStorage.Current.HasKey("User")) {
+			//	var userJson = CrossSecureStorage.Current.GetValue("User");
 
-				if (user.UserId != Guid.Empty)
-					user.LoggedIn = true;
-			}
+			//	user = JsonConvert.DeserializeObject<User>(userJson);
+
+			//	if (user.UserId != Guid.Empty)
+			//		user.LoggedIn = true;
+			//}
 		}
 
 		public static async Task GetUser () {
-			bool needUpdate = false;
-
-			if (CrossSecureStorage.Current.HasKey("User") == false)
-				needUpdate = true;
-
 			using (var client = new HttpClient()) {
 				var url = getUserUrl.Replace("{userId}", user.UserId.ToString());
 				string result = "";
@@ -109,24 +105,20 @@ namespace Nabbit.Services {
 					// skip new users
 					if (httpResponse.IsSuccessStatusCode) {
 						user = JsonConvert.DeserializeObject<User>(result);
-					} else
-						needUpdate = true;
+						user.LoggedIn = true;
+					}
 				}
 			}
 
 			if (user.CustomerId == Guid.Empty) {
 				await CreateCustomer();
-				needUpdate = true;
-			}
-
-			if (needUpdate) {
-				await SaveOrder();
+				await SaveUser();
 			}
 
 			user.LoggedIn = true;
 		}
 
-		public static async Task SaveOrder () {
+		public static async Task SaveUser () {
 			if (user == null)
 				return;
 
@@ -138,7 +130,6 @@ namespace Nabbit.Services {
 			var baseAddress = new Uri("https://apiprod.fattlabs.com/");
 
 			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
-				var empty = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZXJjaGFudCI6IjA1ZDZkZDM4LTdlZjQtNDdlZi1iYTM1LWVlY2I1ZTE0MTkwMSIsImdvZFVzZXIiOmZhbHNlLCJzdWIiOiI0N2RkNTY5Yi1hZTVmLTQ2M2YtYmNiZC02NWUyOGIzMWRiNTYiLCJpc3MiOiJodHRwOi8vYXBpcHJvZC5mYXR0bGFicy5jb20vdGVhbS9hcGlrZXkiLCJpYXQiOjE1Njg3NTU1MDUsImV4cCI6NDcyMjM1NTUwNSwibmJmIjoxNTY4NzU1NTA1LCJqdGkiOiJyRXVyRFA2amdYUExKRk54In0.pm7ut5ywZMfuL23Cc0ZRyqAL_IBDh_DZmCxF7iAu_lQ";
 				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {empty}");
 
 				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
@@ -222,7 +213,6 @@ namespace Nabbit.Services {
 		}
 
 		public static async Task PostUser () {
-			CrossSecureStorage.Current.SetValue("User", JsonConvert.SerializeObject(user));
 			string url = postUserUrl;
 			using (var client = new HttpClient()) {
 				var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
@@ -251,6 +241,52 @@ namespace Nabbit.Services {
 				Console.WriteLine("Something is missing...", "The app was unable to load data. Please check the your connections and try again.");
 				Console.WriteLine(ex.Message);
 			}
+		}
+
+		public static async Task<List<PaymentMethod>> GetPaymentMethods () {
+			var payMethods = new List<PaymentMethod>();
+			var baseAddress = new Uri("https://apiprod.fattlabs.com/");
+
+			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
+				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {LocalGlobals.empty}");
+				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+
+				using (var response = await httpClient.GetAsync($"customer/{user.CustomerId.ToString()}/payment-method")) {
+					string responseData = await response.Content.ReadAsStringAsync();
+					if (response.IsSuccessStatusCode) {
+						var paymentMethodsObj = JArray.Parse(responseData);
+
+						for (int i = 0; i < paymentMethodsObj.Count; i++) {
+							var delAt = paymentMethodsObj[i]["deleted_at"];
+							if (delAt.Type != JTokenType.Null)
+								continue;
+
+							var cardType = paymentMethodsObj[i]["card_type"].ToString();
+							cardType = cardType.Substring(0, 1).ToUpper() + cardType.Substring(1);
+
+							var payMethod = new PaymentMethod() {
+								CardType = cardType,
+								CardExpire = paymentMethodsObj[i]["card_exp"].ToString().Insert(2, "/"),
+								CardLastFour = paymentMethodsObj[i]["card_last_four"].ToString(),
+								PersonName = paymentMethodsObj[i]["person_name"].ToString(),
+								PaymentMethodId = Guid.Parse(paymentMethodsObj[i]["id"].ToString()),
+							};
+
+							var address1 = payMethod.Address1 = paymentMethodsObj[i]["address_1"].ToString();
+							var address2 = payMethod.Address2 = paymentMethodsObj[i]["address_2"].ToString();
+							var city = payMethod.City = paymentMethodsObj[i]["address_city"].ToString();
+							var state = payMethod.State = paymentMethodsObj[i]["address_state"].ToString();
+							var zip = payMethod.Zip = paymentMethodsObj[i]["address_zip"].ToString();
+							payMethod.BillingAddress = $"{address1} {address2}\n"
+												+ $"{city}, {state}, {zip}";
+
+							payMethods.Add(payMethod);
+						}
+					}
+				}
+			}
+
+			return payMethods;
 		}
 	}
 }

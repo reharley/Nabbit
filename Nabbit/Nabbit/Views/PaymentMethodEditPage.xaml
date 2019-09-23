@@ -6,50 +6,63 @@
     <ContentPage.Content>
         <StackLayout>
             <ScrollView>
-                <StackLayout>
-                    <StackLayout VerticalOptions="Center">
-                        <Label Text="Name on Card"
-                               FontSize="Medium" />
-                        <Entry Text="{Binding PersonName}"
-                               FontSize="Medium" />
-                        <Label Text="Billing Address:"
-                               FontSize="Medium" />
-                        <Entry Text="{Binding BillingAddress}"
-                               FontSize="Medium" />
-                        <Label Text="Card Expire Date:"
-                               FontSize="Medium" />
-                        <Entry Text="{Binding CardExpire}"
-                               FontSize="Medium" />
-                    </StackLayout>
-
-                    <Grid VerticalOptions="EndAndExpand"
-                          ColumnSpacing="0"
-                          RowSpacing="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <Button x:Name="cancelRemoveButton"
-                                Text="Cancel"
-                                Style="{StaticResource secondaryDarkButtonStyle}"
-                                VerticalOptions="End"
-                                Clicked="DeletePressed"
-                                Grid.Row="0"
-                                Grid.Column="0" />
-                        <Button x:Name="addSaveButton"
-                                Text="Add To Cart"
-                                Style="{StaticResource secondaryLightButtonStyle}"
-                                VerticalOptions="End"
-                                Clicked="SavePressed"
-                                Grid.Row="0"
-                                Grid.Column="1" />
-                    </Grid>
+                <StackLayout VerticalOptions="CenterAndExpand">
+                    <Label Text="Name on Card"
+                           FontSize="Medium" />
+                    <Entry Text="{Binding PersonName}"
+                           FontSize="Medium" />
+                    <Label Text="Street Address"
+                           FontSize="Medium" />
+                    <Entry Text="{Binding Address1}"
+                           FontSize="Medium" />
+                    <Label Text="Address 2"
+                           FontSize="Medium" />
+                    <Entry Text="{Binding Address2}"
+                           FontSize="Medium" />
+                    <Label Text="City"
+                           FontSize="Medium" />
+                    <Entry Text="{Binding City}"
+                           FontSize="Medium" />
+                    <Label Text="State"
+                           FontSize="Medium" />
+                    <Entry Text="{Binding State}"
+                           FontSize="Medium" />
+                    <Label Text="Zip"
+                           FontSize="Medium" />
+                    <Entry Text="{Binding Zip}"
+                           FontSize="Medium" />
+                    <Label Text="Card Expire Date:"
+                           FontSize="Medium" />
+                    <Entry Text="{Binding CardExpire}"
+                           FontSize="Medium" />
                 </StackLayout>
             </ScrollView>
+
+            <Grid VerticalOptions="EndAndExpand"
+                  ColumnSpacing="0"
+                  RowSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Button Text="Delete"
+                        Style="{StaticResource dangerButtonStyle}"
+                        VerticalOptions="End"
+                        Clicked="DeletePressed"
+                        Grid.Row="0"
+                        Grid.Column="0" />
+                <Button x:Name="addSaveButton"
+                        Text="Save"
+                        Style="{StaticResource primaryButtonStyle}"
+                        VerticalOptions="End"
+                        Clicked="SavePressed"
+                        Grid.Row="0"
+                        Grid.Column="1" />
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

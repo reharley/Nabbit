@@ -43,9 +43,8 @@ namespace Nabbit.Views {
 					payPage.Disappearing += async (sender2, e2) => {
 						signInLabel.Text = "Login Success!";
 						await App.Current.MainPage.Navigation.PopModalAsync();
-						App.Current.MainPage = new AppShell();
 					};
-					await App.Current.MainPage.Navigation.PushAsync(payPage);
+					await App.Current.MainPage.Navigation.PushModalAsync(payPage);
 				} else {
 					signInLabel.Text = "Login Success!";
 					await App.Current.MainPage.Navigation.PopModalAsync();
