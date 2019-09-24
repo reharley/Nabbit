@@ -23,6 +23,9 @@ namespace Nabbit.Services {
 		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
 		private const string getUserOrdersUrl = "https://nabbit.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=X3NJ2NZKahEziqSKZrlX/KxpoyWvuHfYE4wROOAjOLnNleMWGByFIA==";
 
+		public const decimal ServiceFee = 0.2m;
+		public const decimal TaxRate = 0.098m;
+
 		public const string empty = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZXJjaGFudCI6IjA1ZDZkZDM4LTdlZjQtNDdlZi1iYTM1LWVlY2I1ZTE0MTkwMSIsImdvZFVzZXIiOmZhbHNlLCJzdWIiOiI0N2RkNTY5Yi1hZTVmLTQ2M2YtYmNiZC02NWUyOGIzMWRiNTYiLCJpc3MiOiJodHRwOi8vYXBpcHJvZC5mYXR0bGFicy5jb20vdGVhbS9hcGlrZXkiLCJpYXQiOjE1Njg3NTU1MDUsImV4cCI6NDcyMjM1NTUwNSwibmJmIjoxNTY4NzU1NTA1LCJqdGkiOiJyRXVyRFA2amdYUExKRk54In0.pm7ut5ywZMfuL23Cc0ZRyqAL_IBDh_DZmCxF7iAu_lQ";
 		static Restaurant restaurant;
 		public static Restaurant Restaurant {
@@ -287,6 +290,27 @@ namespace Nabbit.Services {
 			}
 
 			return payMethods;
+		}
+
+		public static async Task Charge(PaymentMethod payMethod, Order order) {
+			var baseAddress = new Uri("https://apiprod.fattlabs.com/");
+			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
+				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {LocalGlobals.empty}");
+
+				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+
+				var obj = "{" +
+						$"\"payment_method_id\": \"{payMethod.PaymentMethodId.ToString()}\"," +
+						"\"meta\": [" + order.GetFattMeta() + "]," + 
+						"\"total\": " + order.OrderTotal + "," +
+						"\"pre_auth\": 0" +
+					"}";
+				using (var content = new StringContent(obj, System.Text.Encoding.Default, "application/json")) {
+					using (var response = await httpClient.PostAsync("charge", content)) {
+						string responseData = await response.Content.ReadAsStringAsync();
+					}
+				}
+			}
 		}
 	}
 }

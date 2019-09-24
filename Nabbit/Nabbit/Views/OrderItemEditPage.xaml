@@ -100,13 +100,13 @@
 
                 <Button x:Name="cancelRemoveButton"
                         Text="Cancel"
-                        Style="{StaticResource secondaryDarkButtonStyle}"
+                        Style="{StaticResource primaryLightButtonStyle}"
                         VerticalOptions="End"
                         Clicked="CancelPressed"
                         Grid.Row="0" Grid.Column="0"/>
                 <Button x:Name="addSaveButton"
                         Text="Add To Cart"
-                        Style="{StaticResource secondaryLightButtonStyle}"
+                        Style="{StaticResource primaryButtonStyle}"
                         VerticalOptions="End"
                         Clicked="AddCartPressed"
                         Grid.Row="0" Grid.Column="1" />

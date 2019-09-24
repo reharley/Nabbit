@@ -12,7 +12,7 @@ namespace Nabbit.Models {
 		public Guid OrderItemId { get; set; }
 		public string Instructions { get; set; }
 		public int Quantity { get; set; }
-
+		public decimal ItemPrice { get; set; }
 
 		public virtual Product Product { get; set; }
 		public virtual List<Addon> Addons { get; set; }

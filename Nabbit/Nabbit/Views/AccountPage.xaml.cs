@@ -42,24 +42,7 @@ namespace Nabbit.Views {
 		}
 
 		private async void TestChargeClicked (object sender, EventArgs e) {
-			var baseAddress = new Uri("https://apiprod.fattlabs.com/");
-			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {LocalGlobals.empty}");
-
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
-
-				var obj = "{" +
-						$"\"payment_method_id\": \"{LocalGlobals.User.PaymentMethodIds[0].ToString()}\"," +
-						"\"meta\": {\"tax\":2,\"subtotal\":10}," + 
-						"\"total\": 12.00," +
-						"\"pre_auth\": 0" +
-					"}";
-				using (var content = new StringContent(obj, System.Text.Encoding.Default, "application/json")) {
-					using (var response = await httpClient.PostAsync("charge", content)) {
-						string responseData = await response.Content.ReadAsStringAsync();
-					}
-				}
-			}
+			
 		}
 	}
 }

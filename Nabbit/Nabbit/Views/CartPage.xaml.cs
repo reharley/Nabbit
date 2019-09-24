@@ -15,7 +15,6 @@ namespace Nabbit.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class CartPage : ContentPage {
 		CartViewModel viewModel;
-		OrderItemEditPage orderItemPage;
 
 		public CartPage() {
 			InitializeComponent();

@@ -8,7 +8,14 @@ namespace Nabbit.ViewModels {
 	public class CheckoutViewModel : BaseViewModel {
 		public Order Order { get; set; }
 		public User User { get; set; }
+		public PaymentMethod SelectedPayMethod { get; set; }
 		public List<PaymentMethod> PaymentMethods { get; set; }
+
+		public decimal ServiceCharge { get; set; }
+		public decimal Subtotal { get; set; }
+		public decimal Taxes { get; set; }
+		decimal taxRate;
+		public decimal Total { get; set; }
 
 		public DateTime PickupDate { get; set; }
 		public TimeSpan PickupTime { get; set; }
@@ -16,10 +23,6 @@ namespace Nabbit.ViewModels {
 		public DateTime MaxDate { get; set; }
 		public DateTime MinTime { get; set; }
 		public DateTime MaxTime { get; set; }
-
-		public string CreditCardNumber { get; set; }
-		public string ExpiryDate { get; set; }
-		public int CVV { get; set; }
 
 		public CheckoutViewModel() {
 			User = LocalGlobals.User;
@@ -38,6 +41,7 @@ namespace Nabbit.ViewModels {
 		void BuildOrder() {
 			Order.OrderStatus = OrderStatus.Creating;
 			Order.OrderItems = new List<OrderItem>(Cart.OrderItems);
+			ServiceCharge = LocalGlobals.ServiceFee;
 			CalculateOrderCost();
 			PickupTime = DateTime.Now.TimeOfDay;
 			PickupDate = DateTime.Now;
@@ -50,10 +54,15 @@ namespace Nabbit.ViewModels {
 				foreach (var addon in orderItem.Addons)
 					itemPrice += addon.Price;
 
+				orderItem.ItemPrice = itemPrice;
 				price += itemPrice * orderItem.Quantity;
 			}
 
-			Order.OrderTotal = price;
+			Subtotal = price;
+			Order.OrderSubtotal = Subtotal + ServiceCharge;
+			Order.OrderTaxes = Taxes = (price + ServiceCharge) * LocalGlobals.TaxRate;
+
+			Total = Order.OrderTotal = Subtotal + ServiceCharge + Taxes;
 		}
 	}
 }
