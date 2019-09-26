@@ -65,7 +65,7 @@ namespace Nabbit.MenuUploader {
 
 
 			PullObjects().Wait();
-			UpdateRestaurant().Wait();
+			//UpdateRestaurant().Wait();
 			//PushToTable().Wait();
 			//var user = new User();
 			//user.FirstName = "TJ";
