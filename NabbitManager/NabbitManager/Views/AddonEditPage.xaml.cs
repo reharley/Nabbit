@@ -15,7 +15,7 @@ namespace NabbitManager.Views {
 		bool isNew = false;
 		Addon addon;
 
-		public AddonEditPage() {
+		public AddonEditPage () {
 			InitializeComponent();
 			isNew = true;
 			deleteButton.IsVisible = false;
@@ -25,32 +25,30 @@ namespace NabbitManager.Views {
 			};
 		}
 
-		public AddonEditPage(Guid addonId) {
+		public AddonEditPage (Guid addonId) {
 			InitializeComponent();
 
 			BindingContext = addon = LocalGlobals.Restaurant.Addons.First(a => a.AddonId == addonId);
 		}
 
-		async void CancelPressed(object sender, EventArgs e) {
+		async void CancelPressed (object sender, EventArgs e) {
 			await Navigation.PopModalAsync();
 		}
 
-		async void SavePressed(object sender, EventArgs e) {
+		async void SavePressed (object sender, EventArgs e) {
 			// Update the product item
 			if (!isNew) {
 				var add = LocalGlobals.Restaurant.Addons
-					.FirstOrDefault(a => a.AddonId== addon.AddonId);
+					.FirstOrDefault(a => a.AddonId == addon.AddonId);
 				LocalGlobals.Restaurant.Addons.Remove(add);
 			}
 
 			LocalGlobals.Restaurant.Addons.Add(addon);
-			LocalGlobals.Restaurant.Version++;
-			LocalGlobals.SaveRestaurant();
-			await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
+			await LocalGlobals.SaveRestaurant();
 			await Navigation.PopModalAsync();
 		}
 
-		async void DeletePressed(object sender, EventArgs e) {
+		async void DeletePressed (object sender, EventArgs e) {
 			if (!isNew) {
 				var response = await DisplayAlert(addon.Name,
 										"Are you sure you want to delete this addon?",
@@ -59,9 +57,8 @@ namespace NabbitManager.Views {
 				if (response == true) {
 					var add = LocalGlobals.Restaurant.Addons.First(a => a.AddonId == addon.AddonId);
 					LocalGlobals.Restaurant.Addons.Remove(add);
-					LocalGlobals.Restaurant.Version++;
 
-					await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
+					await LocalGlobals.SaveRestaurant();
 					await Navigation.PopModalAsync();
 				}
 			}

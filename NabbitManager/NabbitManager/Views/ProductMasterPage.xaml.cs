@@ -18,11 +18,13 @@ namespace NabbitManager.Views {
 				"Product Manager",
 				"Product Category Manager",
 				"Addon Group Manager",
-				"Addon Manager"
+				"Addon Manager",
+				"Menu Manager"
 			};
 
 			var uris = new List<string>() {
-			"productmanager","categorymanager","addongroupmanager","addonmanager"
+			"productmanager","categorymanager","addongroupmanager",
+			"addonmanager","menumanager"
 			};
 
 			navButtons.Children.Clear();

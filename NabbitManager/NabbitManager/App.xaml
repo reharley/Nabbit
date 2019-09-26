@@ -6,6 +6,13 @@
              mc:Ignorable="d"
              x:Class="NabbitManager.App">
     <Application.Resources>
+        <!--Delete or comment out for release builds-->
+        <x:Array x:Key="testArray" Type="{x:Type x:String}">
+          <x:String>Baboon</x:String>
+          <x:String>Capuchin Monkey</x:String>
+          <x:String>Blue Monkey</x:String>
+        </x:Array>
+        
 		<Thickness x:Key="PageMargin">20</Thickness>
 		
 		<!--https://material.io/tools/color/#!/?view.left=0&view.right=0&primary.color=64DD17&secondary.color=64DD17-->

@@ -5,10 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              Visual="Material"
-             x:Class="Nabbit.Views.MenuPage">
+             x:Class="Nabbit.Views.MenuPage"
+             Title="Menus">
     <ContentPage.Resources>
         <ResourceDictionary>
-
             <Style x:Key="menuCategoryNameStyle"
                    TargetType="Label">
                 <Setter Property="FontSize"
@@ -50,23 +50,102 @@
                 <Setter Property="FontSize"
                         Value="Title" />
             </Style>
+            
+            <Style x:Key="itemSelectedMenu"
+                   TargetType="StackLayout">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor"
+                                            Value="{StaticResource secondaryColor}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+            
+            <x:Array x:Key="testArray" Type="{x:Type x:String}">
+              <x:String>Baboon</x:String>
+              <x:String>Capuchin Monkey</x:String>
+              <x:String>Blue Monkey</x:String>
+            </x:Array>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <ScrollView>
+            <StackLayout Margin="0"
+                         BackgroundColor="{StaticResource primaryDarkColor}">
+                <CollectionView x:Name="menuTabs"
+                                Margin="0"
+                                HeightRequest="35"
+                                ItemsSource="{Binding Menus}"
+                                d:ItemsSource="{StaticResource testArray}"
+                                SelectionMode="Single"
+                                SelectionChanged="MenuChanged"
+                                HorizontalOptions="StartAndExpand"
+                                BackgroundColor="{StaticResource primaryDarkColor}">
+                    <CollectionView.ItemsLayout>
+                        <ListItemsLayout Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Margin="0,0,5,0"
+                                         Style="{StaticResource itemSelectedMenu}"
+                                         BackgroundColor="{StaticResource primaryDarkColor}">
+                                <Label TextColor="{StaticResource primaryTextColor}"
+                                       FontAttributes="Bold"
+                                       Margin="5,0,0,0"
+                                       FontSize="23"
+                                       Text="{Binding Name}"
+                                       d:Text="{Binding .}"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            
+            <Frame BorderColor="{StaticResource primaryDarkColor}"
+                   BackgroundColor="{StaticResource secondaryLightColor}">
+                <StackLayout BackgroundColor="{StaticResource secondaryDarkColor}">
+                    <Label Text="Business Hours:" />
+                    
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Menu Hours: " />
+                        <Label Text="{Binding MenuOpeningHours}"
+                               d:Text="8:00 AM"/>
+                        <Label Text="-" />
+                        <Label Text="{Binding MenuClosingHours}"
+                               d:Text="8:00 PM"/>
+                    </StackLayout>
+                    <Label Text="{Binding SelectedMenu.Description}"
+                           d:Text="A description of the menu"/>
+                </StackLayout>
+            </Frame>
+            <ScrollView HorizontalScrollBarVisibility="Never">
+                
                 <StackLayout x:Name="groupList"
-                             BindableLayout.ItemsSource="{Binding pcProducts}">
+                             BindableLayout.ItemsSource="{Binding pcProducts}"
+                             d:BindableLayout.ItemsSource="{StaticResource testArray}">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <StackLayout>
+                                
                                 <Label Text="{Binding CategoryName}"
+                                       d:Text="CategoryName"
                                        Style="{StaticResource menuCategoryNameStyle}" />
 
                                 <CollectionView ItemsSource="{Binding Products}"
+                                                d:ItemsSource="{StaticResource testArray}"
                                                 VerticalOptions="Start"
                                                 SelectionMode="Single"
                                                 SelectionChanged="OnItemSelected">
+                                    
+                                    
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
                                             <StackLayout Style="{StaticResource itemSelectedStyle}">
@@ -75,8 +154,10 @@
                                                 <StackLayout Orientation="Horizontal"
                                                              Margin="{StaticResource PageMargin}">
                                                     <Label Text="{Binding Name}"
+                                                           d:Text="Item Name"
                                                            Style="{StaticResource primaryDarkBoldTitleLabel}" />
                                                     <Label Text="{Binding Price, StringFormat='{0:c}'}"
+                                                           d:Text="$4.50"
                                                            Style="{StaticResource menuItemPriceStyle}" />
                                                     <Label Text="&#xf054;"
                                                            Style="{StaticResource menuItemArrowStyle}" />

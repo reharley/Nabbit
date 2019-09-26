@@ -38,5 +38,15 @@ namespace NabbitManager.ViewModels {
 				});
 			}
 		}
+
+		public void SaveModel () {
+			var addonGroupIds = new List<Guid>();
+			foreach (var item in AddonGroups) {
+				if (item.Selected)
+					addonGroupIds.Add(item.Item.AddonGroupId);
+			}
+
+			Product.AddonGroupIds = addonGroupIds;
+		}
 	}
 }

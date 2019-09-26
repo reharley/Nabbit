@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 
 namespace Nabbit.Models {
-	public partial class School : BaseEntity {
+	public class School : BaseEntity {
 		public School() {
 			SchoolId = Guid.NewGuid();
 
-			RestaurantIds = new HashSet<Guid>();
+			RestaurantIds = new List<Guid>();
 		}
 
 		public Guid SchoolId { get; set; }
@@ -15,6 +15,6 @@ namespace Nabbit.Models {
 		public string Location { get; set; }
 		public string Logo { get; set; }
 
-		public virtual ICollection<Guid> RestaurantIds { get; set; }
+		public List<Guid> RestaurantIds { get; set; }
 	}
 }

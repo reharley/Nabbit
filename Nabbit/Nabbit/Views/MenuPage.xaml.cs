@@ -17,17 +17,23 @@ namespace Nabbit.Views {
 	public partial class MenuPage : ContentPage {
 		public HomeViewModel viewModel;
 
-		public MenuPage() {
+		public MenuPage () {
 			InitializeComponent();
 			BindingContext = viewModel = new HomeViewModel();
 			AdjustGroupListHeight();
+
+			if(viewModel.Menus.Count == 1) {
+				menuTabs.IsEnabled = false;
+				menuTabs.IsVisible = false;
+			} else
+				menuTabs.SelectedItem = viewModel.GetMenuName();
 
 			if (LocalGlobals.User.LoggedIn == false) {
 				SignIn();
 			}
 		}
 
-		async Task SignIn() {
+		async Task SignIn () {
 			await Navigation.PushModalAsync(new SignInPage());
 		}
 
@@ -57,6 +63,16 @@ namespace Nabbit.Views {
 
 			var collection = sender as CollectionView;
 			collection.SelectedItem = null;
+		}
+
+		void Handle_Swiped (object sender, SwipedEventArgs e) {
+			viewModel.ChangeMenu(e.Direction);
+			menuTabs.SelectedItem = viewModel.GetMenuName();
+		}
+
+		void MenuChanged (object sender, SelectionChangedEventArgs e) {
+			viewModel.ChangeMenu((Models.Menu)e.CurrentSelection[0]);
+			AdjustGroupListHeight();
 		}
 	}
 }

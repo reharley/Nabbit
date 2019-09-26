@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NabbitManager.Views.CategoryManagerPage">
+             x:Class="NabbitManager.Views.CategoryManagerPage"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design" 
+             mc:Ignorable="d" >
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Text="Add Category" Clicked="AddCatPressed">
 			<ToolbarItem.Icon>
@@ -22,7 +25,8 @@
 						<ViewCell>
 							<StackLayout>
 								<Label Text="{Binding Name}"
-									   Style="{StaticResource managerNameLabelStyle}"/>
+                                       d:Text="Menu Name"
+									   Style="{StaticResource managerNameLabelStyle}" />
 							</StackLayout>
 						</ViewCell>
 					</DataTemplate>

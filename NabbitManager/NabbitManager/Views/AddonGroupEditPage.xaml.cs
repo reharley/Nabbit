@@ -15,7 +15,7 @@ namespace NabbitManager.Views {
 		AddonGroupEditViewModel viewModel;
 		bool isNew = false;
 
-		public AddonGroupEditPage() {
+		public AddonGroupEditPage () {
 			InitializeComponent();
 			BindingContext = viewModel = new AddonGroupEditViewModel();
 
@@ -23,16 +23,16 @@ namespace NabbitManager.Views {
 			deleteButton.IsVisible = false;
 		}
 
-		public AddonGroupEditPage(Guid addonGroupId) {
+		public AddonGroupEditPage (Guid addonGroupId) {
 			InitializeComponent();
 			BindingContext = viewModel = new AddonGroupEditViewModel(addonGroupId);
 		}
 
-		async void CancelPressed(object sender, EventArgs e) {
+		async void CancelPressed (object sender, EventArgs e) {
 			await Navigation.PopModalAsync();
 		}
 
-		async void SavePressed(object sender, EventArgs e) {
+		async void SavePressed (object sender, EventArgs e) {
 			if (!isNew) {
 				var group = LocalGlobals.Restaurant.AddonGroups
 					.FirstOrDefault(c => c.AddonGroupId == viewModel.AddonGroup.AddonGroupId);
@@ -48,14 +48,12 @@ namespace NabbitManager.Views {
 			}
 
 			LocalGlobals.Restaurant.AddonGroups.Add(viewModel.AddonGroup);
-			LocalGlobals.Restaurant.Version++;
 
-			LocalGlobals.SaveRestaurant();
-			await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
+			await LocalGlobals.SaveRestaurant();
 			await Navigation.PopModalAsync();
 		}
 
-		async void DeletePressed(object sender, EventArgs e) {
+		async void DeletePressed (object sender, EventArgs e) {
 			if (!isNew) {
 				var response = await DisplayAlert(viewModel.AddonGroup.Name,
 										"Are you sure you want to delete this group?",
@@ -64,9 +62,8 @@ namespace NabbitManager.Views {
 				if (response == true) {
 					var cat = LocalGlobals.Restaurant.AddonGroups.First(c => c.AddonGroupId == viewModel.AddonGroup.AddonGroupId);
 					LocalGlobals.Restaurant.AddonGroups.Remove(cat);
-					LocalGlobals.Restaurant.Version++;
 
-					await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
+					await LocalGlobals.SaveRestaurant();
 					await Navigation.PopModalAsync();
 				}
 			}

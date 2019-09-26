@@ -143,6 +143,16 @@
             </OnPlatform>
 
             <!--Menu Item Styles-->
+            <Style x:Key="primaryTitleLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Title" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryColor}" />
+            </Style>
+            
             <Style x:Key="primarySubtitleLabel"
                    TargetType="Label">
                 <Setter Property="FontSize"

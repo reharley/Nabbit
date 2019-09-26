@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:d="http://xamarin.com/schemas/2014/forms/design" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Nabbit.Views.CheckoutPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d" 
+             x:Class="Nabbit.Views.CheckoutPage">
 	<ContentPage.Content>
 		<StackLayout>
 			<Grid VerticalOptions="Start">
@@ -21,11 +26,12 @@
 				<StackLayout Grid.Row="1" Grid.Column="0"
 				 Orientation="Horizontal"
 				 HorizontalOptions="Center" VerticalOptions="Start">
-					<DatePicker x:Name="datePicker"
-				 FontSize="12"
-				 HorizontalOptions="Center"
-				 MinimumDate="{Binding MinDate}"
-				 Date="{Binding PickupDate}"/>
+					<Picker x:Name="datePicker"
+							SelectedIndexChanged="OnDatePickerIndexChanged"
+							ItemsSource="{Binding PickupDates}"
+							WidthRequest="100"
+							SelectedItem="0"
+							FontSize="12" />
 					<TimePicker x:Name="timePicker"
 				 FontSize="12"
 				 HorizontalOptions="Center"

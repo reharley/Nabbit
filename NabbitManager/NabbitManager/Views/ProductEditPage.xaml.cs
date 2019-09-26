@@ -40,10 +40,9 @@ namespace NabbitManager.Views {
 				LocalGlobals.Restaurant.Products.Remove(prod);
 			}
 
+			viewModel.SaveModel();
 			LocalGlobals.Restaurant.Products.Add(viewModel.Product);
-			LocalGlobals.Restaurant.Version++;
-			LocalGlobals.SaveRestaurant();
-			await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
+			await LocalGlobals.SaveRestaurant();
 			await Navigation.PopModalAsync();
 		}
 
@@ -56,9 +55,8 @@ namespace NabbitManager.Views {
 				if (response == true) {
 					var prod = LocalGlobals.Restaurant.Products.First(p => p.ProductId == viewModel.Product.ProductId);
 					LocalGlobals.Restaurant.Products.Remove(prod);
-					LocalGlobals.Restaurant.Version++;
 
-					await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
+					await LocalGlobals.SaveRestaurant();
 					await Navigation.PopModalAsync();
 				}
 			}

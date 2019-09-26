@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Nabbit.Models {
-	public partial class Order : BaseEntity {
+	public class Order : BaseEntity {
 		public Order (Guid userId, Guid restaurantId) {
 			OrderId = Guid.NewGuid();
 			UserId = userId;
@@ -17,6 +17,7 @@ namespace Nabbit.Models {
 
 		public Guid OrderId { get; set; }
 		public Guid RestaurantId { get; set; }
+		public Guid MenuId { get; set; }
 		public Guid UserId { get; set; }
 		public Guid TransactionId { get; set; }
 
@@ -30,7 +31,7 @@ namespace Nabbit.Models {
 		public decimal OrderSubtotal { get; set; }
 		public decimal OrderTaxes { get; set; }
 
-		public virtual ICollection<OrderItem> OrderItems { get; set; }
+		public List<OrderItem> OrderItems { get; set; }
 
 
 		public string GetFattMeta () {

@@ -54,11 +54,11 @@
     </Shell.Resources>
 
     <TabBar>
-        <Tab Title="Menu"
+        <Tab x:Name="menusTab" 
+			 Title="Menu"
              Icon="tab_feed.png"
              Style="{StaticResource MenuShell}">
-            <ShellContent Title="Menu"
-                          Icon="restaurant-menu.png"
+            <ShellContent Title="Cart"
                           ContentTemplate="{DataTemplate views:MenuPage}" />
         </Tab>
         <Tab Title="Deals"

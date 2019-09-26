@@ -17,6 +17,7 @@ namespace NabbitManager {
 			routes.Add("addongroupmanager", typeof(AddonGroupManagerPage));
 			routes.Add("productmanager", typeof(ProductManagerPage));
 			routes.Add("categorymanager", typeof(CategoryManagerPage));
+			routes.Add("menumanager", typeof(MenuManagerPage));
 			routes.Add("allOrders", typeof(AllOrdersPage));
 			routes.Add("liveOrders", typeof(LiveOrdersPage));
 

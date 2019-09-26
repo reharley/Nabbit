@@ -223,7 +223,9 @@ namespace Nabbit.Services {
 			}
 		}
 
-		public static void SaveRestaurant () {
+		public static async Task SaveRestaurant () {
+			Restaurant.Version++;
+			await UpdateRestaurant(LocalGlobals.Restaurant);
 			App.Current.Properties["restaurant"] = JsonConvert.SerializeObject(Restaurant);
 		}
 
