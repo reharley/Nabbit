@@ -64,13 +64,13 @@ namespace Nabbit.MenuUploader {
 			//AzureFunctionTest().Wait();
 
 
-			//PullObjects().Wait();
-			//UpdateRestaurant().Wait();
+			PullObjects().Wait();
+			UpdateRestaurant().Wait();
 			//PushToTable().Wait();
 			//var user = new User();
 			//user.FirstName = "TJ";
 			//PostUser(user).Wait();
-			GetUser().Wait();
+			//GetUser().Wait();
 			//MakeOrder();
 			//PullUserOrders().Wait();
 
@@ -324,20 +324,20 @@ namespace Nabbit.MenuUploader {
 						MenuId = Guid.NewGuid(),
 						Name = item[0],
 						Description = "",
-						Rank = 1,
-						OpeningHour = item[2],
-						ClosingHour = item[3]
+						Rank = 1
+						//OpeningHour = item[2],
+						//ClosingHour = item[3]
 					};
 
 					restaurant.Menus.Add(menu);
 				} else if (item[1] == "Open Hours") { // create the business hours
-					var businessHours = new BusinessHours() {
-						DayOfWeek = Convert.ToByte(item[0]),
-						OpeningHour = item[2],
-						ClosingHour = item[3]
-					};
+					//var businessHours = new BusinessHours() {
+					//	DayOfWeek = Convert.ToByte(item[0]),
+					//	OpeningHour = item[2],
+					//	ClosingHour = item[3]
+					//};
 
-					restaurant.BusinessHours.Add(businessHours);
+					//restaurant.BusinessHours.Add(businessHours);
 				} else { // create the products
 					if (restaurant.Products.Where(a => a.Name.Equals(item[0])).FirstOrDefault() != null)
 						continue;

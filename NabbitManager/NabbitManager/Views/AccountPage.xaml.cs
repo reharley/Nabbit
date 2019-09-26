@@ -45,5 +45,9 @@ namespace NabbitManager.Views {
 		private async void SignInClicked(object sender, EventArgs e) {
 			await SignIn();
 		}
+
+		private async void HoursClicked (object sender, EventArgs e) {
+			await Navigation.PushAsync(new RestaurantDetailsPage());
+		}
 	}
 }

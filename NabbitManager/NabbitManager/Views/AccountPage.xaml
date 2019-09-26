@@ -6,12 +6,10 @@
              mc:Ignorable="d"
              x:Class="NabbitManager.Views.AccountPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout VerticalOptions="FillAndExpand">
 			<Label x:Name="test" />
 			<Button Text="Sign In" Clicked="SignInClicked" />
+            <Button Text="Edit Business Hours" Clicked="HoursClicked" VerticalOptions="End"/>
 		</StackLayout>
     </ContentPage.Content>
 </ContentPage>

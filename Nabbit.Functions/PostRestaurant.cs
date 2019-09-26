@@ -47,10 +47,8 @@ namespace Nabbit.Functions {
 				await restaurantTable.ExecuteAsync(update);
 				return (ActionResult)new OkResult();
 			} catch (Exception ex) {
-
+				return new BadRequestObjectResult(ex.Message);
 			}
-
-			return new BadRequestResult();
 		}
 	}
 }

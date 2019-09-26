@@ -13,6 +13,8 @@ namespace Nabbit.ViewModels {
 	public class HomeViewModel : BaseViewModel {
 		public string MenuOpeningHours { get; set; }
 		public string MenuClosingHours { get; set; }
+		public string BussOpeningHours { get; set; }
+		public string BussClosingHours { get; set; }
 
 		List<List<ProductCategoryProducts>> menus;
 		int menuIndex;
@@ -43,6 +45,8 @@ namespace Nabbit.ViewModels {
 			var dayOfWeek = (int)DateTime.Today.DayOfWeek;
 			var openingTime = SelectedMenu.Hours.Opening[dayOfWeek];
 			var closingTime = SelectedMenu.Hours.Closing[dayOfWeek];
+			var bussOpeningTime = LocalGlobals.Restaurant.BusinessHours.Opening[dayOfWeek];
+			var bussClosingTime = LocalGlobals.Restaurant.BusinessHours.Closing[dayOfWeek];
 
 			if (openingTime == null)
 				MenuOpeningHours = "N/A";
@@ -56,6 +60,20 @@ namespace Nabbit.ViewModels {
 			else {
 				DateTime time = DateTime.Today.Add(closingTime.Value);
 				MenuClosingHours = time.ToString("h:mm tt");
+			}
+
+			if (bussOpeningTime == null)
+				BussOpeningHours = "N/A";
+			else {
+				DateTime time = DateTime.Today.Add(closingTime.Value);
+				BussOpeningHours = time.ToString("h:mm tt");
+			}
+
+			if (bussClosingTime == null)
+				BussOpeningHours = "N/A";
+			else {
+				DateTime time = DateTime.Today.Add(closingTime.Value);
+				BussClosingHours = time.ToString("h:mm tt");
 			}
 		}
 

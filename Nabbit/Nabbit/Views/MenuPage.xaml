@@ -112,8 +112,13 @@
             <Frame BorderColor="{StaticResource primaryDarkColor}"
                    BackgroundColor="{StaticResource secondaryLightColor}">
                 <StackLayout BackgroundColor="{StaticResource secondaryDarkColor}">
-                    <Label Text="Business Hours:" />
-                    
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Business Hours:" />
+                        <Label Text="{Binding BussOpeningHours}"
+                               d:Text="8:00 AM" />
+                        <Label Text="{Binding BussClosingHours}"
+                               d:Text="8:00 AM" />
+                    </StackLayout>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Menu Hours: " />
                         <Label Text="{Binding MenuOpeningHours}"
