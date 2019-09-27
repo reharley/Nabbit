@@ -65,14 +65,14 @@ namespace Nabbit.ViewModels {
 			if (bussOpeningTime == null)
 				BussOpeningHours = "N/A";
 			else {
-				DateTime time = DateTime.Today.Add(closingTime.Value);
+				DateTime time = DateTime.Today.Add(bussOpeningTime.Value);
 				BussOpeningHours = time.ToString("h:mm tt");
 			}
 
 			if (bussClosingTime == null)
 				BussOpeningHours = "N/A";
 			else {
-				DateTime time = DateTime.Today.Add(closingTime.Value);
+				DateTime time = DateTime.Today.Add(bussClosingTime.Value);
 				BussClosingHours = time.ToString("h:mm tt");
 			}
 		}

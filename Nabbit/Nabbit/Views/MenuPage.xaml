@@ -109,28 +109,35 @@
                 </CollectionView>
             </StackLayout>
             
-            <Frame BorderColor="{StaticResource primaryDarkColor}"
-                   BackgroundColor="{StaticResource secondaryLightColor}">
-                <StackLayout BackgroundColor="{StaticResource secondaryDarkColor}">
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="Business Hours:" />
-                        <Label Text="{Binding BussOpeningHours}"
-                               d:Text="8:00 AM" />
-                        <Label Text="{Binding BussClosingHours}"
-                               d:Text="8:00 AM" />
-                    </StackLayout>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="Menu Hours: " />
-                        <Label Text="{Binding MenuOpeningHours}"
-                               d:Text="8:00 AM"/>
-                        <Label Text="-" />
-                        <Label Text="{Binding MenuClosingHours}"
-                               d:Text="8:00 PM"/>
-                    </StackLayout>
-                    <Label Text="{Binding SelectedMenu.Description}"
-                           d:Text="A description of the menu"/>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Label Text="Business Hours:" 
+                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"/>
+                    <Label Text="{Binding BussOpeningHours}"
+                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"
+                           d:Text="8:00 AM" />
+                    <Label Text="{Binding BussClosingHours}"
+                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"
+                           d:Text="8:00 AM" />
                 </StackLayout>
-            </Frame>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Label Text="Menu Hours: "
+                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"/>
+                    <Label Text="{Binding MenuOpeningHours}"
+                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"
+                           d:Text="8:00 AM"/>
+                    <Label Text="-" />
+                    <Label Text="{Binding MenuClosingHours}"
+                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"
+                           d:Text="8:00 PM"/>
+                </StackLayout>
+                <Label Text="{Binding SelectedMenu.Description}"
+                       Style="{StaticResource primaryDarkBoldLabel}"
+                       FontSize="Default"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       d:Text="A description of the menu"/>
+            </StackLayout>
             <ScrollView HorizontalScrollBarVisibility="Never">
                 
                 <StackLayout x:Name="groupList"
@@ -149,7 +156,6 @@
                                                 VerticalOptions="Start"
                                                 SelectionMode="Single"
                                                 SelectionChanged="OnItemSelected">
-                                    
                                     
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
