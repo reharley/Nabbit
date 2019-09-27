@@ -78,6 +78,7 @@ namespace NabbitManager.ViewModels {
 			}
 
 			var hours = new Hours();
+			hours.BuildHours();
 			for (int i = 0; i < Hours.Count; i++) {
 				if (Hours[i].Selected) {
 					hours.Opening[i] = Hours[i].Item.Open;

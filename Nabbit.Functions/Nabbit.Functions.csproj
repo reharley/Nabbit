@@ -53,6 +53,14 @@
     <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\Nabbit.dll" />
     <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\Nabbit.Functions.dll" />
     <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\Nabbit.Functions.pdb" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\Nabbit.Functions.deps.json" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\runtimes\win10-x86\native\WatsonRegistrationUtility.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\runtimes\win10-x64\native\WatsonRegistrationUtility.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\runtimes\win10-arm\native\WatsonRegistrationUtility.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\runtimes\unix\lib\netstandard1.3\System.Text.Encoding.CodePages.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\Nabbit.pdb" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\Nabbit.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\runtimes\win\lib\netstandard1.3\System.Text.Encoding.CodePages.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
