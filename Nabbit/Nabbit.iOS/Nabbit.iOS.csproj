@@ -79,48 +79,6 @@
     <Compile Include="Services\BaseUrl_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon1024.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon180.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon167.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon152.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon120.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon87.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon80.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon76.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon60.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon58.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon29.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon20.png">
-      <Visible>false</Visible>
-    </ImageAsset>
     <BundleResource Include="Resources\tab_about.png" />
     <BundleResource Include="Resources\tab_about%402x.png" />
     <BundleResource Include="Resources\tab_about%403x.png" />
@@ -142,6 +100,34 @@
       <Link>Resources\payment.html</Link>
     </BundleResource>
     <BundleResource Include="Resources\hot_sale.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\1024.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\120.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\120-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\152.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\167.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\180.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\20.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\29.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-2.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\60.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\76.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\87.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-2.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-3.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\76-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\29-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-3.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80-2.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-4.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\60-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-4.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -158,6 +144,13 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Services\" />
+    <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
+    <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
+    <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
+    <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
+    <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
+    <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
+    <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nabbit\Nabbit.csproj">

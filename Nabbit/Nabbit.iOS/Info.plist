@@ -43,13 +43,13 @@
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
 	<string>Nabbit</string>
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>fa-regular-400.ttf</string>
 		<string>fa-brands-400.ttf</string>
 		<string>fa-solid-900.ttf</string>
 	</array>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/NabbitIcon.appiconset</string>
 </dict>
 </plist>
