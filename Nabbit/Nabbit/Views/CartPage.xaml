@@ -62,7 +62,7 @@
             </StackLayout>
 
             <Button Text="Checkout"
-                    Style="{StaticResource secondaryButtonStyle}"
+                    Style="{StaticResource primaryButtonStyle}"
                     HorizontalOptions="FillAndExpand"
                     Clicked="CheckoutClicked" />
         </StackLayout>

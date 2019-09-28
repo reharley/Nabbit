@@ -19,6 +19,10 @@ namespace Nabbit.Models {
 		public decimal AddonCost { get; set; }
 
 		void ConstructAddonText (OrderItem x) {
+			if (x.Addons.Count == 0) {
+				AddonText = "";
+				return;
+			}
 			var addonGroups = AddonGroupAddons.BuildAddonGroups(x);
 
 			AddonCost = 0m;
