@@ -110,29 +110,18 @@
             </StackLayout>
             
             <StackLayout>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                    <Label Text="Business Hours:" 
-                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"/>
-                    <Label Text="{Binding BussOpeningHours}"
-                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"
-                           d:Text="8:00 AM" />
-                    <Label Text="{Binding BussClosingHours}"
-                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"
-                           d:Text="8:00 AM" />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                    <Label Text="Menu Hours: "
-                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"/>
-                    <Label Text="{Binding MenuOpeningHours}"
-                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"
-                           d:Text="8:00 AM"/>
-                    <Label Text="-" />
-                    <Label Text="{Binding MenuClosingHours}"
-                           Style="{StaticResource primaryDarkBoldSubtitleLabel}"
-                           d:Text="8:00 PM"/>
-                </StackLayout>
+                <Label d:Text="Business Hours: 12:00 AM - 12:00 PM"
+                       Text="{Binding BussHoursText}"
+                       FontSize="Medium"
+                       HorizontalOptions="Center"
+                       Style="{StaticResource primaryDarkBoldSubtitleLabel}"/>
+                <Label d:Text="Menu Hours: 12:00 AM - 12:00 PM"
+                       Text="{Binding MenuHoursText}"
+                       HorizontalOptions="Center"
+                       FontSize="Medium"
+                       Style="{StaticResource primaryDarkBoldSubtitleLabel}"/>
                 <Label Text="{Binding SelectedMenu.Description}"
-                       Style="{StaticResource primaryDarkBoldLabel}"
+                       Style="{StaticResource primaryTitleLabel}"
                        FontSize="Default"
                        HorizontalOptions="Center"
                        HorizontalTextAlignment="Center"

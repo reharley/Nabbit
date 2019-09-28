@@ -11,10 +11,29 @@ using Xamarin.Forms;
 
 namespace Nabbit.ViewModels {
 	public class HomeViewModel : BaseViewModel {
-		public string MenuOpeningHours { get; set; }
-		public string MenuClosingHours { get; set; }
-		public string BussOpeningHours { get; set; }
-		public string BussClosingHours { get; set; }
+		string menuHoursText;
+		public string MenuHoursText {
+			get {
+				if (menuHoursText == null)
+					menuHoursText = "";
+				return menuHoursText;
+			}
+			set {
+				SetProperty(ref menuHoursText, value);
+			}
+		}
+
+		string bussHoursText;
+		public string BussHoursText {
+			get {
+				if (bussHoursText == null)
+					bussHoursText = "";
+				return bussHoursText;
+			}
+			set {
+				SetProperty(ref bussHoursText, value);
+			}
+		}
 
 		List<List<ProductCategoryProducts>> menus;
 		int menuIndex;
@@ -42,39 +61,7 @@ namespace Nabbit.ViewModels {
 			menuIndex = 0;
 			pcProducts = menus[menuIndex];
 			SelectedMenu = Menus[menuIndex];
-			var dayOfWeek = (int)DateTime.Today.DayOfWeek;
-			var openingTime = SelectedMenu.Hours.Opening[dayOfWeek];
-			var closingTime = SelectedMenu.Hours.Closing[dayOfWeek];
-			var bussOpeningTime = LocalGlobals.Restaurant.BusinessHours.Opening[dayOfWeek];
-			var bussClosingTime = LocalGlobals.Restaurant.BusinessHours.Closing[dayOfWeek];
-
-			if (openingTime == null)
-				MenuOpeningHours = "N/A";
-			else {
-				DateTime time = DateTime.Today.Add(openingTime.Value);
-				MenuOpeningHours = time.ToString("h:mm tt");
-			}
-
-			if (closingTime == null)
-				MenuClosingHours = "N/A";
-			else {
-				DateTime time = DateTime.Today.Add(closingTime.Value);
-				MenuClosingHours = time.ToString("h:mm tt");
-			}
-
-			if (bussOpeningTime == null)
-				BussOpeningHours = "N/A";
-			else {
-				DateTime time = DateTime.Today.Add(bussOpeningTime.Value);
-				BussOpeningHours = time.ToString("h:mm tt");
-			}
-
-			if (bussClosingTime == null)
-				BussOpeningHours = "N/A";
-			else {
-				DateTime time = DateTime.Today.Add(bussClosingTime.Value);
-				BussClosingHours = time.ToString("h:mm tt");
-			}
+			ChangeTime();
 		}
 
 		public Models.Menu GetMenuName () {
@@ -85,6 +72,50 @@ namespace Nabbit.ViewModels {
 			menuIndex = Menus.IndexOf(menu);
 			pcProducts = menus[menuIndex];
 			SelectedMenu = Menus[menuIndex];
+			ChangeTime();
+		}
+
+		void ChangeTime () {
+			var dayOfWeek = (int)DateTime.Today.DayOfWeek;
+			var openingTime = SelectedMenu.Hours.Opening[dayOfWeek];
+			var closingTime = SelectedMenu.Hours.Closing[dayOfWeek];
+			var bussOpeningTime = LocalGlobals.Restaurant.BusinessHours.Opening[dayOfWeek];
+			var bussClosingTime = LocalGlobals.Restaurant.BusinessHours.Closing[dayOfWeek];
+			string menuOpeningHours, menuClosingHours, bussOpeningHours, bussClosingHours;
+			if (openingTime == null)
+				menuOpeningHours = "N/A";
+			else {
+				DateTime time = DateTime.Today.Add(openingTime.Value);
+				menuOpeningHours = time.ToString("h:mm tt");
+			}
+
+			if (closingTime == null)
+				menuClosingHours = "N/A";
+			else {
+				DateTime time = DateTime.Today.Add(closingTime.Value);
+				menuClosingHours = time.ToString("h:mm tt");
+			}
+
+			MenuHoursText = string.Format("Menu Hours: {0} - {1}",
+				menuOpeningHours, menuClosingHours);
+
+
+			if (bussOpeningTime == null)
+				bussOpeningHours = "N/A";
+			else {
+				DateTime time = DateTime.Today.Add(bussOpeningTime.Value);
+				bussOpeningHours = time.ToString("h:mm tt");
+			}
+
+			if (bussClosingTime == null)
+				bussClosingHours = "N/A";
+			else {
+				DateTime time = DateTime.Today.Add(bussClosingTime.Value);
+				bussClosingHours = time.ToString("h:mm tt");
+			}
+
+			BussHoursText = string.Format("Business Hours: {0} - {1}",
+				bussOpeningHours, bussClosingHours);
 		}
 
 		public void BuildCategoryProducts () {

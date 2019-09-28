@@ -36,7 +36,7 @@ namespace Nabbit.Views {
 			if (orderItem == null)
 				return;
 
-			await App.Current.MainPage.Navigation.PushAsync(new OrderItemEditPage(orderItem.OrderItemId));
+			await Navigation.PushAsync(new OrderItemEditPage(orderItem.OrderItemId, Cart.MenuId));
 
 			var collection = sender as CollectionView;
 			collection.SelectedItem = null;

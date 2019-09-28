@@ -18,32 +18,49 @@
 				</Grid.ColumnDefinitions>
 
 				<Label Grid.Row="0"
-		   Grid.Column="0" FontSize="Medium"
-		   Text="Pickup Time" VerticalOptions="Start"
-		   HorizontalOptions="Center" Style="{StaticResource primaryDarkBoldLabel}" />
+                       Grid.Column="0" FontSize="Medium"
+                       Text="Pickup Time" VerticalOptions="Start"
+                       HorizontalOptions="Center" 
+                       Style="{StaticResource primaryDarkBoldLabel}" />
 				<Label Grid.Row="0" Grid.Column="1" FontSize="Medium" VerticalOptions="Start" HorizontalOptions="Center" Text="ETR" Style="{StaticResource primaryDarkBoldLabel}" />
-
-				<StackLayout Grid.Row="1" Grid.Column="0"
-				 Orientation="Horizontal"
-				 HorizontalOptions="Center" VerticalOptions="Start">
-					<Picker x:Name="datePicker"
-							SelectedIndexChanged="OnDatePickerIndexChanged"
-							ItemsSource="{Binding PickupDates}"
-							WidthRequest="100"
-							SelectedItem="0"
-							FontSize="12" />
-					<TimePicker x:Name="timePicker"
-				 FontSize="12"
-				 HorizontalOptions="Center"
-				 Time="{Binding PickupTime}" />
-				</StackLayout>
+                
+                <StackLayout Grid.Row="1" Grid.Column="0">
+    				<StackLayout Orientation="Horizontal"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Start"
+                                 Margin="0">
+    					<Picker x:Name="datePicker"
+    							ItemsSource="{Binding PickupDates}"
+    							WidthRequest="100"
+    							SelectedItem="0"
+    							FontSize="12" />
+    					<TimePicker x:Name="timePicker"
+                                    FontSize="12"
+                                    WidthRequest="83"
+                                    PropertyChanged="OnTimePickerChanged"
+                                    HorizontalOptions="Center"
+                                    Time="{Binding PickupTime}" />
+    				</StackLayout>
+                    
+                    <Label Text="{Binding MenuHoursText}"
+                           MaxLines="1"
+                           FontSize="Micro"
+                           Margin="3,0,0,0"
+                           x:Name="menuHoursText"
+                           d:Text="Menu Hours: 12:00 AM - 12:00 PM"
+                           Style="{StaticResource primaryTitleLabel}"
+                           HorizontalOptions="StartAndExpand"/>
+                </StackLayout>
 
 				<StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center">
-					<Label Text="0 People ahead" HorizontalOptions="Center" />
-					<Label Text="Estimated Time Ready: then" HorizontalOptions="Center" />
+					<Label Text="0 People ahead" 
+                           HorizontalOptions="Center" 
+                           HorizontalTextAlignment="Center"/>
+					<Label Text="Estimated Time Ready: then" 
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
 				</StackLayout>
 			</Grid>
-
 
 
 			<BoxView Style="{StaticResource separatorBoxStyle}" />
@@ -127,6 +144,7 @@
 					TextColor="{StaticResource primaryDarkColor}"
 					CornerRadius="10"
 					HeightRequest="35"
+                    WidthRequest="80"
 					FontSize="13"
 					BorderWidth="2"
 					Clicked="AddCardPressed" />

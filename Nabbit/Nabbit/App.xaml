@@ -274,7 +274,7 @@
                                     <Setter Property="BackgroundColor"
                                             Value="{StaticResource secondaryColor}" />
                                     <Setter Property="CornerRadius"
-                                            Value="10" />
+                                            Value="0" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>

@@ -2,16 +2,31 @@
 using Nabbit.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Nabbit.ViewModels {
 	public class CheckoutViewModel : BaseViewModel {
 		public Order Order { get; set; }
-		public User User { get; set; }
+		public Menu Menu { get; set; }
+		public Restaurant Restaurant { get; set; }
+
 		public PaymentMethod SelectedPayMethod { get; set; }
 		public List<PaymentMethod> PaymentMethods { get; set; }
-		public List<string> PickupDates { get; set; }
+
+		List<string> pickupDates;
+		public List<string> PickupDates {
+			get {
+				if (pickupDates == null)
+					pickupDates = new List<string>();
+				return pickupDates;
+			}
+			set {
+				SetProperty(ref pickupDates, value);
+			}
+		}
 		public List<DateTime> PickupDateTimes { get; set; }
+		int pickupDatesIndex;
 
 		public decimal ServiceCharge { get; set; }
 		public decimal Subtotal { get; set; }
@@ -20,35 +35,121 @@ namespace Nabbit.ViewModels {
 		public decimal Total { get; set; }
 
 		public DateTime PickupDate { get; set; }
-		public TimeSpan PickupTime { get; set; }
+
+		TimeSpan pickupTime;
+		public TimeSpan PickupTime {
+			get {
+				return pickupTime;
+			}
+			set {
+				SetProperty(ref pickupTime, value);
+			}
+		}
+
 		public DateTime MinDate { get; set; }
 		public DateTime MaxDate { get; set; }
 		public DateTime MinTime { get; set; }
 		public DateTime MaxTime { get; set; }
 
+		string menuHoursText;
+		public string MenuHoursText {
+			get {
+				if (menuHoursText == null)
+					menuHoursText = "";
+				return menuHoursText;
+			}
+			set {
+				SetProperty(ref menuHoursText, value);
+			}
+		}
+
 		public CheckoutViewModel () {
-			User = LocalGlobals.User;
-			Order = new Order(User.UserId, LocalGlobals.Restaurant.RestaurantId);
-			Order.FirstName = User.FirstName;
-			Order.LastName = User.LastName;
+			var user = LocalGlobals.User;
+			Order = new Order(user.UserId, LocalGlobals.Restaurant.RestaurantId);
+			Order.FirstName = user.FirstName;
+			Order.LastName = user.LastName;
+
+			Menu = LocalGlobals.Restaurant.Menus.First(m => m.MenuId == Cart.MenuId);
+			Restaurant = LocalGlobals.Restaurant;
+
+
 			BuildOrder();
 			GetMinMaxProperties();
 			FillPickupDates();
+			SetEarliestTime();
+
+			pickupDatesIndex = 0;
+			ChangeMenuHours(0);
+		}
+
+		public void ChangeMenuHours (int pickupDatesIndex) {
+			this.pickupDatesIndex = pickupDatesIndex;
+			var dayOfWeek = (int)PickupDateTimes[pickupDatesIndex].DayOfWeek;
+			var openingTime = Menu.Hours.Opening[dayOfWeek];
+			var closingTime = Menu.Hours.Closing[dayOfWeek];
+			string menuOpeningHours, menuClosingHours;
+			if (openingTime == null)
+				menuOpeningHours = "N/A";
+			else {
+				DateTime time = DateTime.Today.Add(openingTime.Value);
+				menuOpeningHours = time.ToString("h:mm tt");
+			}
+
+			if (closingTime == null)
+				menuClosingHours = "N/A";
+			else {
+				DateTime time = DateTime.Today.Add(closingTime.Value);
+				menuClosingHours = time.ToString("h:mm tt");
+			}
+
+			MenuHoursText = string.Format("Menu Hours: {0} - {1}", menuOpeningHours, menuClosingHours);
+		}
+
+		public void SetEarliestTime () {
+			var dayOfWeek = (int)PickupDateTimes[pickupDatesIndex].DayOfWeek;
+			var openingTime = Menu.Hours.Opening[dayOfWeek].Value;
+
+			if (PickupDateTimes[pickupDatesIndex].Date == DateTime.Today) {
+				var now = DateTime.Now.TimeOfDay;
+				if (now >= openingTime)
+					PickupTime = now.Add(new TimeSpan(0, 5, 0));
+				else if (now <= openingTime.Subtract(new TimeSpan(0, 10, 0)))
+					PickupTime = openingTime;
+				else
+					PickupTime = now.Add(new TimeSpan(0, 5, 0));
+
+
+			} else {
+				PickupTime = openingTime;
+			}
+		}
+
+		public void SetLatestTime () {
+			var dayOfWeek = (int)PickupDateTimes[pickupDatesIndex].DayOfWeek;
+			var closingTime = Menu.Hours.Closing[dayOfWeek].Value;
+
+			PickupTime = closingTime;
 		}
 
 		void FillPickupDates () {
 			PickupDates = new List<string>();
 			PickupDateTimes = new List<DateTime>();
+			var hours = Restaurant.BusinessHours.Opening;
 			var date = DateTime.Now;
-			if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
-				AddDate("Today", date);
+			if (hours[(int)date.DayOfWeek] != null) {
+				var menuClosingHours = Menu.Hours.Closing[(int)date.DayOfWeek].Value;
+
+				if (menuClosingHours.Subtract(new TimeSpan(0, 15, 0)) > date.TimeOfDay)
+					AddDate("Today", date);
+			}
+
 			date = date.AddDays(1);
-			if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+			if (hours[(int)date.DayOfWeek] != null)
 				AddDate("Tomorrow", date);
 
 			for (int i = 0; PickupDates.Count < 5; i++) {
 				date = date.AddDays(1);
-				if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
+				if (hours[(int)date.DayOfWeek] != null)
 					AddDate(string.Format("{0:ddd MMM dd}", date), date);
 			}
 		}
@@ -57,6 +158,7 @@ namespace Nabbit.ViewModels {
 			PickupDates.Add(text);
 			PickupDateTimes.Add(dateTime);
 		}
+
 		void GetMinMaxProperties () {
 			MinDate = DateTime.Now;
 			MinTime = DateTime.Now;

@@ -15,12 +15,16 @@ namespace Nabbit.Views {
 	public partial class OrderItemEditPage : ContentPage {
 		public OrderItemEditViewModel viewModel;
 		bool inCart;
+		Guid menuId;
+		Guid restaurantId;
 
-		public OrderItemEditPage (Guid itemId) {
+		public OrderItemEditPage (Guid itemId, Guid menuId) {
 			InitializeComponent();
 			NavigationPage.SetHasNavigationBar(this, true);
 			NavigationPage.SetHasBackButton(this, true);
 
+			this.menuId = menuId;
+			restaurantId = LocalGlobals.Restaurant.RestaurantId;
 			BindingContext = viewModel = new OrderItemEditViewModel(itemId);
 			BuildPage();
 		}
@@ -41,7 +45,7 @@ namespace Nabbit.Views {
 				Cart.OrderItems.Remove(orderItem);
 			}
 
-			await App.Current.MainPage.Navigation.PopAsync();
+			await Navigation.PopAsync();
 		}
 
 		void QuantityChanged (object sender, ValueChangedEventArgs e) {
@@ -52,13 +56,66 @@ namespace Nabbit.Views {
 			var addons = GetSelectedAddons();
 			viewModel.OrderItem.Addons = new List<Addon>(addons);
 
-			if (inCart) {
-				var orderItem = Cart.OrderItems.First(o => o.OrderItemId == viewModel.OrderItem.OrderItemId);
-				Cart.OrderItems.Remove(orderItem);
+			if (await ItemFromSameMenu()) {
+				if (inCart) {
+					var orderItem = Cart.OrderItems
+						.First(o => o.OrderItemId == viewModel.OrderItem.OrderItemId);
+
+					Cart.OrderItems.Remove(orderItem);
+				}
+
+				Cart.OrderItems.Add(viewModel.OrderItem);
 			}
 
-			Cart.OrderItems.Add(viewModel.OrderItem);
-			await App.Current.MainPage.Navigation.PopAsync();
+			await Navigation.PopAsync();
+		}
+
+		/// <summary>
+		/// Checks to see if the item to be added is compatible with the items
+		/// in the rest of the cart. All items must be from the same menu.
+		/// </summary>
+		/// <returns>true if this viewModel.OrderItem is from the same menu as
+		/// Cart.MenuId and same Cart.RestaurantId</returns>
+		async Task<bool> ItemFromSameMenu () {
+			if (Cart.RestaurantId == Guid.Empty)
+				Cart.RestaurantId = restaurantId;
+			else {
+				// cannot add item. ABORT
+				var clear = await DisplayAlert("Cart", "The cart can only " +
+					"contain items from one restaurant.\n\n Would you like to " +
+					"clear the cart and add this item?", "Clear Cart", "Cancel");
+
+				if (clear) {
+					ClearCart();
+				} else {
+					await Navigation.PopAsync();
+					return false;
+				}
+			}
+
+			if (Cart.MenuId == Guid.Empty)
+				Cart.MenuId = menuId;
+			else if (Cart.MenuId != menuId) {
+				// cannot add item. ABORT
+				bool clear = await DisplayAlert("Cart", "The cart can only " +
+					"contain items from one menu.\n\n Would you like to " +
+					"clear the cart?", "Clear", "Cancel");
+
+				if (clear) {
+					ClearCart();
+				} else {
+					await Navigation.PopAsync();
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		void ClearCart () {
+			Cart.ClearCart();
+			Cart.MenuId = menuId;
+			Cart.RestaurantId = restaurantId;
 		}
 
 		void AdjustGroupListHeight () {
