@@ -35,7 +35,7 @@ namespace NabbitManager.Views {
 			if (e.Item == null)
 				return;
 
-			//await Navigation.PushModalAsync(new NavigationPage(new OrderDetailPage(((Order)e.Item).)));
+			//await Navigation.PushAsync(new OrderDetailPage(((Order)e.Item).)));
 
 			//Deselect Item
 			((ListView)sender).SelectedItem = null;
@@ -45,7 +45,7 @@ namespace NabbitManager.Views {
 			OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString()).Wait();
 			orderList.ItemsSource = OrderQueueService.OrderQueue;
 		}
-
+		
 		public void StartUpdate() {
 			if (cts != null) cts.Cancel();
 			cts = new CancellationTokenSource();

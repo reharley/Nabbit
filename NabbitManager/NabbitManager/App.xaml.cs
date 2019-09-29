@@ -74,7 +74,7 @@ namespace NabbitManager {
 					}
 
 					if (DateTime.Now >= pickupPrintTime) {
-						PrinterService.Printer(order);
+						//PrinterService.Printer(order);
 						OrderQueueService.OrderQueue.RemoveAt(0);
 					}
 				}

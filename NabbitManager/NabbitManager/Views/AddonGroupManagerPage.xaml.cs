@@ -21,13 +21,13 @@ namespace NabbitManager.Views {
 		async void HandleItemPressed(object sender, ItemTappedEventArgs e) {
 			if (e.Item == null)
 				return;
-			await Navigation.PushModalAsync(new NavigationPage(new AddonGroupEditPage(((AddonGroup)e.Item).AddonGroupId)));
+			await Navigation.PushAsync(new AddonGroupEditPage(((AddonGroup)e.Item).AddonGroupId));
 
 			((ListView)sender).SelectedItem = null;
 		}
 
 		async void AddGroupPressed(object sender, EventArgs e) {
-			await Navigation.PushModalAsync(new NavigationPage(new AddonGroupEditPage()));
+			await Navigation.PushAsync(new AddonGroupEditPage());
 		}
 	}
 }

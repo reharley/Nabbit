@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,6 +13,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using ESCPOS_NET.Emitters;
 using Java.IO;
 using Java.Util;
 using NabbitManager.Services;
@@ -56,8 +58,32 @@ namespace NabbitManager.Droid {
 			// Read data from the device
 			//await _socket.InputStream.ReadAsync(buffer, 0, buffer.Length);
 
+			var cmds = GetLogo();
+
 			// Write data to the device
-			await _socket.OutputStream.WriteAsync(bytes, 0, bytes.Length);
+			await _socket.OutputStream.WriteAsync(cmds, 0, cmds.Length);
+			//await _socket.OutputStream.WriteAsync(bytes, 0, bytes.Length);
+		}
+
+		byte[] GetLogo () {
+			byte[] img = null;
+
+			var asset = Android.App.Application.Context.Assets.Open("nabbit_logo_transparent_outline.bmp");
+			using (var memoryStream = new MemoryStream()) {
+				asset.CopyTo(memoryStream);
+				img = memoryStream.ToArray();
+			}
+
+			ICommandEmitter e = new EPSON();
+			var receipt = new List<byte[]>();
+			receipt.Add(e.Initialize());
+			receipt.Add(e.Enable());
+			receipt.Add(e.PrintImage(img, true, maxWidth: 256));
+
+			receipt.Add(e.PrintLine());
+			receipt.Add(e.PrintLine());
+			receipt.Add(e.PartialCutAfterFeed(5));
+			return receipt.SelectMany(x => x).ToArray();
 		}
 
 		/// <summary>

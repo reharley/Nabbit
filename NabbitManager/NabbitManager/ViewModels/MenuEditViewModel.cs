@@ -39,9 +39,10 @@ namespace NabbitManager.ViewModels {
 			}
 
 			Hours = new List<ItemSelector<HoursView>>();
-			if (Menu.Hours == null)
+			if (Menu.Hours == null) {
 				Menu.Hours = new Hours();
-
+				Menu.Hours.BuildHours();
+			}
 			var hours = Menu.Hours;
 			var days = Nabbit.Models.Hours.BuildDays();
 			for (int i = 0; i < hours.Opening.Count; i++) {

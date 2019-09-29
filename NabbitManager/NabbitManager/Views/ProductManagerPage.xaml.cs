@@ -40,7 +40,7 @@ namespace NabbitManager.Views {
 			if (e.Item == null)
 				return;
 
-			await Navigation.PushModalAsync(new NavigationPage(new ProductEditPage(((Product)e.Item).ProductId)));
+			await Navigation.PushAsync(new ProductEditPage(((Product)e.Item).ProductId));
 
 			((ListView)sender).SelectedItem = null;
 		}
@@ -61,7 +61,7 @@ namespace NabbitManager.Views {
 		}
 
 		async void AddItemPressed(object sender, EventArgs e) {
-			await Navigation.PushModalAsync(new NavigationPage(new ProductEditPage()));
+			await Navigation.PushAsync(new ProductEditPage());
 		}
 	}
 }

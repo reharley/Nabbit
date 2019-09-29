@@ -33,9 +33,28 @@ namespace NabbitManager.Views {
 					Text = titles[i]
 				};
 				var uri = uris[i];
-				button.Pressed += async (sender, args) => {
-					await Shell.Current.GoToAsync(uri);
-				};
+				if (i == 0) {
+					button.Pressed += async (sender, args) => {
+						await Navigation.PushAsync(new ProductManagerPage());
+					};
+				} else if (i == 1) {
+					button.Pressed += async (sender, args) => {
+						await Navigation.PushAsync(new CategoryManagerPage());
+					};
+				} else if (i == 2) {
+					button.Pressed += async (sender, args) => {
+						await Navigation.PushAsync(new AddonGroupManagerPage());
+					};
+				} else if (i == 3) {
+					button.Pressed += async (sender, args) => {
+						await Navigation.PushAsync(new AddonManagerPage());
+					};
+				} else if (i == 4) {
+					button.Pressed += async (sender, args) => {
+						await Navigation.PushAsync(new MenuManagerPage());
+					};
+				}
+
 				navButtons.Children.Add(button);
 			}
 		}

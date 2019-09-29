@@ -35,7 +35,7 @@ namespace NabbitManager.Views {
 			//if (e.Item == null)
 			//	return;
 
-			//await Navigation.PushModalAsync(new NavigationPage(new OrderDetailPage(((Order)e.Item).Id)));
+			//await Navigation.PushAsync(new OrderDetailPage(((Order)e.Item).Id)));
 
 			////Deselect Item
 			//((ListView)sender).SelectedItem = null;

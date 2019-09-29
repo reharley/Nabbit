@@ -10,18 +10,21 @@ using Xamarin.Forms;
 
 namespace NabbitManager.Services {
 	public static class PrinterService {
-		public static void Printer(Order order) {
+		public static void Printer(Order order, byte[] img) {
 			ICommandEmitter e = new EPSON();
 			var receipt = new List<byte[]>();
 			receipt.Add(e.Initialize());
 			receipt.Add(e.Enable());
-
+			//e.PrintImage(img, true);
 			receipt.Add(e.PrintLine());
 			receipt.Add(e.PrintLine());
 			receipt.Add(e.PrintLine());
 			receipt.Add(e.PrintLine());
+			receipt.Add(e.SetStyles(PrintStyle.DoubleHeight | PrintStyle.DoubleWidth | PrintStyle.Bold));
 			receipt.Add(e.PrintLine("Nabbit Order"));
+			receipt.Add(e.SetStyles(PrintStyle.DoubleHeight | PrintStyle.DoubleWidth | PrintStyle.Bold));
 			receipt.Add(e.PrintLine($"{LocalGlobals.Restaurant.Name}"));
+			receipt.Add(e.SetStyles(PrintStyle.None));
 			receipt.Add(e.PrintLine());
 			receipt.Add(e.PrintLine());
 			receipt.Add(e.PrintLine($"First Name: {order.FirstName}"));

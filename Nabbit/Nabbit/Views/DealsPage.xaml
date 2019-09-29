@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns ="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Nabbit.Views.DealsPage"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d" >
+    <ContentPage.Content>
+        <StackLayout>
+            <CollectionView ItemsSource="{Binding Deals}"
+                            d:ItemsSource="{StaticResource testArray}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <StackLayout Style="{StaticResource itemSelectedStyle}">
+                                <BoxView Style="{StaticResource separatorBoxStyle}"/>
+                                <StackLayout Orientation="Horizontal"
+                                             Margin="{StaticResource PageMargin}">
+                                    <Label Text="{Binding Name}"
+                                           d:Text="Deal Name"
+                                           Style="{StaticResource primaryDarkBoldTitleLabel}" />
+                                    <Label Text="{Binding Price, StringFormat='{0:c}'}"
+                                           d:Text="$4.50"
+                                           Style="{StaticResource menuItemPriceStyle}" />
+                                    <Label Text="&#xf054;"
+                                           Style="{StaticResource menuItemArrowStyle}" />
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -7,6 +7,13 @@
              x:Class="Nabbit.App">
     <Application.Resources>
         <ResourceDictionary>
+            <!--Delete or comment out for release builds-->
+            <x:Array x:Key="testArray" Type="{x:Type x:String}">
+              <x:String>Baboon</x:String>
+              <x:String>Capuchin Monkey</x:String>
+              <x:String>Blue Monkey</x:String>
+            </x:Array>
+            
             <Thickness x:Key="PageMargin">15</Thickness>
             <Thickness x:Key="AndroidPageMargin">35</Thickness>
 
@@ -142,7 +149,7 @@
                     Value="FontAwesome5Free-Regular" />
             </OnPlatform>
 
-            <!--Menu Item Styles-->
+            <!--Labels -->
             <Style x:Key="primaryTitleLabel"
                    TargetType="Label">
                 <Setter Property="FontSize"
@@ -243,6 +250,32 @@
                         Value="Title" />
                 <Setter Property="TextColor"
                         Value="{StaticResource primaryColor}" />
+            </Style>
+            
+            <Style x:Key="menuItemArrowStyle"
+                   TargetType="Label">
+                <Setter Property="HorizontalOptions"
+                        Value="End" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource FontAwesomeSolid}" />
+                <Setter Property="FontSize"
+                        Value="Title" />
+            </Style>
+            
+            <Style x:Key="menuItemPriceStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Medium" />
+                <Setter Property="HorizontalOptions"
+                        Value="EndAndExpand" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource secondaryDarkColor}" />
             </Style>
 
             <!--Selection Styles-->

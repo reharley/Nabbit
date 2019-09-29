@@ -39,7 +39,7 @@ namespace NabbitManager.Views {
 			if (e.Item == null)
 				return;
 
-			await Navigation.PushModalAsync(new NavigationPage(new AddonEditPage(((Addon)e.Item).AddonId)));
+			await Navigation.PushAsync(new AddonEditPage(((Addon)e.Item).AddonId));
 
 			((ListView)sender).SelectedItem = null;
 		}
@@ -60,7 +60,7 @@ namespace NabbitManager.Views {
 		}
 
 		async void AddAddonPressed(object sender, EventArgs e) {
-			await Navigation.PushModalAsync(new NavigationPage(new AddonEditPage()));
+			await Navigation.PushAsync(new AddonEditPage());
 		}
 	}
 }

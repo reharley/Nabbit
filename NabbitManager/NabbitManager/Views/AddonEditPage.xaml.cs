@@ -32,7 +32,7 @@ namespace NabbitManager.Views {
 		}
 
 		async void CancelPressed (object sender, EventArgs e) {
-			await Navigation.PopModalAsync();
+			await Navigation.PopAsync();
 		}
 
 		async void SavePressed (object sender, EventArgs e) {
@@ -45,7 +45,7 @@ namespace NabbitManager.Views {
 
 			LocalGlobals.Restaurant.Addons.Add(addon);
 			await LocalGlobals.SaveRestaurant();
-			await Navigation.PopModalAsync();
+			await Navigation.PopAsync();
 		}
 
 		async void DeletePressed (object sender, EventArgs e) {
@@ -59,7 +59,7 @@ namespace NabbitManager.Views {
 					LocalGlobals.Restaurant.Addons.Remove(add);
 
 					await LocalGlobals.SaveRestaurant();
-					await Navigation.PopModalAsync();
+					await Navigation.PopAsync();
 				}
 			}
 		}

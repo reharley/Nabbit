@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Nabbit.Models {
-	public partial class OrderItem {
+	public class OrderItem {
 		public OrderItem() {
 		}
 
@@ -14,7 +14,7 @@ namespace Nabbit.Models {
 		public int Quantity { get; set; }
 		public decimal ItemPrice { get; set; }
 
-		public virtual Product Product { get; set; }
-		public virtual List<Addon> Addons { get; set; }
+		public Product Product { get; set; }
+		public List<Addon> Addons { get; set; }
 	}
 }

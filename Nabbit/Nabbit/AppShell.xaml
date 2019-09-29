@@ -65,7 +65,7 @@
              Icon="hot_sale.png"
              Style="{StaticResource MenuShell}">
             <ShellContent Title="Cart"
-                          ContentTemplate="{DataTemplate views:CartPage}" />
+                          ContentTemplate="{DataTemplate views:DealsPage}" />
         </Tab>
         <Tab Title="Cart"
              Icon="tab_about.png"

@@ -31,13 +31,13 @@ namespace NabbitManager.Views {
 			if (e.Item == null)
 				return;
 
-			await Navigation.PushModalAsync(new NavigationPage(new CategoryEditPage(((ProductCategory)e.Item).ProductCategoryId)));
+			await Navigation.PushAsync(new CategoryEditPage(((ProductCategory)e.Item).ProductCategoryId));
 
 			((ListView)sender).SelectedItem = null;
 		}
 
 		async void AddCatPressed(object sender, EventArgs e) {
-			await Navigation.PushModalAsync(new NavigationPage(new CategoryEditPage()));
+			await Navigation.PushAsync(new CategoryEditPage());
 		}
 	}
 }

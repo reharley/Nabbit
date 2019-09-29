@@ -122,6 +122,9 @@ namespace Nabbit.ViewModels {
 			if (LocalGlobals.Restaurant != null) {
 				Menus = new List<Models.Menu>();
 				foreach (var menu in LocalGlobals.Restaurant.Menus) {
+					if (menu.Name == "Deals")
+						continue;
+
 					var pcProductsTmp = new List<ProductCategoryProducts>();
 					Menus.Add(menu);
 					foreach (var category in LocalGlobals.Restaurant.ProductCategories
