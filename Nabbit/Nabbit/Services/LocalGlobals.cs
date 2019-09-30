@@ -22,7 +22,8 @@ namespace Nabbit.Services {
 		private const string postUserUrl = "https://nabbit.azurewebsites.net/api/PostUser?code=CoamMBwbH3aqVfeVzzRJuXrw2n6FVHCsT0l26phUAwL0SsTBEwTPyw==";
 		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
 		private const string getUserOrdersUrl = "https://nabbit.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=X3NJ2NZKahEziqSKZrlX/KxpoyWvuHfYE4wROOAjOLnNleMWGByFIA==";
-
+		private const string getRestOrdersUrl = "https://nabbit.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=X3NJ2NZKahEziqSKZrlX/KxpoyWvuHfYE4wROOAjOLnNleMWGByFIA==";
+		
 		public const decimal ServiceFee = 0.2m;
 		public const decimal TaxRate = 0.098m;
 
@@ -227,6 +228,29 @@ namespace Nabbit.Services {
 			Restaurant.Version++;
 			await UpdateRestaurant(Restaurant);
 			App.Current.Properties["restaurant"] = JsonConvert.SerializeObject(Restaurant);
+		}
+
+		public static async Task<List<Order>> GetRestOrders () {
+			try {
+				using (var client = new HttpClient()) {
+					string result = "";
+					var url = getRestOrdersUrl.Replace("{restaurantId}", restaurant.RestaurantId.ToString());
+					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+						if (httpResponse.IsSuccessStatusCode)
+							return JsonConvert.DeserializeObject<List<Order>>(result);
+						else
+							return null;
+					}
+				}
+			} catch (Exception ex) {
+				/// TODO: Log error
+				Console.WriteLine("Something is missing...", "The app was unable to load data. Please check the your connections and try again.");
+				Console.WriteLine(ex.Message);
+
+				return null;
+			}
 		}
 
 		public static async Task GetUserOrders () {

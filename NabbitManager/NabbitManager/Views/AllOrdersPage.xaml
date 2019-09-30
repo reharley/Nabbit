@@ -4,7 +4,86 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="NabbitManager.Views.AllOrdersPage">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="{StaticResource PageMargin}">
+            <StackLayout >
+                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               HeightRequest="40"
+                               VerticalOptions="CenterAndExpand"
+                               HorizontalOptions="CenterAndExpand">
+                    <ActivityIndicator.WidthRequest>
+                        <OnPlatform x:TypeArguments="x:Double"
+                                    iOS="100"
+                                    Android="100" />
+                    </ActivityIndicator.WidthRequest>
+                    <ActivityIndicator.Color>
+                        <OnPlatform x:TypeArguments="Color"
+                                    iOS="{StaticResource secondaryColor}"
+                                    Android="{StaticResource secondaryColor}" />
+                    </ActivityIndicator.Color>
+                </ActivityIndicator>
+                
+                <CollectionView x:Name="orderList"
+                                SelectionMode="Single"
+                                SelectionChanged="OnItemSelected"
+                                d:ItemsSource="{StaticResource testArray}">
+                    <CollectionView.ItemsLayout>
+                        <ListItemsLayout ItemSpacing="20">
+                            <x:Arguments>
+                                <ItemsLayoutOrientation>Vertical</ItemsLayoutOrientation>    
+                            </x:Arguments>
+                        </ListItemsLayout>
+                    </CollectionView.ItemsLayout>
+                    
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Style="{StaticResource itemSelectedStyle}">
+                                <BoxView Style="{StaticResource separatorBoxStyle}" Margin="0"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Grid.Row="0" Grid.Column="0"
+                                               TextColor="{StaticResource primaryDarkColor}"
+                                               FontAttributes="Bold"
+                                               Text="Pickup Time" />
+                                        <Label Grid.Row="0" Grid.Column="1"
+                                               TextColor="{StaticResource primaryDarkColor}"
+                                               FontAttributes="Bold"
+                                               Text="Status" />
+                                        <Label Grid.Row="0" Grid.Column="2"
+                                               TextColor="{StaticResource primaryDarkColor}"
+                                               FontAttributes="Bold"
+                                               Text="Total" />
+                                        
+                                        <Label Grid.Row="1" Grid.Column="0"
+                                               d:Text="09/23/19"
+                                               Text="{Binding PickupTime, StringFormat='{0:MM/dd/yy}'}" />
+                                        
+                                        <Label Grid.Row="1" Grid.Column="1"
+                                               d:Text="Complete"
+                                               Text="{Binding OrderStatus}" />
+                                        
+                                        <Label Grid.Row="1" Grid.Column="2"
+                                               d:Text="$10.50"
+                                               Text="{Binding OrderTotal, StringFormat='{0:c}'}" />
+                                    </Grid>
+                                    
+                                    <Label Text="&#xf054;"
+                                           Style="{StaticResource menuItemArrowStyle}" />
+                                </StackLayout>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
             <Button Text="Test Print" Clicked="Handle_Clicked" />
         </StackLayout>
     </ContentPage.Content>

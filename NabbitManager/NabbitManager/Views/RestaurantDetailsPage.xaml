@@ -7,6 +7,12 @@
              mc:Ignorable="d">
     <ContentPage.Content>
         <StackLayout>
+            <Label Text="Tax Rate:" />
+            <StackLayout Orientation="Horizontal">
+                <Label Text="%" FontSize="Medium" Margin="0" VerticalOptions="Center" />
+                <Entry Text="{Binding TaxRate, StringFormat='{0}'}" Keyboard="Numeric"
+                       Placeholder="9.8" />
+            </StackLayout>
             <CollectionView ItemsSource="{Binding Hours}"
                             d:ItemsSource="{StaticResource testArray}">
                 <CollectionView.Header>

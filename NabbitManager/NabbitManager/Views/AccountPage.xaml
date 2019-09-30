@@ -8,8 +8,8 @@
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand">
 			<Label x:Name="test" />
-			<Button Text="Sign In" Clicked="SignInClicked" />
-            <Button Text="Edit Business Hours" Clicked="HoursClicked" VerticalOptions="End"/>
+			<!--<Button Text="Sign In" Clicked="SignInClicked" />-->
+            <Button Text="Restaurant Settings" Clicked="HoursClicked" VerticalOptions="EndAndExpand"/>
 		</StackLayout>
     </ContentPage.Content>
 </ContentPage>

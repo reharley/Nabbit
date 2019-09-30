@@ -36,7 +36,7 @@ namespace Nabbit.MenuUploader {
 		private const string postOrderUrl = "http://localhost:7071/api/PostOrder";
 		//private const string getUserUrl = "http://localhost:7071/api/GetUser/userId/{userId}"; https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==
 		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
-
+		private const string getRestOrdersUrl = "http://localhost:7071/api/GetRestOrders/{restaurantId}";
 		private const string postUserUrl = "http://localhost:7071/api/PostUser";
 
 		private static HttpClient _client;
@@ -64,8 +64,8 @@ namespace Nabbit.MenuUploader {
 			//AzureFunctionTest().Wait();
 
 
-			PullObjects().Wait();
-			UpdateRestaurant().Wait();
+			//PullObjects().Wait();
+			//UpdateRestaurant().Wait();
 			//PushToTable().Wait();
 			//var user = new User();
 			//user.FirstName = "TJ";
@@ -73,7 +73,7 @@ namespace Nabbit.MenuUploader {
 			//GetUser().Wait();
 			//MakeOrder();
 			//PullUserOrders().Wait();
-
+			PullRestOrders().Wait();
 			Console.WriteLine("Complete");
 			//SendNotification();
 		}
@@ -113,6 +113,7 @@ namespace Nabbit.MenuUploader {
 			};
 
 			var order = new Order(userId, restaurantId) {
+				OrderId = Guid.NewGuid(),
 				FirstName = "Emma",
 				LastName = "Harley",
 				PickupTime = DateTime.Now,
@@ -121,6 +122,24 @@ namespace Nabbit.MenuUploader {
 			};
 
 			PostOrder(order).Wait();
+		}
+
+		static async Task PullRestOrders () {
+			//var userId = "5d2b6da2-3f67-4fd0-a3c8-678cbfb9d4f9";
+			var restaurantId = "681a6d33-beac-4928-8172-793c3e981bd5";
+			try {
+				using (var client = new HttpClient()) {
+					var url = getRestOrdersUrl.Replace("{restaurantId}", restaurantId);
+					var result = await client.GetStringAsync(url);
+					if (result == "none")
+						return;
+					var orders = JsonConvert.DeserializeObject<List<Order>>(result);
+				}
+			} catch (Exception ex) {
+				/// TODO: Log error
+				Console.WriteLine("Something is missing...", "The app was unable to load data. Please check the your connections and try again.");
+				Console.WriteLine(ex.Message);
+			}
 		}
 
 		static async Task PullUserOrders() {

@@ -117,7 +117,7 @@ namespace Nabbit.ViewModels {
 				bussClosingHours = time.ToString("h:mm tt");
 			}
 
-			if (bussOpeningHours == null || bussClosingHours == null)
+			if (bussOpeningTime == null || bussClosingTime == null)
 				BussHoursText = "Business Hours: Closed Today";
 			else
 				BussHoursText = string.Format("Business Hours: {0} - {1}",

@@ -5,6 +5,7 @@ using Nabbit.Services;
 
 namespace NabbitManager.ViewModels {
 	public class RestaurantDetailsViewModel : BaseView {
+		public decimal TaxRate { get; set; }
 		public List<ItemSelector<HoursView>> Hours { get; set; }
 
 		public RestaurantDetailsViewModel () {
@@ -12,6 +13,7 @@ namespace NabbitManager.ViewModels {
 		}
 
 		void BuildModel () {
+			TaxRate = LocalGlobals.Restaurant.TaxRate;
 			Hours = new List<ItemSelector<HoursView>>();
 			var hours = LocalGlobals.Restaurant.BusinessHours;
 			if (hours == null) {

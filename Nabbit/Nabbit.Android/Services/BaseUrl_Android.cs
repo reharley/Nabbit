@@ -1,5 +1,5 @@
 ﻿using System;
-using Nabbit.Services;
+using NabbitManager.Services;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(NabbitManager.Droid.Services.BaseUrl_Android))]
