@@ -62,8 +62,15 @@ namespace NabbitManager {
 
 
 		async void ProcessOrders() {
+			var lastPing = DateTime.Now;
 			while(true) {
-				//OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString());
+				if (LocalGlobals.PingServer) {
+					if (lastPing - DateTime.Now > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
+						await OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString());
+						lastPing = DateTime.Now;
+					}
+				}
+
 				if (OrderQueueService.OrderQueue.Count > 0) {
 					var order = OrderQueueService.OrderQueue[0];
 					DateTime pickupPrintTime = order.PickupTime.AddMinutes(-10);
@@ -74,10 +81,11 @@ namespace NabbitManager {
 					}
 
 					if (DateTime.Now >= pickupPrintTime) {
-						//PrinterService.Printer(order);
+						PrinterService.Printer(order);
 						OrderQueueService.OrderQueue.RemoveAt(0);
 					}
 				}
+
 				await Task.Delay(1000);
 			}
 		}

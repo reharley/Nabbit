@@ -39,18 +39,6 @@ namespace Nabbit.Views {
 			viewModel.IsBusy = false;
 		}
 
-		void VerifyForm () {
-			
-
-
-			// add holidays
-			//if ()
-		}
-
-		bool PickupInvalid (DateTime pickupTime) {
-			
-			return false;
-		}
 
 		private void OnDatePickerIndexChanged (object sender, EventArgs e) {
 			viewModel.ChangeMenuHours(datePicker.SelectedIndex);
@@ -63,6 +51,7 @@ namespace Nabbit.Views {
 		private async void PurchaseClicked (object sender, EventArgs e) {
 			if (payMethodsList.SelectedItem == null) {
 				await DisplayAlert("Pay Method", "Please add a payment method to charge.", "Ok");
+				return;
 			}
 
 			if (LocalGlobals.User.LoggedIn) {
@@ -93,14 +82,19 @@ namespace Nabbit.Views {
 			var openHours = hours.Opening[dayOfWeek].Value;
 			var closingHours = hours.Closing[dayOfWeek].Value;
 
-			if (openHours <= pickupTime && pickupTime <= closingHours) {
+			if ((string)datePicker.SelectedItem == "Today") {
+				if (pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 5, 0))) {
+					await DisplayAlert("Pickup Time", "The pickup time entered was before the current time.", "Ok");
+					viewModel.SetEarliestTime();
+				}
+			} else if (openHours <= pickupTime && pickupTime <= closingHours) {
 				menuHoursText.TextColor = (Color)App.Current.Resources["primaryColor"];
 			} else if (openHours > pickupTime) {
 				await DisplayAlert("Pickup Time", "The pickup time entered was before opening time.", "Ok");
 				//menuHoursText.TextColor = (Color)App.Current.Resources["dangerColor"];
 				viewModel.SetEarliestTime();
 			} else if (closingHours < pickupTime) {
-				await DisplayAlert("Pickup Time", "The pickup time entered was after opening time.", "Ok");
+				await DisplayAlert("Pickup Time", "The pickup time entered was after closing time.", "Ok");
 				//menuHoursText.TextColor = (Color)App.Current.Resources["dangerColor"];
 				viewModel.SetEarliestTime();
 			}

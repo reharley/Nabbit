@@ -8,6 +8,8 @@ using Nabbit.ViewModels;
 namespace NabbitManager.ViewModels {
 	public class RestaurantDetailsViewModel : BaseViewModel {
 		public decimal TaxRate { get; set; }
+		public int PingDelay { get; set; }
+
 		bool usePrinter = false;
 		public bool UsePrinter {
 			get {
@@ -28,8 +30,9 @@ namespace NabbitManager.ViewModels {
 		}
 
 		void BuildModel () {
+			PingDelay = LocalGlobals.PingMinuteDelay;
+			UsePrinter = LocalGlobals.PingServer;
 			TaxRate = LocalGlobals.Restaurant.TaxRate;
-			OneSignal.Current.IdsAvailable(IdsAvailable);
 
 			Hours = new List<ItemSelector<HoursView>>();
 			var hours = LocalGlobals.Restaurant.BusinessHours;
@@ -78,6 +81,8 @@ namespace NabbitManager.ViewModels {
 			}
 
 			LocalGlobals.Restaurant.BusinessHours = hours;
+			LocalGlobals.PingServer = UsePrinter;
+			LocalGlobals.PingMinuteDelay = PingDelay;
 		}
 	}
 }

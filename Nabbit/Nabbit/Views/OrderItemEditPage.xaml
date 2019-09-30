@@ -80,9 +80,9 @@
                     </StackLayout>
                 </ScrollView>
             </StackLayout>
-
+            
+            <Label Text="Special Instructions:" />
             <Entry Text="{Binding OrderItem.Instructions}"
-                   Placeholder="Any special instructions?"
                    FontSize="Medium"
                    VerticalOptions="EndAndExpand" />
             <Label Text="{Binding Price, StringFormat='{0:c}'}"

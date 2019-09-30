@@ -29,9 +29,15 @@ namespace NabbitManager.Views {
 					Text = titles[i]
 				};
 				var uri = uris[i];
-				button.Pressed += async (sender, args) => {
-					await Shell.Current.GoToAsync(uri);
-				};
+				if (i == 0) {
+					button.Pressed += async (sender, args) => {
+						await Navigation.PushAsync(new AllOrdersPage());
+					};
+				} else if (i == 1) {
+					button.Pressed += async (sender, args) => {
+						await Navigation.PushAsync(new LiveOrdersPage());
+					};
+				}
 				navButtons.Children.Add(button);
 			}
 		}

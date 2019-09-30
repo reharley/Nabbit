@@ -23,7 +23,25 @@
 		<Color x:Key="iOSNavigationBarTextColor">Black</Color>
 		<Color x:Key="AndroidNavigationBarTextColor">White</Color>
 		<Color x:Key="SaveButtonPrimaryLight">#9cff57</Color>
+        
+        
+        <!--Colors-->
+        <Color x:Key="primaryColor">#1565c0</Color>
+        <Color x:Key="primaryLightColor">#5e92f3</Color>
+        <Color x:Key="primaryDarkColor">#003c8f</Color>
 
+        <Color x:Key="secondaryColor">#04d9f9</Color>
+        <Color x:Key="secondaryLightColor">#6cffff</Color>
+        <Color x:Key="secondaryDarkColor">#00a7c6</Color>
+
+        <Color x:Key="dangerColor">#d50000</Color>
+        <Color x:Key="dangerLightColor">#ff5131</Color>
+        <Color x:Key="dangerDarkColor">#9b0000</Color>
+
+        <Color x:Key="primaryTextColor">#ffffff</Color>
+        <Color x:Key="secondaryTextColor">#000000</Color>
+        <Color x:Key="dangerTextColor">#ffffff</Color>
+        
 		<!-- Implicit styles -->
 		<Style TargetType="{x:Type NavigationPage}">
 			<Setter Property="BarBackgroundColor"
@@ -54,6 +72,252 @@
 			<Setter Property="BorderColor" Value="Lime" />
 			<Setter Property="BackgroundColor" Value="{StaticResource SaveButtonPrimaryLight}" />
 		</Style>
+        
+        
+            <Style x:Key="separatorBoxStyle"
+                TargetType="BoxView">
+                <Setter Property="HeightRequest"
+                        Value="1" />
+                <Setter Property="WidthRequest"
+                        Value="1" />
+                <Setter Property="Color"
+                        Value="{StaticResource secondaryColor}" />
+            </Style>
+
+            <!--Buttons-->
+            
+            <Style x:Key="primaryButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource buttonStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource primaryColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryTextColor}" />
+                <Setter Property="HorizontalOptions"
+                        Value="FillAndExpand" />
+                <Setter Property="BorderRadius"
+                        Value="0" />
+                <Setter Property="FontSize"
+                        Value="Large" />
+            </Style>
+
+            <Style x:Key="primaryLightButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource buttonStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource primaryLightColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryTextColor}" />
+            </Style>
+
+
+            <Style x:Key="primaryDarkButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource buttonStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource primaryDarkColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryTextColor}" />
+                <Setter Property="FontSize"
+                        Value="Large" />
+            </Style>
+
+
+            <Style x:Key="secondaryButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource buttonStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource secondaryColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource secondaryTextColor}" />
+            </Style>
+
+            <Style x:Key="secondaryLightButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource buttonStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource secondaryLightColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource secondaryTextColor}" />
+            </Style>
+
+            <Style x:Key="secondaryDarkButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource buttonStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource secondaryDarkColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource secondaryTextColor}" />
+            </Style>
+
+            <Style x:Key="dangerButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource buttonStyle}">
+                <Setter Property="BackgroundColor"
+                        Value="{StaticResource dangerColor}" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource dangerTextColor}" />
+            </Style>
+
+            <!--Fonts-->
+            <OnPlatform x:TypeArguments="x:String"
+                        x:Key="FontAwesomeBrands">
+                <On Platform="Android"
+                    Value="fa-brands-400.ttf#Regular" />
+                <On Platform="iOS"
+                    Value="FontAwesome5Brands-Regular" />
+            </OnPlatform>
+
+            <OnPlatform x:TypeArguments="x:String"
+                        x:Key="FontAwesomeSolid">
+                <On Platform="Android"
+                    Value="fa-solid-900.ttf#Solid" />
+                <On Platform="iOS"
+                    Value="FontAwesome5Free-Solid" />
+            </OnPlatform>
+
+            <OnPlatform x:TypeArguments="x:String"
+                        x:Key="FontAwesomeRegular">
+                <On Platform="Android"
+                    Value="fa-regular-400.ttf#Regular" />
+                <On Platform="iOS"
+                    Value="FontAwesome5Free-Regular" />
+            </OnPlatform>
+
+            <!--Labels -->
+            <Style x:Key="primaryTitleLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Title" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryColor}" />
+            </Style>
+            
+            <Style x:Key="primarySubtitleLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Subtitle" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryColor}" />
+            </Style>
+            
+            <Style x:Key="primaryDarkLabel"
+                   TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryDarkColor}" />
+            </Style>
+            
+            <Style x:Key="orderNameLabelStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Large" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+            </Style>
+
+            <Style x:Key="primaryDarkBoldTitleLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Title" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryDarkColor}" />
+            </Style>
+
+            <Style x:Key="primaryDarkBoldSubtitleLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Subtitle" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryDarkColor}" />
+            </Style>
+
+            <Style x:Key="primaryDarkBoldLabel"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Large" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="HorizontalOptions"
+                        Value="Start" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryDarkColor}" />
+            </Style>
+            
+            <Style x:Key="solidFALabel"
+                   TargetType="Label">
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource FontAwesomeSolid}" />
+                <Setter Property="FontSize"
+                        Value="Title" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryColor}" />
+            </Style>
+
+            <Style x:Key="regularFALabel"
+                   TargetType="Label">
+                <Setter Property="HorizontalOptions"
+                        Value="End" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="FontAttributes"
+                        Value="None" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource FontAwesomeRegular}" />
+                <Setter Property="FontSize"
+                        Value="Title" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource primaryColor}" />
+            </Style>
+            
+            <Style x:Key="menuItemArrowStyle"
+                   TargetType="Label">
+                <Setter Property="HorizontalOptions"
+                        Value="End" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="FontAttributes"
+                        Value="Bold" />
+                <Setter Property="FontFamily"
+                        Value="{StaticResource FontAwesomeSolid}" />
+                <Setter Property="FontSize"
+                        Value="Title" />
+            </Style>
+            
+            <Style x:Key="menuItemPriceStyle"
+                   TargetType="Label">
+                <Setter Property="FontSize"
+                        Value="Medium" />
+                <Setter Property="HorizontalOptions"
+                        Value="EndAndExpand" />
+                <Setter Property="VerticalOptions"
+                        Value="Center" />
+                <Setter Property="TextColor"
+                        Value="{StaticResource secondaryDarkColor}" />
+            </Style>
 
 		<!--Manager Styles-->
 		<Style x:Key="managerNameLabelStyle" TargetType="Label">
@@ -67,5 +331,23 @@
 			<Setter Property="HorizontalOptions" Value="End" />
 			<Setter Property="VerticalOptions" Value="Center" />
 		</Style>
+        
+        <!--Selection Styles-->
+        <Style x:Key="itemSelectedStyle"
+               TargetType="StackLayout">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{StaticResource secondaryColor}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
 	</Application.Resources>
 </Application>

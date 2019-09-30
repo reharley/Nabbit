@@ -45,7 +45,9 @@ namespace Nabbit.Views {
 
 		private async void CheckoutClicked(object sender, EventArgs e) {
 			var user = LocalGlobals.User;
-			if (user.LoggedIn == false) {
+			if (LocalGlobals.Restaurant.IsActive == false) {
+				await DisplayAlert("Service Down", "Ordering services are temporarily down. Please try again another time.", "OK");
+			} else if (user.LoggedIn == false) {
 				await DisplayAlert("Login", "Please create an account before making an order.", "OK");
 				await App.Current.MainPage.Navigation.PushModalAsync(new SignInPage());
 			} else if (Cart.OrderItems.Count > 0)

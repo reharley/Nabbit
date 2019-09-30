@@ -2,7 +2,10 @@
 <ContentPage
     xmlns ="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="NabbitManager.Views.AllOrdersPage">
+    x:Class="NabbitManager.Views.AllOrdersPage"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             mc:Ignorable="d">
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
             <StackLayout >
@@ -76,8 +79,7 @@
                                                Text="{Binding OrderTotal, StringFormat='{0:c}'}" />
                                     </Grid>
                                     
-                                    <Label Text="&#xf054;"
-                                           Style="{StaticResource menuItemArrowStyle}" />
+                                    <Label Text=">" FontSize="Title" FontAttributes="Bold" />
                                 </StackLayout>
                             </StackLayout>
                         </DataTemplate>

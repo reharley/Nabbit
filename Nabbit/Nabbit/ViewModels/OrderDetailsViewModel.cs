@@ -23,6 +23,7 @@ namespace Nabbit.ViewModels {
 
 		public OrderDetailsViewModel (Order order) {
 			Order = order;
+			// is first name in there?
 			OrderItems = Order.OrderItems.Select(x => new OrderItemView(x)).ToList();
 
 			var uid = order.UserId.ToString();

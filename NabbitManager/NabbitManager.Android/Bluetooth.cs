@@ -58,11 +58,11 @@ namespace NabbitManager.Droid {
 			// Read data from the device
 			//await _socket.InputStream.ReadAsync(buffer, 0, buffer.Length);
 
-			var cmds = GetLogo();
+			//var cmds = GetLogo();
 
 			// Write data to the device
-			await _socket.OutputStream.WriteAsync(cmds, 0, cmds.Length);
-			//await _socket.OutputStream.WriteAsync(bytes, 0, bytes.Length);
+			//await _socket.OutputStream.WriteAsync(cmds, 0, cmds.Length);
+			await _socket.OutputStream.WriteAsync(bytes, 0, bytes.Length);
 		}
 
 		byte[] GetLogo () {

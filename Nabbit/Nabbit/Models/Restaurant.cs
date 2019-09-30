@@ -25,6 +25,7 @@ namespace Nabbit.Models {
 		public int Version { get; set; }
 		public Hours BusinessHours { get; set; }
 		public decimal TaxRate { get; set; }
+		public bool IsActive { get; set; }
 
 		public List<Addon> Addons { get; set; }
 		public List<AddonGroup> AddonGroups { get; set; }
