@@ -8,6 +8,8 @@
     <ContentPage.Content>
         <StackLayout>
             <CollectionView ItemsSource="{Binding Deals}"
+                            SelectionMode="Single"
+                            SelectionChanged="OnItemSelected"
                             d:ItemsSource="{StaticResource testArray}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

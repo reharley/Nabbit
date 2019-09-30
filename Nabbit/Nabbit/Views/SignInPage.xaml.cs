@@ -26,30 +26,16 @@ namespace Nabbit.Views {
 				// Sign-in succeeded.
 				UserInformation userInfo = await Auth.SignInAsync();
 				var tokenHandler = new JwtSecurityTokenHandler();
-				try {
-					var jwToken = tokenHandler.ReadJwtToken(userInfo.IdToken);
-					LocalGlobals.User.FirstName = jwToken.Claims.FirstOrDefault(t => t.Type == "given_name").Value;
-					LocalGlobals.User.LastName = jwToken.Claims.FirstOrDefault(t => t.Type == "family_name").Value;
-					LocalGlobals.User.UserId = new Guid(jwToken.Claims.FirstOrDefault(t => t.Type == "oid").Value);
-					LocalGlobals.User.Email = jwToken.Claims.FirstOrDefault(t => t.Type == "emails").Value;
+				var jwToken = tokenHandler.ReadJwtToken(userInfo.IdToken);
+				LocalGlobals.User.FirstName = jwToken.Claims.FirstOrDefault(t => t.Type == "given_name").Value;
+				LocalGlobals.User.LastName = jwToken.Claims.FirstOrDefault(t => t.Type == "family_name").Value;
+				LocalGlobals.User.UserId = new Guid(jwToken.Claims.FirstOrDefault(t => t.Type == "oid").Value);
+				LocalGlobals.User.Email = jwToken.Claims.FirstOrDefault(t => t.Type == "emails").Value;
 
-					await LocalGlobals.GetUser();
-				} catch (Exception e) {
+				await LocalGlobals.GetUser();
 
-				}
-
-				if (LocalGlobals.User.PaymentMethodIds.Count == 0) {
-					var payPage = new PaymentInfoPage();
-					payPage.Disappearing += async (sender2, e2) => {
-						signInLabel.Text = "Login Success!";
-						await App.Current.MainPage.Navigation.PopModalAsync();
-					};
-					await App.Current.MainPage.Navigation.PushModalAsync(payPage);
-				} else {
-					signInLabel.Text = "Login Success!";
-					await App.Current.MainPage.Navigation.PopModalAsync();
-					App.Current.MainPage = new AppShell();
-				}
+				signInLabel.Text = "Login Success!";
+				await App.Current.MainPage.Navigation.PopModalAsync();
 			} catch (Exception e) {
 				// Do something with sign-in failure.
 				signInLabel.Text = "Login Failed... Please try again.";

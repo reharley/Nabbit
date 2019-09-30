@@ -153,23 +153,56 @@
 
 			<StackLayout Margin="{StaticResource PageMargin}">
 				<StackLayout Orientation="Horizontal">
-					<Label Text="Order Subtotal ......................................................................" LineBreakMode="TailTruncation" FontSize="Medium" />
-					<Label Text="{Binding Subtotal, StringFormat='{0:c}'}" d:Text="$25.00" FontSize="Medium" HorizontalOptions="EndAndExpand" MinimumWidthRequest="70" MaxLines="1" />
+					<Label Text="Order Subtotal ......................................................................" 
+                           LineBreakMode="TailTruncation" 
+                           TextColor="{StaticResource primaryDarkColor}"
+                           FontSize="Medium" />
+					<Label Text="{Binding Subtotal, StringFormat='{0:c}'}" 
+                           d:Text="$25.00" 
+                           FontSize="Medium" 
+                           TextColor="{StaticResource primaryDarkColor}"
+                           HorizontalOptions="EndAndExpand" 
+                           MinimumWidthRequest="70" 
+                           MaxLines="1" />
 				</StackLayout>
 
 				<StackLayout Orientation="Horizontal">
-					<Label Text="Service Charge ......................................................................" LineBreakMode="TailTruncation" FontSize="Medium" />
-					<Label Text="{Binding ServiceCharge, StringFormat='{0:c}'}" d:Text="$0.20" FontSize="Medium" HorizontalOptions="EndAndExpand" MinimumWidthRequest="70" MaxLines="1" />
+					<Label Text="Service Charge ......................................................................" 
+                           LineBreakMode="TailTruncation" 
+                           TextColor="{StaticResource primaryDarkColor}"
+                           FontSize="Medium" />
+					<Label Text="{Binding ServiceCharge, StringFormat='{0:c}'}" 
+                           d:Text="$0.20" 
+                           FontSize="Medium" 
+                           TextColor="{StaticResource primaryDarkColor}"
+                           HorizontalOptions="EndAndExpand" 
+                           MinimumWidthRequest="70" MaxLines="1" />
 				</StackLayout>
 
 				<StackLayout Orientation="Horizontal">
-					<Label Text="Taxes .............................................................................." LineBreakMode="TailTruncation" FontSize="Medium" />
-					<Label Text="{Binding Taxes, StringFormat='{0:c}'}" d:Text="$2.50" FontSize="Medium" HorizontalOptions="EndAndExpand" MinimumWidthRequest="70" MaxLines="1" />
+					<Label Text="Taxes .............................................................................." 
+                           LineBreakMode="TailTruncation" 
+                           TextColor="{StaticResource primaryDarkColor}"
+                           FontSize="Medium" />
+					<Label Text="{Binding Taxes, StringFormat='{0:c}'}" 
+                           d:Text="$2.50" 
+                           FontSize="Medium" 
+                           TextColor="{StaticResource primaryDarkColor}"
+                           HorizontalOptions="EndAndExpand" 
+                           MinimumWidthRequest="70" MaxLines="1" />
 				</StackLayout>
 
 				<StackLayout Orientation="Horizontal">
-					<Label Text="Order Total .............................................................................." LineBreakMode="TailTruncation" FontSize="Medium" />
-					<Label Text="{Binding Total, StringFormat='{0:c}'}" d:Text="$27.70" FontSize="Medium" HorizontalOptions="EndAndExpand" MinimumWidthRequest="70" MaxLines="1" />
+					<Label Text="Order Total .............................................................................." 
+                           LineBreakMode="TailTruncation" 
+                           TextColor="{StaticResource primaryDarkColor}"
+                           FontSize="Medium" />
+					<Label Text="{Binding Total, StringFormat='{0:c}'}" 
+                           d:Text="$27.70" 
+                           FontSize="Medium" 
+                           TextColor="{StaticResource primaryDarkColor}"
+                           HorizontalOptions="EndAndExpand" 
+                           MinimumWidthRequest="70" MaxLines="1" />
 				</StackLayout>
 			</StackLayout>
 

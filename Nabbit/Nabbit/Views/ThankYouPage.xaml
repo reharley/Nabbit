@@ -7,8 +7,25 @@
              x:Class="Nabbit.Views.ThankYouPage">
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}" VerticalOptions="CenterAndExpand">
-			<Label Text="Thank you for your Order!" HorizontalOptions="CenterAndExpand"/>
-			<Button Text="Return to Menu" Clicked="ReturnClicked" />
+			<Frame CornerRadius="180"
+                   BorderColor="{StaticResource secondaryColor}"
+                   HasShadow="true"
+                   Scale="0.7"
+                   BackgroundColor="Black">
+                <Image Source="nabbit_logo_transparent_outline"/>
+            </Frame>
+            
+           
+            <Label x:Name="signInLabel" 
+                   HorizontalOptions="CenterAndExpand"
+                   Style="{StaticResource primaryDarkLabel}"
+                   FontSize="Medium"
+                   Text="Thank you for your order!" />
+			<Button Text="Return to Menu" Clicked="ReturnClicked"
+                    BorderRadius="0" FontSize="Large"
+                    TextColor="{StaticResource primaryTextColor}"
+                    BackgroundColor="{StaticResource primaryColor}"
+                    HorizontalOptions="FillAndExpand" />
 		</StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -16,7 +16,6 @@ namespace Nabbit.Views {
 			if (Device.RuntimePlatform == Device.Android) {
 				var thick = ((Thickness)App.Current.Resources["AndroidPageMargin"]).Left;
 				pageStack.Margin = new Thickness(0, thick, 0, 0);
-				addCardButton.WidthRequest = 190;
 			}
 		}
 
@@ -44,15 +43,10 @@ namespace Nabbit.Views {
 			var collection = sender as CollectionView;
 			collection.SelectedItem = null;
 		}
-		
-		async void AddCardPressed (object sender, SelectionChangedEventArgs e) {
-			if (e.CurrentSelection.Count == 0)
-				return;
 
-			await App.Current.MainPage.Navigation.PushModalAsync(new PaymentInfoPage());
 
-			var collection = sender as CollectionView;
-			collection.SelectedItem = null;
+		private async void AddCardPressed (object sender, EventArgs e) {
+			await Navigation.PushModalAsync(new PaymentInfoPage());
 		}
 	}
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Nabbit.ViewModels {
-	public class OrderHistoryViewModel {
+	public class OrderHistoryViewModel : BaseViewModel {
 		public List<Order> Orders { get; set; }
 	}
 }

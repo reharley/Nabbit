@@ -128,6 +128,10 @@
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-4.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\60-1.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-4.png" />
+    <BundleResource Include="Resources\shopping_cart.png" />
+    <BundleResource Include="Resources\user.png" />
+    <BundleResource Include="Resources\nabbit_logo_transparent_outline.png" />
+    <BundleResource Include="Resources\big_user.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

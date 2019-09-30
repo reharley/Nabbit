@@ -1,4 +1,5 @@
 ﻿using Nabbit.Models;
+using Nabbit.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,12 @@ using Xamarin.Forms.Xaml;
 namespace Nabbit.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class OrderDetailsPage : ContentPage {
-		public OrderDetailsPage(Order order) {
+		OrderDetailsViewModel viewModel;
+
+		public OrderDetailsPage (Order order) {
 			InitializeComponent();
+
+			BindingContext = viewModel = new OrderDetailsViewModel(order);
 		}
 	}
 }

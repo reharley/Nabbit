@@ -20,29 +20,25 @@ namespace Nabbit.Views {
 		AccountViewModel viewModel;
 		public AccountPage () {
 			InitializeComponent();
-			test.Text = "Click to sign in";
 
-			LocalGlobals.GetUser().Wait();
 			BindingContext = viewModel = new AccountViewModel();
-			test.Text = "Logged In";
 		}
 
 
 		protected override void OnAppearing () {
 			viewModel.UserInfo = LocalGlobals.User;
-			firstName.Text = "Welcome, " + viewModel.UserInfo.FirstName;
 		}
 
 		private async void OrderHistoryClicked (object sender, EventArgs e) {
-			await Shell.Current.GoToAsync("orderHistory");
+			await Navigation.PushAsync(new OrderHistoryPage());
 		}
 
 		private async void PaymentMethodsClicked (object sender, EventArgs e) {
-			await Shell.Current.GoToAsync("paymentMethods");
+			await Navigation.PushAsync(new PaymentMethodsPage());
 		}
 
-		private async void TestChargeClicked (object sender, EventArgs e) {
-			
+		private async void EditProfileClicked (object sender, EventArgs e) {
+			await Navigation.PushAsync(new PaymentMethodsPage());
 		}
 	}
 }

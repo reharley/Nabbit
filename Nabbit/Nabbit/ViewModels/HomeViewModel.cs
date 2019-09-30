@@ -83,21 +83,24 @@ namespace Nabbit.ViewModels {
 			var bussClosingTime = LocalGlobals.Restaurant.BusinessHours.Closing[dayOfWeek];
 			string menuOpeningHours, menuClosingHours, bussOpeningHours, bussClosingHours;
 			if (openingTime == null)
-				menuOpeningHours = "N/A";
+				menuOpeningHours = "Closed";
 			else {
 				DateTime time = DateTime.Today.Add(openingTime.Value);
 				menuOpeningHours = time.ToString("h:mm tt");
 			}
 
 			if (closingTime == null)
-				menuClosingHours = "N/A";
+				menuClosingHours = "Closed";
 			else {
 				DateTime time = DateTime.Today.Add(closingTime.Value);
 				menuClosingHours = time.ToString("h:mm tt");
 			}
 
-			MenuHoursText = string.Format("Menu Hours: {0} - {1}",
-				menuOpeningHours, menuClosingHours);
+			if (openingTime == null || closingTime == null)
+				MenuHoursText = "Menu Hours: Closed Today";
+			else
+				MenuHoursText = string.Format("Menu Hours: {0} - {1}",
+					menuOpeningHours, menuClosingHours);
 
 
 			if (bussOpeningTime == null)
@@ -114,14 +117,17 @@ namespace Nabbit.ViewModels {
 				bussClosingHours = time.ToString("h:mm tt");
 			}
 
-			BussHoursText = string.Format("Business Hours: {0} - {1}",
-				bussOpeningHours, bussClosingHours);
+			if (bussOpeningHours == null || bussClosingHours == null)
+				BussHoursText = "Business Hours: Closed Today";
+			else
+				BussHoursText = string.Format("Business Hours: {0} - {1}",
+							bussOpeningHours, bussClosingHours);
 		}
 
 		public void BuildCategoryProducts () {
 			if (LocalGlobals.Restaurant != null) {
 				Menus = new List<Models.Menu>();
-				foreach (var menu in LocalGlobals.Restaurant.Menus) {
+				foreach (var menu in LocalGlobals.Restaurant.Menus.OrderBy(m => m.Rank)) {
 					if (menu.Name == "Deals")
 						continue;
 

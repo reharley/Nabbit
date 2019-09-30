@@ -7,9 +7,145 @@
              x:Class="Nabbit.Views.OrderDetailsPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <StackLayout Margin="{StaticResource PageMargin}">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Row="0" Grid.Column="0"
+                       Text="Order For" 
+                       TextColor="{StaticResource primaryDarkColor}"/>
+                    
+                <Label Grid.Row="0" Grid.Column="1"
+                       Text="UID:" 
+                       TextColor="{StaticResource primaryDarkColor}"/>
+                    
+                <Label Grid.Row="2" Grid.Column="0"
+                       TextColor="{StaticResource primaryDarkColor}"
+                       Text="Order Creation" />
+                
+                <Label Grid.Row="2" Grid.Column="1"
+                       TextColor="{StaticResource primaryDarkColor}"
+                       Text="Pickup Time" />
+                
+                <StackLayout Grid.Row="1" Grid.Column="0"
+                             Orientation="Horizontal">
+                    <Label Text="{Binding Order.FirstName}"
+                           d:Text="Emmanuel" />
+                    <Label Text="{Binding Order.LastName}"
+                           d:Text="Harley" />
+                </StackLayout>
+                    
+                <Label Grid.Row="1" Grid.Column="1"
+                       Text="{Binding UID}"
+                       d:Text="540-BFF" />
+
+                <Label Grid.Row="3" Grid.Column="0"
+                       Text="{Binding CreationDate}" 
+                       d:Text="09/23/19 10:10 AM"/>
+                
+                <Label Grid.Row="3" Grid.Column="1"
+                       Text="{Binding PickupTime}" 
+                       d:Text="09/23/19 10:30 AM" />
+            </Grid>
+            
+            <Label Text="Items:" 
+                   Style="{StaticResource primaryDarkBoldTitleLabel}"
+                   Margin="0,20,0,0"/>
+            <CollectionView ItemsSource="{Binding OrderItems}"
+                            d:ItemsSource="{StaticResource testArray}"
+                            VerticalOptions="FillAndExpand"
+                            VerticalScrollBarVisibility="Never"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Style="{StaticResource itemSelectedStyle}">
+                            <BoxView Style="{StaticResource separatorBoxStyle}" />
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Product.Name}"
+                                       d:Text="Product Name"
+                                       Style="{StaticResource primaryDarkBoldTitleLabel}"
+                                       HorizontalOptions="StartAndExpand"
+                                       VerticalOptions="Start"/>
+                                <BoxView HeightRequest="1" WidthRequest="0" />
+                                <Label Text="{Binding OrderItemPrice, StringFormat='{0:c}'}"
+                                       d:Text="$6.70"
+                                       Style="{StaticResource primaryDarkBoldTitleLabel}"
+                                       FontSize="Default"
+                                       HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+
+                            <Label Text="{Binding Quantity,
+                                            StringFormat='Quantity: {0}'}"
+                                   d:Text="Quantity: 5"/>
+                            <Label Text="{Binding Instructions}"
+                                   d:Text="Some instructions"/>
+                            <Label Text="{Binding AddonText}"
+                                   d:Text="with addons"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            </StackLayout>
+            
+            <BoxView Style="{StaticResource separatorBoxStyle}" />
+
+            <StackLayout Margin="{StaticResource PageMargin}">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Order Subtotal ......................................................................" 
+                           LineBreakMode="TailTruncation" 
+                           FontSize="Medium" />
+                    <Label Text="{Binding Order.OrderSubtotal, StringFormat='{0:c}'}" 
+                           d:Text="$25.00" 
+                           FontSize="Medium" 
+                           HorizontalOptions="EndAndExpand" 
+                           MinimumWidthRequest="70" 
+                           MaxLines="1" />
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Service Charge ......................................................................" 
+                           LineBreakMode="TailTruncation" 
+                           FontSize="Medium" />
+                    <Label Text="{Binding ServiceCharge, StringFormat='{0:c}'}" 
+                           d:Text="$0.20" 
+                           FontSize="Medium" 
+                           HorizontalOptions="EndAndExpand" 
+                           MinimumWidthRequest="70" MaxLines="1" />
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Taxes .............................................................................." 
+                           LineBreakMode="TailTruncation" 
+                           FontSize="Medium" />
+                    <Label Text="{Binding Order.OrderTaxes, StringFormat='{0:c}'}" 
+                           d:Text="$2.50" 
+                           FontSize="Medium" 
+                           HorizontalOptions="EndAndExpand" 
+                           MinimumWidthRequest="70" MaxLines="1" />
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Order Total .............................................................................." 
+                           LineBreakMode="TailTruncation" 
+                           FontSize="Medium" />
+                    <Label Text="{Binding Order.OrderTotal, StringFormat='{0:c}'}" 
+                           d:Text="$27.70" 
+                           FontSize="Medium" 
+                           HorizontalOptions="EndAndExpand" 
+                           MinimumWidthRequest="70" MaxLines="1" />
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -9,21 +9,21 @@ using System.Text;
 
 namespace Nabbit.Models {
 	public class User {
-		public User() {
+		public User () {
 			LoggedIn = false;
-
-			PaymentMethodIds = new List<Guid>();
 		}
 
+		/// <summary>Internal system Id</summary>
 		public Guid UserId { get; set; }
-		public List<Guid> PaymentMethodIds { get; set; }
+		/// <summary>School Id that the user is associated with</summary>
+		public Guid SchoolId { get; set; }
+		/// <summary>Id for payment methods associated with Fattmerchant</summary>
 		public Guid CustomerId { get; set; }
+
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }
-		public string School { get; set; }
-		public bool LoggedIn { get; set; }
 
-        public List<Guid> UserOrderIds { get; set; }
+		public bool LoggedIn { get; set; }
 	}
 }

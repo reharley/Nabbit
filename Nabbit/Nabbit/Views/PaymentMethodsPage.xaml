@@ -9,7 +9,6 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout x:Name="pageStack">
-            <Label Text="" />
             <ActivityIndicator IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"
                                HeightRequest="40"
@@ -116,41 +115,19 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <CollectionView x:Name="addCardButton"
-                            HorizontalOptions="Center"
-                            VerticalOptions="EndAndExpand"
-                            Margin="0, 0, 0, 15"
-                            WidthRequest="200"
-                            HeightRequest="85"
-                            SelectionMode="Single"
-                            SelectionChanged="AddCardPressed">
-                <CollectionView.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Baboon</x:String>
-                    </x:Array>
-                </CollectionView.ItemsSource>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame BorderColor="{StaticResource secondaryColor}"
-                               Style="{StaticResource itemSelectedFrame}"
-                               CornerRadius="10"
-                               HasShadow="False"
-                               HorizontalOptions="Center">
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="&#xf067;"
-                                       Style="{StaticResource solidFALabel}"
-                                       HorizontalOptions="Center" />
-                                <Label Text="&#xf09d;"
-                                       Style="{StaticResource solidFALabel}"
-                                       HorizontalOptions="Center" />
-                                <Label Text="Add Card"
-                                       Style="{StaticResource primarySubtitleLabel}"
-                                       HorizontalOptions="Center" />
-                            </StackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            
+            <Button Text="Add Card"
+                    HorizontalOptions="Center"
+                    BackgroundColor="White"
+                    BorderColor="{StaticResource secondaryDarkColor}"
+                    TextColor="{StaticResource primaryDarkColor}"
+                    CornerRadius="10"
+                    HeightRequest="60"
+                    Margin="20"
+                    WidthRequest="200"
+                    FontSize="Title"
+                    BorderWidth="2"
+                    Clicked="AddCardPressed" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

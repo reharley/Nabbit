@@ -4,20 +4,62 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             Visual="Material"
              x:Class="Nabbit.Views.AccountPage">
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
-            <Label x:Name="test" />
-            <Label x:Name="firstName" />
-
-
-
+            <Label Text="Profile" 
+                   Style="{StaticResource primaryDarkBoldTitleLabel}"
+                   HorizontalOptions="Center" />
+            
+            <Image Source="big_user" 
+                   HeightRequest="150"/>
+            
+            
+            <Label Text="{Binding UserInfo.FirstName, 
+                            StringFormat='Welcome, {0}'}"
+                   d:Text="Welcome, Emmanuel"
+                   Margin="0,20,0,20"
+                   Style="{StaticResource primaryDarkLabel}"/>
+                
+            <Label Text="First Name" 
+                   FontSize="Medium"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource primaryLightColor}"/>
+            <Label Text="{Binding UserInfo.FirstName}"
+                   Style="{StaticResource primaryDarkLabel}"
+                   FontSize="Large"
+                   d:Text="Emmanuel" />
+            
+            <Label Text="Last Name" 
+                   FontSize="Medium"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource primaryLightColor}"/>
+            <Label Text="{Binding UserInfo.LastName}"
+                   Style="{StaticResource primaryDarkLabel}"
+                   FontSize="Large"
+                   d:Text="Harley" />
+            
+            <Label Text="School" 
+                   FontSize="Medium"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource primaryLightColor}"/>
+            <Label Text="{Binding SchoolName}"
+                   Style="{StaticResource primaryDarkLabel}"
+                   FontSize="Large"
+                   d:Text="Western Washington University" />
+            
+            <!--<Button Text="Edit Profile"
+                    VerticalOptions="EndAndExpand"
+                    Clicked="EditProfileClicked"
+                    Style="{StaticResource primaryButtonStyle}"/>-->
             <Button Text="Order History"
-                    Clicked="OrderHistoryClicked" />
+                    VerticalOptions="EndAndExpand"
+                    Clicked="OrderHistoryClicked" 
+                    Style="{StaticResource primaryButtonStyle}"/>
             <Button Text="Payment Methods"
-                    Clicked="PaymentMethodsClicked" />
-            <Button Text="Test Charge"
-                    Clicked="TestChargeClicked" />
+                    Clicked="PaymentMethodsClicked"
+                    Style="{StaticResource primaryButtonStyle}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

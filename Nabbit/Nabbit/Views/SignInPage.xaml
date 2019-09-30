@@ -6,12 +6,26 @@
              mc:Ignorable="d"
              x:Class="Nabbit.Views.SignInPage">
     <ContentPage.Content>
-		<StackLayout Margin="{StaticResource PageMargin}" VerticalOptions="CenterAndExpand">
-			<Label x:Name="signInLabel" 
+		<StackLayout Margin="{StaticResource PageMargin}" 
+                     VerticalOptions="CenterAndExpand">
+			<Frame CornerRadius="180"
+                   BorderColor="{StaticResource secondaryColor}"
+                   HasShadow="true"
+                   BackgroundColor="Black">
+                <Image Source="nabbit_logo_transparent_outline" />
+            </Frame>
+            
+            <Label HorizontalOptions="CenterAndExpand"
+                   FontSize="Title" FontAttributes="Bold"
+                   Style="{StaticResource primaryDarkLabel}"
+                   Text="Welcome" />
+            <Label x:Name="signInLabel" 
 				   HorizontalOptions="CenterAndExpand"
-				   Text="Please sign in or create an account here:" />
+                   Style="{StaticResource primaryDarkLabel}"
+                   FontSize="Medium"
+				   Text="Please sign in or create an account" />
 			<Button Text="Sign In" Clicked="SignInClicked" 
-					HorizontalOptions="CenterAndExpand" />
+                    Style="{StaticResource primaryButtonStyle}"/>
 		</StackLayout>
     </ContentPage.Content>
 </ContentPage>

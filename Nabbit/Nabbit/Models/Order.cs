@@ -62,6 +62,6 @@ namespace Nabbit.Models {
 		public const string Transit = "InTransit";
 		public const string Submitted = "Submitted";
 		public const string Queued = "Queued";
-		public const string Processed = "Processed";
+		public const string Complete = "Complete";
 	}
 }

@@ -20,8 +20,6 @@ namespace Nabbit.Views {
 				e.Cancel = true;
 
 				var paymentMethodId = e.Url.Split('?')[1];
-				LocalGlobals.User.PaymentMethodIds.Add(Guid.Parse(paymentMethodId));
-				await LocalGlobals.SaveUser();
 				await App.Current.MainPage.Navigation.PopModalAsync();
 			} else if (e.Url.Contains("cancel")) {
 				await App.Current.MainPage.Navigation.PopModalAsync();

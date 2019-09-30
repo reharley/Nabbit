@@ -68,13 +68,13 @@
                           ContentTemplate="{DataTemplate views:DealsPage}" />
         </Tab>
         <Tab Title="Cart"
-             Icon="tab_about.png"
+             Icon="shopping_cart.png"
              Style="{StaticResource MenuShell}">
             <ShellContent Title="Cart"
                           ContentTemplate="{DataTemplate views:CartPage}" />
         </Tab>
         <Tab Title="Account"
-             Icon="tab_about.png"
+             Icon="user.png"
              Style="{StaticResource MenuShell}">
             <ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />
         </Tab>
