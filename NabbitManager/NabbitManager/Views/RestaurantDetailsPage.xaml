@@ -13,6 +13,11 @@
                 <Entry Text="{Binding TaxRate, StringFormat='{0}'}" Keyboard="Numeric"
                        Placeholder="9.8" />
             </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Use this device as order printer?" />
+                <Switch IsToggled="{Binding UsePrinter}" />
+            </StackLayout>
+            
             <CollectionView ItemsSource="{Binding Hours}"
                             d:ItemsSource="{StaticResource testArray}">
                 <CollectionView.Header>

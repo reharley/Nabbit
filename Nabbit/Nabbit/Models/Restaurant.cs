@@ -19,6 +19,8 @@ namespace Nabbit.Models {
 
 		public Guid RestaurantId { get; set; }
 		public Guid SchoolId { get; set; }
+		/// <summary>The id used to ping the printer through OneSignal</summary>
+		public Guid PlayerId { get; set; }
 		public string Name { get; set; }
 		public int Version { get; set; }
 		public Hours BusinessHours { get; set; }

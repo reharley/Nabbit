@@ -1,19 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using Com.OneSignal;
 using Nabbit.Models;
 using Nabbit.Services;
+using Nabbit.ViewModels;
 
 namespace NabbitManager.ViewModels {
-	public class RestaurantDetailsViewModel : BaseView {
+	public class RestaurantDetailsViewModel : BaseViewModel {
 		public decimal TaxRate { get; set; }
+		bool usePrinter = false;
+		public bool UsePrinter {
+			get {
+				return usePrinter;
+			}
+			set {
+				SetProperty(ref usePrinter, value);
+			}
+		}
 		public List<ItemSelector<HoursView>> Hours { get; set; }
 
 		public RestaurantDetailsViewModel () {
 			BuildModel();
 		}
 
+		private void IdsAvailable (string userID, string pushToken) {
+			UsePrinter = LocalGlobals.Restaurant.PlayerId.ToString() == userID;
+		}
+
 		void BuildModel () {
 			TaxRate = LocalGlobals.Restaurant.TaxRate;
+			OneSignal.Current.IdsAvailable(IdsAvailable);
+
 			Hours = new List<ItemSelector<HoursView>>();
 			var hours = LocalGlobals.Restaurant.BusinessHours;
 			if (hours == null) {
