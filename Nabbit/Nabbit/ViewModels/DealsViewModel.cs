@@ -20,9 +20,9 @@ namespace Nabbit.ViewModels {
 		}
 
 		public DealsViewModel () {
-			var menu = LocalGlobals.Restaurant.Menus.First(m => m.Name == "Deals");
-			if (menu != null) {
-				var prodCatId = menu.ProductCategoryIds[0];
+			Menu = LocalGlobals.Restaurant.Menus.First(m => m.Name == "Deals");
+			if (Menu != null) {
+				var prodCatId = Menu.ProductCategoryIds[0];
 				var producCategory = LocalGlobals.Restaurant.ProductCategories
 					.First(pc => pc.ProductCategoryId == prodCatId);
 				Deals = LocalGlobals.Restaurant.Products

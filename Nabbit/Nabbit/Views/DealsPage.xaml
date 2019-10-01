@@ -13,20 +13,18 @@
                             d:ItemsSource="{StaticResource testArray}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout>
-                            <StackLayout Style="{StaticResource itemSelectedStyle}">
-                                <BoxView Style="{StaticResource separatorBoxStyle}"/>
-                                <StackLayout Orientation="Horizontal"
-                                             Margin="{StaticResource PageMargin}">
-                                    <Label Text="{Binding Name}"
-                                           d:Text="Deal Name"
-                                           Style="{StaticResource primaryDarkBoldTitleLabel}" />
-                                    <Label Text="{Binding Price, StringFormat='{0:c}'}"
-                                           d:Text="$4.50"
-                                           Style="{StaticResource menuItemPriceStyle}" />
-                                    <Label Text="&#xf054;"
-                                           Style="{StaticResource menuItemArrowStyle}" />
-                                </StackLayout>
+                        <StackLayout Style="{StaticResource itemSelectedStyle}">
+                            <BoxView Style="{StaticResource separatorBoxStyle}"/>
+                            <StackLayout Orientation="Horizontal"
+                                         Margin="{StaticResource PageMargin}">
+                                <Label Text="{Binding Name}"
+                                       d:Text="Deal Name"
+                                       Style="{StaticResource primaryDarkBoldTitleLabel}" />
+                                <Label Text="{Binding Price, StringFormat='{0:c}'}"
+                                       d:Text="$4.50"
+                                       Style="{StaticResource menuItemPriceStyle}" />
+                                <Label Text="&#xf054;"
+                                       Style="{StaticResource menuItemArrowStyle}" />
                             </StackLayout>
                         </StackLayout>
                     </DataTemplate>

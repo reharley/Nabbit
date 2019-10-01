@@ -29,16 +29,23 @@
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand">
             <StackLayout Margin="{StaticResource PageMargin}">
-                <Label Text="{Binding OrderItem.Product.Name}"
-                       FontSize="Large" />
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding OrderItem.Product.Name}"
+                           d:Text="Product Name"
+                           Style="{StaticResource primaryDarkBoldTitleLabel}" />
+                    <Label Text="{Binding OrderItem.Product.Price, StringFormat='{0:c}'}"
+                           d:Text="$4.50" HorizontalOptions="EndAndExpand"
+                           
+                           VerticalOptions="Center"
+                           FontSize="Medium" />
+                </StackLayout>
                 <Label Text="{Binding OrderItem.Product.Description}"
-                       FontSize="Medium" />
-                <Label Text="{Binding OrderItem.Product.Price, StringFormat='{0:c}'}"
                        FontSize="Medium" />
                 <StackLayout Orientation="Horizontal">
                     <Label Text="{Binding Source={x:Reference stepperQty},
 							Path=Value,
 							StringFormat='Quantity: {0}'}"
+                           VerticalTextAlignment="Center"
                            FontSize="Medium" />
                     <Stepper Minimum="1"
                              Maximum="10"
@@ -81,13 +88,15 @@
                 </ScrollView>
             </StackLayout>
             
-            <Label Text="Special Instructions:" />
+            <Label Text="{Binding Price, StringFormat='Total: {0:c}'}"
+                   FontSize="Large" d:Text="Total: $4.50"
+                   Margin="0,0,15,0"
+                   TextColor="{StaticResource primaryDarkColor}"
+                   FontAttributes="Bold" HorizontalOptions="End"
+                   VerticalOptions="EndAndExpand" />
+            <Label Text="Special Instructions:" VerticalOptions="End" />
             <Entry Text="{Binding OrderItem.Instructions}"
                    FontSize="Medium"
-                   VerticalOptions="EndAndExpand" />
-            <Label Text="{Binding Price, StringFormat='{0:c}'}"
-                   FontSize="Large"
-                   FontAttributes="Bold"
                    VerticalOptions="End" />
             <Grid ColumnSpacing="0" RowSpacing="0">
                 <Grid.ColumnDefinitions>

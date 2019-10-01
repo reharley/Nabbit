@@ -20,8 +20,6 @@ namespace Nabbit.Views {
 
 		public OrderItemEditPage (Guid itemId, Guid menuId) {
 			InitializeComponent();
-			NavigationPage.SetHasNavigationBar(this, true);
-			NavigationPage.SetHasBackButton(this, true);
 
 			this.menuId = menuId;
 			restaurantId = LocalGlobals.Restaurant.RestaurantId;
