@@ -50,7 +50,6 @@ namespace Nabbit.Functions {
             } catch (Exception e) {
                 return new BadRequestObjectResult("Please pass a name on the query string or in the request body");
             }
-
         }
     }
 }

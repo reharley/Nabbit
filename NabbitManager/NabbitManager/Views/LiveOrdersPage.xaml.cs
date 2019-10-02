@@ -20,6 +20,16 @@ namespace NabbitManager.Views {
 		public LiveOrdersPage () {
 			InitializeComponent();
 			orderList.ItemsSource = OrderQueueService.OrderQueue;
+
+			if (LocalGlobals.Restaurant.IsActive) {
+				stopStartButton.Text = "Stop";
+				stopStartButton.BackgroundColor = Color.Red;
+				stateIndicator.BackgroundColor = Color.Green;
+			} else {
+				stopStartButton.Text = "Start";
+				stateIndicator.BackgroundColor = Color.Red;
+				stopStartButton.BackgroundColor = Color.Green;
+			}
 		}
 
 		protected override void OnAppearing () {

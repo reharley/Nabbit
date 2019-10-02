@@ -31,6 +31,7 @@ namespace NabbitManager.Droid {
 
 		#region IBth implementation
 
+		static BluetoothSocket _socket;
 
 		public async Task Test(byte[] bytes) {
 			BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
@@ -41,19 +42,23 @@ namespace NabbitManager.Droid {
 				throw new Exception("Bluetooth adapter is not enabled.");
 
 
-			BluetoothDevice device = null;
-			foreach (var bd in adapter.BondedDevices) {
-				if (bd.Name.ToLower().Contains("printer")) {
-					device = bd;
-					break;
+			if (_socket == null) {
+				BluetoothDevice device = null;
+				foreach (var bd in adapter.BondedDevices) {
+					if (bd.Name.ToLower().Contains("printer")) {
+						device = bd;
+						break;
+					}
 				}
+
+				if (device == null)
+					throw new Exception("Named device not found.");
+
+				_socket = device.CreateRfcommSocketToServiceRecord(UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
+				_socket.ConnectAsync().Wait();
+			} else if (_socket.IsConnected == false) {
+				_socket.ConnectAsync().Wait();
 			}
-
-			if (device == null)
-				throw new Exception("Named device not found.");
-
-			var _socket = device.CreateRfcommSocketToServiceRecord(UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
-			_socket.ConnectAsync().Wait();
 
 			// Read data from the device
 			//await _socket.InputStream.ReadAsync(buffer, 0, buffer.Length);
