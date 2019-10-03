@@ -46,11 +46,6 @@ namespace Nabbit.ViewModels {
 			}
 		}
 
-		public DateTime MinDate { get; set; }
-		public DateTime MaxDate { get; set; }
-		public DateTime MinTime { get; set; }
-		public DateTime MaxTime { get; set; }
-
 		string menuHoursText;
 		public string MenuHoursText {
 			get {
@@ -74,7 +69,6 @@ namespace Nabbit.ViewModels {
 
 
 			BuildOrder();
-			GetMinMaxProperties();
 			FillPickupDates();
 			SetEarliestTime();
 
@@ -84,6 +78,7 @@ namespace Nabbit.ViewModels {
 
 		public void ChangeMenuHours (int pickupDatesIndex) {
 			this.pickupDatesIndex = pickupDatesIndex;
+			PickupDate = PickupDateTimes[pickupDatesIndex];
 			var dayOfWeek = (int)PickupDateTimes[pickupDatesIndex].DayOfWeek;
 			var openingTime = Menu.Hours.Opening[dayOfWeek];
 			var closingTime = Menu.Hours.Closing[dayOfWeek];
@@ -155,11 +150,6 @@ namespace Nabbit.ViewModels {
 		void AddDate (string text, DateTime dateTime) {
 			PickupDates.Add(text);
 			PickupDateTimes.Add(dateTime);
-		}
-
-		void GetMinMaxProperties () {
-			MinDate = DateTime.Now;
-			MinTime = DateTime.Now;
 		}
 
 		void BuildOrder () {

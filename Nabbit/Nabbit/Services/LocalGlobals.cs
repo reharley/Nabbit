@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -23,7 +24,7 @@ namespace Nabbit.Services {
 		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
 		private const string getUserOrdersUrl = "https://nabbit.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=X3NJ2NZKahEziqSKZrlX/KxpoyWvuHfYE4wROOAjOLnNleMWGByFIA==";
 		private const string getRestOrdersUrl = "https://nabbit.azurewebsites.net/api/GetRestOrders/{restaurantId}?code=ZCJqEFJhas1iI2fsO0yQq24TAXRULXzx8ebr/s8Dr43MOSYGxNlZnA==";
-		
+
 		public const decimal ServiceFee = 0.2m;
 		public const decimal TaxRate = 0.098m;
 
@@ -202,7 +203,7 @@ namespace Nabbit.Services {
 			return 0;
 		}
 
-		public static async Task GetRestaurant() {
+		public static async Task GetRestaurant () {
 			using (var client = new HttpClient()) {
 				var url = getRestaurantsUrl.Replace("{userId}", "none").Replace("{schoolId}", School.SchoolId.ToString());
 				using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
@@ -333,7 +334,7 @@ namespace Nabbit.Services {
 			return payMethods;
 		}
 
-		public static async Task Charge(PaymentMethod payMethod, Order order) {
+		public static async Task<ChargeResponse> Charge (PaymentMethod payMethod, Order order) {
 			var baseAddress = new Uri("https://apiprod.fattlabs.com/");
 			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
 				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {LocalGlobals.empty}");
@@ -342,13 +343,24 @@ namespace Nabbit.Services {
 
 				var obj = "{" +
 						$"\"payment_method_id\": \"{payMethod.PaymentMethodId.ToString()}\"," +
-						"\"meta\": [" + order.GetFattMeta() + "]," + 
+						"\"meta\": [" + order.GetFattMeta() + "]," +
 						"\"total\": " + order.OrderTotal + "," +
 						"\"pre_auth\": 0" +
 					"}";
 				using (var content = new StringContent(obj, System.Text.Encoding.Default, "application/json")) {
 					using (var response = await httpClient.PostAsync("charge", content)) {
 						string responseData = await response.Content.ReadAsStringAsync();
+						if (response.IsSuccessStatusCode) {
+							return new ChargeResponse("", 200);
+						} else if (response.StatusCode == HttpStatusCode.BadRequest) {
+							var responseObj = JObject.Parse(responseData);
+							var message = responseObj["message"];
+							return new ChargeResponse(message.ToString(), 400);
+						} else if(response.StatusCode == HttpStatusCode.InternalServerError){
+							return new ChargeResponse("Server error. Please try again.", 500);
+						} else {
+							return new ChargeResponse("Unknown error. Please try again.", 422);
+						}
 					}
 				}
 			}

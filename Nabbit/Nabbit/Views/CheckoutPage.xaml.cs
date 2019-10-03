@@ -60,7 +60,17 @@ namespace Nabbit.Views {
 				viewModel.Order.PickupTime = new DateTime(pickupDate.Year, pickupDate.Month, pickupDate.Day, pickupTime.Hours, pickupTime.Minutes, pickupTime.Seconds);
 
 				var payMethod = payMethodsList.SelectedItem as PaymentMethod;
-				await LocalGlobals.Charge(payMethod, viewModel.Order);
+				var response = await LocalGlobals.Charge(payMethod, viewModel.Order);
+				if (response.Status != 200) {
+					if (response.Status == 400) {
+						await DisplayAlert("Pay Method Error",
+							response.Message + " Please check your card details.", "Ok");
+					} else {
+						await DisplayAlert("Pay Method Error", response.Message, "Ok");
+					}
+
+					return;
+				}
 
 				await LocalGlobals.PostOrder(viewModel.Order);
 				await Navigation.PushAsync(new ThankYouPage());
@@ -86,7 +96,7 @@ namespace Nabbit.Views {
 				if (pickupTime < DateTime.Now.TimeOfDay) {
 					await DisplayAlert("Pickup Time", "The pickup time entered was before the current time.", "Ok");
 					viewModel.SetEarliestTime();
-				} else if(pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 4, 0))) {
+				} else if (pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 4, 0))) {
 					await DisplayAlert("Pickup Time", "Please provide time to process the order.", "Ok");
 					viewModel.SetEarliestTime();
 				}
