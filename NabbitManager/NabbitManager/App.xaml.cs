@@ -73,7 +73,8 @@ namespace NabbitManager {
 		async void ProcessOrders() {
 			var lastPing = DateTime.Now;
 			while(true) {
-				if (lastPing - DateTime.Now > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
+				var timeDiff = DateTime.Now.Subtract(lastPing);
+				if (timeDiff > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
 					await OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString());
 					lastPing = DateTime.Now;
 					LocalGlobals.Restaurant.LastPing = lastPing;
