@@ -44,6 +44,17 @@ namespace Nabbit.Views {
 
 
 		private async void CheckoutClicked(object sender, EventArgs e) {
+			viewModel.IsBusy = true;
+			await LocalGlobals.GetRestaurant();
+			viewModel.IsBusy = false;
+
+			// get how long since last ping
+			var now = DateTime.Now;
+			var pingTimeSpan = now.Subtract(LocalGlobals.Restaurant.LastPing);
+			var minTime = new TimeSpan(0, LocalGlobals.PingMinuteDelay * 2, 0);
+			if (minTime < pingTimeSpan)
+				LocalGlobals.Restaurant.IsActive = false;
+
 			var user = LocalGlobals.User;
 			if (LocalGlobals.Restaurant.IsActive == false) {
 				await DisplayAlert("Service Down", "Ordering services are temporarily down. Please try again another time.", "OK");

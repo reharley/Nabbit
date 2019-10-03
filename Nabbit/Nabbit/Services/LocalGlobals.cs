@@ -28,7 +28,6 @@ namespace Nabbit.Services {
 		public const decimal TaxRate = 0.098m;
 
 		public static int PingMinuteDelay = 1;
-		public static bool PingServer = false;
 
 		public const string empty = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtZXJjaGFudCI6IjA1ZDZkZDM4LTdlZjQtNDdlZi1iYTM1LWVlY2I1ZTE0MTkwMSIsImdvZFVzZXIiOmZhbHNlLCJzdWIiOiI0N2RkNTY5Yi1hZTVmLTQ2M2YtYmNiZC02NWUyOGIzMWRiNTYiLCJpc3MiOiJodHRwOi8vYXBpcHJvZC5mYXR0bGFicy5jb20vdGVhbS9hcGlrZXkiLCJpYXQiOjE1Njg3NTU1MDUsImV4cCI6NDcyMjM1NTUwNSwibmJmIjoxNTY4NzU1NTA1LCJqdGkiOiJyRXVyRFA2amdYUExKRk54In0.pm7ut5ywZMfuL23Cc0ZRyqAL_IBDh_DZmCxF7iAu_lQ";
 		static Restaurant restaurant;
@@ -201,6 +200,19 @@ namespace Nabbit.Services {
 			//}
 
 			return 0;
+		}
+
+		public static async Task GetRestaurant() {
+			using (var client = new HttpClient()) {
+				var url = getRestaurantsUrl.Replace("{userId}", "none").Replace("{schoolId}", School.SchoolId.ToString());
+				using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+					var result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+					if (httpResponse.IsSuccessStatusCode) {
+						var restaurantEntity = JsonConvert.DeserializeObject<List<RestaurantEntity>>(result)[0];
+						restaurant = JsonConvert.DeserializeObject<Restaurant>(restaurantEntity.JSON);
+					}
+				}
+			}
 		}
 
 		public static async Task UpdateRestaurant (Restaurant rest) {

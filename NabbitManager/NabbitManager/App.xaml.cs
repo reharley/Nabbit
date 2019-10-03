@@ -14,6 +14,7 @@ using Com.OneSignal.Abstractions;
 using NabbitManager.Services;
 using Nabbit.Services;
 using System.Threading.Tasks;
+using Plugin.SecureStorage;
 
 namespace NabbitManager {
 	public partial class App : Application {
@@ -43,7 +44,15 @@ namespace NabbitManager {
 				  typeof(Analytics), typeof(Crashes), typeof(Auth));
 
 			//printingScheduler = ProcessOrders();
-			printingScheduler = Task.Run(ProcessOrders);
+
+			if (CrossSecureStorage.Current.HasKey("InstallId") == false)
+				CrossSecureStorage.Current.SetValue("InstallId", Guid.NewGuid().ToString());
+
+
+			var installIdString = CrossSecureStorage.Current.GetValue("InstallId");
+			var installId = Guid.Parse(installIdString);
+			if (LocalGlobals.Restaurant.PrinterId == installId)
+				printingScheduler = Task.Run(ProcessOrders);
 		}
 
 		private async void HandleNotificationRecieved(OSNotification notification) {
@@ -64,11 +73,11 @@ namespace NabbitManager {
 		async void ProcessOrders() {
 			var lastPing = DateTime.Now;
 			while(true) {
-				if (LocalGlobals.PingServer) {
-					if (lastPing - DateTime.Now > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
-						await OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString());
-						lastPing = DateTime.Now;
-					}
+				if (lastPing - DateTime.Now > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
+					await OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString());
+					lastPing = DateTime.Now;
+					LocalGlobals.Restaurant.LastPing = lastPing;
+					await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
 				}
 
 				if (OrderQueueService.OrderQueue.Count > 0) {

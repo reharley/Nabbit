@@ -4,6 +4,7 @@ using Com.OneSignal;
 using Nabbit.Models;
 using Nabbit.Services;
 using Nabbit.ViewModels;
+using Plugin.SecureStorage;
 
 namespace NabbitManager.ViewModels {
 	public class RestaurantDetailsViewModel : BaseViewModel {
@@ -31,9 +32,16 @@ namespace NabbitManager.ViewModels {
 
 		void BuildModel () {
 			PingDelay = LocalGlobals.PingMinuteDelay;
-			UsePrinter = LocalGlobals.PingServer;
 			TaxRate = LocalGlobals.Restaurant.TaxRate;
 
+			var installIdString = CrossSecureStorage.Current.GetValue("InstallId");
+			var installId = Guid.Parse(installIdString);
+			UsePrinter = LocalGlobals.Restaurant.PrinterId == installId;
+
+			BuildHours();
+		}
+
+		void BuildHours () {
 			Hours = new List<ItemSelector<HoursView>>();
 			var hours = LocalGlobals.Restaurant.BusinessHours;
 			if (hours == null) {
@@ -80,8 +88,14 @@ namespace NabbitManager.ViewModels {
 				}
 			}
 
+			if (usePrinter) {
+				var installIdString = CrossSecureStorage.Current.GetValue("InstallId");
+				var installId = Guid.Parse(installIdString);
+				LocalGlobals.Restaurant.PrinterId = installId;
+			}
+
 			LocalGlobals.Restaurant.BusinessHours = hours;
-			LocalGlobals.PingServer = UsePrinter;
+			LocalGlobals.Restaurant.TaxRate = TaxRate;
 			LocalGlobals.PingMinuteDelay = PingDelay;
 		}
 	}

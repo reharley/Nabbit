@@ -83,8 +83,11 @@ namespace Nabbit.Views {
 			var closingHours = hours.Closing[dayOfWeek].Value;
 
 			if ((string)datePicker.SelectedItem == "Today") {
-				if (pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 5, 0))) {
+				if (pickupTime < DateTime.Now.TimeOfDay) {
 					await DisplayAlert("Pickup Time", "The pickup time entered was before the current time.", "Ok");
+					viewModel.SetEarliestTime();
+				} else if(pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 4, 0))) {
+					await DisplayAlert("Pickup Time", "Please provide time to process the order.", "Ok");
 					viewModel.SetEarliestTime();
 				}
 			} else if (openHours <= pickupTime && pickupTime <= closingHours) {

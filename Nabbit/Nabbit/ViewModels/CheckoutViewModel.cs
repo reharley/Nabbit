@@ -109,7 +109,7 @@ namespace Nabbit.ViewModels {
 			var dayOfWeek = (int)PickupDateTimes[pickupDatesIndex].DayOfWeek;
 			var openingTime = Menu.Hours.Opening[dayOfWeek].Value;
 
-			if (PickupDateTimes[pickupDatesIndex].Date == DateTime.Today) {
+			if ((string)PickupDates[pickupDatesIndex] == "Today") {
 				var now = DateTime.Now.TimeOfDay;
 				if (now >= openingTime)
 					PickupTime = now.Add(new TimeSpan(0, 5, 0));
@@ -117,8 +117,6 @@ namespace Nabbit.ViewModels {
 					PickupTime = openingTime;
 				else
 					PickupTime = now.Add(new TimeSpan(0, 5, 0));
-
-
 			} else {
 				PickupTime = openingTime;
 			}
@@ -186,7 +184,7 @@ namespace Nabbit.ViewModels {
 
 			Subtotal = price;
 			Order.OrderSubtotal = Subtotal + ServiceCharge;
-			Order.OrderTaxes = Taxes = (price + ServiceCharge) * Restaurant.TaxRate;
+			Order.OrderTaxes = Taxes = (price + ServiceCharge) * (Restaurant.TaxRate / 100m);
 
 			Total = Order.OrderTotal = Subtotal + ServiceCharge + Taxes;
 		}

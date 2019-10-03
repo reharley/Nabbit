@@ -64,6 +64,7 @@ namespace NabbitManager.Services {
 				receipt.Add(e.SetStyles(PrintStyle.Bold));
 				receipt.Add(e.Print($"\t\t{item.OrderItemPrice}"));
 				receipt.Add(e.PrintLine());
+				receipt.Add(e.PrintLine());
 				receipt.Add(e.SetStyles(PrintStyle.DoubleHeight | PrintStyle.DoubleWidth | PrintStyle.Bold));
 				receipt.Add(e.PrintLine($"Quantity: {item.Quantity}"));
 				receipt.Add(e.PrintLine());
