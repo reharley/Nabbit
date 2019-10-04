@@ -28,6 +28,7 @@ namespace Nabbit.Models {
 		public DateTime PickupTime { get; set; }
 		public string OrderStatus { get; set; }
 		public decimal OrderTotal { get; set; }
+		public decimal ServiceCharge { get; set; }
 		public decimal OrderSubtotal { get; set; }
 		public decimal OrderTaxes { get; set; }
 

@@ -172,8 +172,9 @@ namespace Nabbit.ViewModels {
 				price += itemPrice * orderItem.Quantity;
 			}
 
+			Order.ServiceCharge = ServiceCharge;
 			Subtotal = price;
-			Order.OrderSubtotal = Subtotal + ServiceCharge;
+			Order.OrderSubtotal = Subtotal;
 			Order.OrderTaxes = Taxes = (price + ServiceCharge) * (Restaurant.TaxRate / 100m);
 
 			Total = Order.OrderTotal = Subtotal + ServiceCharge + Taxes;

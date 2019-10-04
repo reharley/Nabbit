@@ -29,7 +29,7 @@ namespace Nabbit.Views {
 
 		async Task LoadOrder () {
 			await LocalGlobals.GetUserOrders();
-			orderList.ItemsSource = LocalGlobals.UserOrders.OrderBy(o => o.PickupTime);
+			orderList.ItemsSource = LocalGlobals.UserOrders.OrderByDescending(o => o.PickupTime);
 			viewModel.IsBusy = false;
 		}
 
