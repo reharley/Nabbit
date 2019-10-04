@@ -153,7 +153,7 @@ namespace Nabbit.ViewModels {
 		}
 
 		void BuildOrder () {
-			Order.OrderStatus = OrderStatus.Creating;
+			Order.OrderStatus = OrderStatus.Created;
 			Order.OrderItems = new List<OrderItem>(Cart.OrderItems);
 			ServiceCharge = LocalGlobals.ServiceFee;
 			CalculateOrderCost();

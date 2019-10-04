@@ -58,10 +58,7 @@ namespace Nabbit.Models {
 	}
 
 	public static class OrderStatus {
-		public const string Creating = "Creating";
-		public const string Submitting = "Submitting";
-		public const string Transit = "InTransit";
-		public const string Submitted = "Submitted";
+		public const string Created = "Created";
 		public const string Queued = "Queued";
 		public const string Complete = "Complete";
 	}

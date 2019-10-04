@@ -50,6 +50,8 @@ namespace Nabbit.Functions {
 				orderTable = tableClient.GetTableReference(orderTableName);
 
 				await AddOrderToQueue(order);
+				order.OrderStatus = OrderStatus.Queued;
+
 				await AddOrderToTable(order, requestBody);
 				await AddOrderToUser(order);
 				await AddOrderToRestaurantCatelogs(order);

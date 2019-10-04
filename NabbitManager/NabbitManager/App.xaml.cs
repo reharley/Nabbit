@@ -72,10 +72,11 @@ namespace NabbitManager {
 
 		async void ProcessOrders() {
 			var lastPing = DateTime.Now;
-			while(true) {
+			var restaurantId = LocalGlobals.Restaurant.RestaurantId.ToString();
+			while (true) {
 				var timeDiff = DateTime.Now.Subtract(lastPing);
 				if (timeDiff > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
-					await OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString());
+					await OrderQueueService.GetQueueOrders(restaurantId);
 					lastPing = DateTime.Now;
 					LocalGlobals.Restaurant.LastPing = lastPing;
 					await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
@@ -92,6 +93,7 @@ namespace NabbitManager {
 
 					if (DateTime.Now >= pickupPrintTime) {
 						PrinterService.Printer(order);
+						await OrderQueueService.DeleteQueueOrder(restaurantId, order.OrderId.ToString());
 						OrderQueueService.OrderQueue.RemoveAt(0);
 					}
 				}

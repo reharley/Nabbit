@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nabbit.Models;
+using Nabbit.ViewModels;
 
-namespace Nabbit.ViewModels {
+namespace NabbitManager.ViewModels {
 	public class OrderDetailsViewModel : BaseViewModel {
 		public Order Order { get; set; }
 		public string UID { get; set; }

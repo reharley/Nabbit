@@ -65,7 +65,6 @@ namespace Nabbit.Functions {
 				var messages = await queue.GetMessagesAsync(count % 32);
 				foreach (var message in messages) {
 					orderIds.Add(message.AsString);
-					await queue.DeleteMessageAsync(message);
 				}
 
 				await queue.FetchAttributesAsync();
