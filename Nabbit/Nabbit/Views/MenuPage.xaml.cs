@@ -19,7 +19,13 @@ namespace Nabbit.Views {
 
 		public MenuPage () {
 			InitializeComponent();
+
+			if (LocalGlobals.User.LoggedIn == false) {
+				SignIn();
+			}
+
 			BindingContext = viewModel = new HomeViewModel();
+
 			AdjustGroupListHeight();
 
 			if(viewModel.Menus.Count == 1) {
@@ -28,13 +34,15 @@ namespace Nabbit.Views {
 			} else
 				menuTabs.SelectedItem = viewModel.GetMenuName();
 
-			if (LocalGlobals.User.LoggedIn == false) {
-				SignIn();
-			}
 		}
 
 		async Task SignIn () {
 			await Navigation.PushModalAsync(new SignInPage());
+		}
+
+		protected override void OnAppearing () {
+			base.OnAppearing();
+			viewModel.IsBusy = true;
 		}
 
 		void AdjustGroupListHeight () {

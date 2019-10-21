@@ -101,10 +101,8 @@
 
 								<StackLayout Grid.Row="0" Grid.Column="0">
 									<Label Text="Card Details" Style="{StaticResource primaryDarkBoldSubtitleLabel}" />
-									<StackLayout Orientation="Horizontal">
-										<Label Text="{Binding CardType}" Style="{StaticResource primarySubtitleLabel}" />
-										<Label Text="{Binding CardLastFour, StringFormat='ending in {0}'}" Style="{StaticResource primarySubtitleLabel}" />
-									</StackLayout>
+									<Label Text="{Binding CardType}" Style="{StaticResource primarySubtitleLabel}" />
+									<Label Text="{Binding CardLastFour, StringFormat='Ending in {0}'}" Style="{StaticResource primarySubtitleLabel}" />
 								</StackLayout>
 
 								<StackLayout Grid.Row="0" Grid.Column="1">

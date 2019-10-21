@@ -76,6 +76,8 @@ namespace Nabbit.ViewModels {
 		}
 
 		void ChangeTime () {
+			if (LocalGlobals.Restaurant == null)
+				return;
 			var dayOfWeek = (int)DateTime.Today.DayOfWeek;
 			var openingTime = SelectedMenu.Hours.Opening[dayOfWeek];
 			var closingTime = SelectedMenu.Hours.Closing[dayOfWeek];
@@ -125,33 +127,34 @@ namespace Nabbit.ViewModels {
 		}
 
 		public void BuildCategoryProducts () {
-			if (LocalGlobals.Restaurant != null) {
-				Menus = new List<Models.Menu>();
-				foreach (var menu in LocalGlobals.Restaurant.Menus.OrderBy(m => m.Rank)) {
-					if (menu.Name == "Deals")
-						continue;
+			if (LocalGlobals.Restaurant == null)
+				return;
 
-					var pcProductsTmp = new List<ProductCategoryProducts>();
-					Menus.Add(menu);
-					foreach (var category in LocalGlobals.Restaurant.ProductCategories
-													.Where(pc => menu.ProductCategoryIds.Contains(pc.ProductCategoryId))
-													.OrderBy(pc => pc.Rank)) {
-						var products = LocalGlobals.Restaurant.Products.Where(p => category.ProductIds.Contains(p.ProductId))
-										.Select(x => new ProductView(x))
-										.ToList();
-						products[0].SeparatorOn = false;
-						var pcProduct = new ProductCategoryProducts {
-							CategoryName = category.Name,
-							MenuName = menu.Name,
-							MenuDescription = menu.Description,
-							Products = products
-						};
+			Menus = new List<Models.Menu>();
+			foreach (var menu in LocalGlobals.Restaurant.Menus.OrderBy(m => m.Rank)) {
+				if (menu.Name == "Deals")
+					continue;
 
-						pcProductsTmp.Add(pcProduct);
-					}
+				var pcProductsTmp = new List<ProductCategoryProducts>();
+				Menus.Add(menu);
+				foreach (var category in LocalGlobals.Restaurant.ProductCategories
+												.Where(pc => menu.ProductCategoryIds.Contains(pc.ProductCategoryId))
+												.OrderBy(pc => pc.Rank)) {
+					var products = LocalGlobals.Restaurant.Products.Where(p => category.ProductIds.Contains(p.ProductId))
+									.Select(x => new ProductView(x))
+									.ToList();
+					products[0].SeparatorOn = false;
+					var pcProduct = new ProductCategoryProducts {
+						CategoryName = category.Name,
+						MenuName = menu.Name,
+						MenuDescription = menu.Description,
+						Products = products
+					};
 
-					menus.Add(pcProductsTmp);
+					pcProductsTmp.Add(pcProduct);
 				}
+
+				menus.Add(pcProductsTmp);
 			}
 		}
 

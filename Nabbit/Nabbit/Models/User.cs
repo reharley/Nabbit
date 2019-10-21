@@ -17,8 +17,8 @@ namespace Nabbit.Models {
 		public Guid UserId { get; set; }
 		/// <summary>School Id that the user is associated with</summary>
 		public Guid SchoolId { get; set; }
-		/// <summary>Id for payment methods associated with Fattmerchant</summary>
-		public Guid CustomerId { get; set; }
+		/// <summary>Id for payment methods associated with Stripe</summary>
+		public string CustomerId { get; set; }
 
 		public string FirstName { get; set; }
 		public string LastName { get; set; }

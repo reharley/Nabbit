@@ -17,6 +17,7 @@ namespace Nabbit.Views {
 				var thick = ((Thickness)App.Current.Resources["AndroidPageMargin"]).Left;
 				pageStack.Margin = new Thickness(0, thick, 0, 0);
 			}
+
 		}
 
 		protected override void OnAppearing () {
@@ -25,8 +26,9 @@ namespace Nabbit.Views {
 			PullCustomerIds();
 		}
 
+
 		async Task PullCustomerIds () {
-			payMethodsList.ItemsSource = await LocalGlobals.GetPaymentMethods();
+			payMethodsList.ItemsSource = await StripeService.GetPayMethodsAsync(LocalGlobals.User.CustomerId);
 			viewModel.IsBusy = false;
 		}
 
@@ -46,7 +48,7 @@ namespace Nabbit.Views {
 
 
 		private async void AddCardPressed (object sender, EventArgs e) {
-			await Navigation.PushModalAsync(new PaymentInfoPage());
+			await Navigation.PushAsync(new PaymentMethodEditPage());
 		}
 	}
 }

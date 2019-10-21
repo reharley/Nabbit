@@ -33,7 +33,7 @@ namespace Nabbit.Views {
 		}
 
 		async Task PullCustomerIds () {
-			var itemSource = await LocalGlobals.GetPaymentMethods();
+			var itemSource = await StripeService.GetPayMethodsAsync(LocalGlobals.User.CustomerId);
 			payMethodsList.ItemsSource = itemSource;
 			payMethodsList.SelectedItem = itemSource[0];
 			viewModel.IsBusy = false;
@@ -59,21 +59,29 @@ namespace Nabbit.Views {
 				var pickupTime = viewModel.PickupTime;
 				viewModel.Order.PickupTime = new DateTime(pickupDate.Year, pickupDate.Month, pickupDate.Day, pickupTime.Hours, pickupTime.Minutes, pickupTime.Seconds);
 
+
 				var payMethod = payMethodsList.SelectedItem as PaymentMethod;
-				var response = await LocalGlobals.Charge(payMethod, viewModel.Order);
-				if (response.Status != 200) {
-					if (response.Status == 400) {
-						await DisplayAlert("Pay Method Error",
-							response.Message + " Please check your card details.", "Ok");
-					} else {
-						await DisplayAlert("Pay Method Error", response.Message, "Ok");
-					}
 
-					return;
+				var payMethodId = payMethod.PaymentMethodId;
+				var amount = ((long) (viewModel.Order.OrderTotal * 100m)).ToString();
+				var customerId = LocalGlobals.User.CustomerId;
+				var result = await StripeService.ChargeAsync(amount, customerId, payMethodId);
+				if (result == "failed")
+					await DisplayAlert("Payment Failed", "Could not connect. Please try again.", "Ok");
+				else if (result == "canceled")
+					await DisplayAlert("Payment Failed", "This payment was canceled.", "Ok");
+				else if (result == "requires_payment_method")
+					await DisplayAlert("Payment Failed", "Payment method did not go through. Please try again.", "Ok");
+				else if (result == "requires_action")
+					await DisplayAlert("Payment Failed", "This card is currently not supported. Please try another.", "Ok");
+				else if (result == "processing")
+					await DisplayAlert("Payment processing", "This card is currently not supported. Please try another.", "Ok");
+				else if (result != "succeeded")
+					await DisplayAlert("Payment Failed", "Please check payment method details and try again. Or use another card.", "Ok");
+				else if (result == "succeeded") {
+					await LocalGlobals.PostOrder(viewModel.Order);
+					await Navigation.PushAsync(new ThankYouPage());
 				}
-
-				await LocalGlobals.PostOrder(viewModel.Order);
-				await Navigation.PushAsync(new ThankYouPage());
 			}
 		}
 

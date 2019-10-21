@@ -117,10 +117,13 @@ namespace Nabbit.Services {
 				}
 			}
 
-			if (user.CustomerId == Guid.Empty) {
-				await CreateCustomer();
+			if (user.SchoolId == Guid.Empty) {
+				user.SchoolId = LocalGlobals.School.SchoolId;
 				await SaveUser();
 			}
+
+			if (user.CustomerId == null || user.CustomerId == "")
+				await SaveUser();
 
 			user.LoggedIn = true;
 		}
@@ -131,29 +134,6 @@ namespace Nabbit.Services {
 
 			CrossSecureStorage.Current.SetValue("User", JsonConvert.SerializeObject(user));
 			await PostUser();
-		}
-
-		static async Task CreateCustomer () {
-			var baseAddress = new Uri("https://apiprod.fattlabs.com/");
-
-			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {empty}");
-
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
-
-				using (var content = new StringContent("{  \"email\": \"" + user.Email + "\",\"firstname\": \"" + user.FirstName + "\",  \"lastname\": \"" + user.LastName + "\"}",
-															System.Text.Encoding.Default, "application/json")) {
-					using (var response = await httpClient.PostAsync("customer", content)) {
-						string responseData = await response.Content.ReadAsStringAsync();
-
-						if (response.IsSuccessStatusCode) {
-							var responseObj = JObject.Parse(responseData);
-							if (responseObj["id"] != null)
-								user.CustomerId = Guid.Parse((string)(responseObj["id"]));
-						}
-					}
-				}
-			}
 		}
 
 		/// <summary>
@@ -285,84 +265,6 @@ namespace Nabbit.Services {
 				/// TODO: Log error
 				Console.WriteLine("Something is missing...", "The app was unable to load data. Please check the your connections and try again.");
 				Console.WriteLine(ex.Message);
-			}
-		}
-
-		public static async Task<List<PaymentMethod>> GetPaymentMethods () {
-			var payMethods = new List<PaymentMethod>();
-			var baseAddress = new Uri("https://apiprod.fattlabs.com/");
-
-			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {LocalGlobals.empty}");
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
-
-				using (var response = await httpClient.GetAsync($"customer/{user.CustomerId.ToString()}/payment-method")) {
-					string responseData = await response.Content.ReadAsStringAsync();
-					if (response.IsSuccessStatusCode) {
-						var paymentMethodsObj = JArray.Parse(responseData);
-
-						for (int i = 0; i < paymentMethodsObj.Count; i++) {
-							var delAt = paymentMethodsObj[i]["deleted_at"];
-							if (delAt.Type != JTokenType.Null)
-								continue;
-
-							var cardType = paymentMethodsObj[i]["card_type"].ToString();
-							cardType = cardType.Substring(0, 1).ToUpper() + cardType.Substring(1);
-
-							var payMethod = new PaymentMethod() {
-								CardType = cardType,
-								CardExpire = paymentMethodsObj[i]["card_exp"].ToString().Insert(2, "/"),
-								CardLastFour = paymentMethodsObj[i]["card_last_four"].ToString(),
-								PersonName = paymentMethodsObj[i]["person_name"].ToString(),
-								PaymentMethodId = Guid.Parse(paymentMethodsObj[i]["id"].ToString()),
-							};
-
-							var address1 = payMethod.Address1 = paymentMethodsObj[i]["address_1"].ToString();
-							var address2 = payMethod.Address2 = paymentMethodsObj[i]["address_2"].ToString();
-							var city = payMethod.City = paymentMethodsObj[i]["address_city"].ToString();
-							var state = payMethod.State = paymentMethodsObj[i]["address_state"].ToString();
-							var zip = payMethod.Zip = paymentMethodsObj[i]["address_zip"].ToString();
-							payMethod.BillingAddress = $"{address1} {address2}\n"
-												+ $"{city}, {state}, {zip}";
-
-							payMethods.Add(payMethod);
-						}
-					}
-				}
-			}
-
-			return payMethods;
-		}
-
-		public static async Task<ChargeResponse> Charge (PaymentMethod payMethod, Order order) {
-			var baseAddress = new Uri("https://apiprod.fattlabs.com/");
-			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {LocalGlobals.empty}");
-
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
-
-				var obj = "{" +
-						$"\"payment_method_id\": \"{payMethod.PaymentMethodId.ToString()}\"," +
-						"\"meta\": [" + order.GetFattMeta() + "]," +
-						"\"total\": " + order.OrderTotal + "," +
-						"\"pre_auth\": 0" +
-					"}";
-				using (var content = new StringContent(obj, System.Text.Encoding.Default, "application/json")) {
-					using (var response = await httpClient.PostAsync("charge", content)) {
-						string responseData = await response.Content.ReadAsStringAsync();
-						if (response.IsSuccessStatusCode) {
-							return new ChargeResponse("", 200);
-						} else if (response.StatusCode == HttpStatusCode.BadRequest) {
-							var responseObj = JObject.Parse(responseData);
-							var message = responseObj["message"];
-							return new ChargeResponse(message.ToString(), 400);
-						} else if(response.StatusCode == HttpStatusCode.InternalServerError){
-							return new ChargeResponse("Server error. Please try again.", 500);
-						} else {
-							return new ChargeResponse("Unknown error. Please try again.", 422);
-						}
-					}
-				}
 			}
 		}
 	}

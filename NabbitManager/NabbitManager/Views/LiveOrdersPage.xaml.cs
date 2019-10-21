@@ -2,6 +2,7 @@
 using Nabbit.Services;
 using Nabbit.Views;
 using NabbitManager.Services;
+using NabbitManager.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

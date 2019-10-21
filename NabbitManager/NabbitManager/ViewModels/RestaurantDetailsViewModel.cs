@@ -34,7 +34,7 @@ namespace NabbitManager.ViewModels {
 			PingDelay = LocalGlobals.PingMinuteDelay;
 			TaxRate = LocalGlobals.Restaurant.TaxRate;
 
-			var installIdString = CrossSecureStorage.Current.GetValue("InstallId");
+			var installIdString = App.Current.Properties["InstallId"] as string;
 			var installId = Guid.Parse(installIdString);
 			UsePrinter = LocalGlobals.Restaurant.PrinterId == installId;
 
@@ -89,7 +89,7 @@ namespace NabbitManager.ViewModels {
 			}
 
 			if (usePrinter) {
-				var installIdString = CrossSecureStorage.Current.GetValue("InstallId");
+				var installIdString = App.Current.Properties["InstallId"] as string;
 				var installId = Guid.Parse(installIdString);
 				LocalGlobals.Restaurant.PrinterId = installId;
 			}

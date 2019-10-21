@@ -10,7 +10,7 @@ using System.Linq;
 namespace NabbitManager.Services {
 	public static class OrderQueueService {
 		private const string getQueueOrdersUrl = "https://nabbit.azurewebsites.net/api/GetQueueOrders/restaurantId/{restaurantId}?code=kXf6aapwz4ScevooekM/4H5INYPzaLsr54IXOFeyG6Xm6SxBR2p9VQ==";
-		private const string deleteQueueOrdersUrl = "https://nabbit.azurewebsites.net/api/GetQueueOrders/restaurantId/{restaurantId}?code=kXf6aapwz4ScevooekM/4H5INYPzaLsr54IXOFeyG6Xm6SxBR2p9VQ==";
+		private const string deleteQueueOrdersUrl = "https://nabbit.azurewebsites.net/api/DeleteQueueOrder/restaurantId/{restaurantId}/orderId/{orderId}?code=UG1uLRRpacxZnSsBdoMoREMNvX2nDq2rMX1qVxbXHpW6LfgsxKPMSg==";
 		static List<Order> orderQueue;
 		public static List<Order> OrderQueue {
 			get {
@@ -34,10 +34,11 @@ namespace NabbitManager.Services {
 					string result = "";
 					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
 						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+						if (httpResponse.IsSuccessStatusCode) {
+							OrderQueue = JsonConvert.DeserializeObject<List<Order>>(result)
+								.OrderByDescending(x => x.PickupTime).ToList();
+						}
 					}
-					if (result != null || result != "")
-						OrderQueue.AddRange(JsonConvert.DeserializeObject<List<Order>>(result));
-					OrderQueue = OrderQueue.OrderBy(x => x.PickupTime).ToList();
 				}
 			} catch (Exception ex) {
 				/// TODO: Log error

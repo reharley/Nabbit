@@ -1,44 +1,200 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<ContentPage
-    xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Nabbit.Views.PaymentMethodEditPage">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns ="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fastEntry="clr-namespace:XamarinFastEntrySample.FastEntry;assembly=XamarinFastEntry.Behaviors"
+             xmlns:local="clr-namespace:Nabbit.Views"
+             x:Class="Nabbit.Views.PaymentMethodEditPage">
     <ContentPage.Content>
         <StackLayout>
             <ScrollView>
-                <StackLayout VerticalOptions="CenterAndExpand">
-                    <Label Text="Name on Card"
+                <StackLayout Margin="{StaticResource PageMargin}"
+                             VerticalOptions="StartAndExpand">
+                    
+                    <Grid VerticalOptions="FillAndExpand"
+              ColumnSpacing="20"
+              HorizontalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions> 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="5*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>  
+            
+               <local:CreditCardDisplayView Grid.Row="0"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"/>
+        
+               <Frame HasShadow="false"
+                      Padding="10"
+                      BorderColor="{StaticResource primaryLightColor}"
+                      Margin="30,30,30,10"
+                      Grid.Row="1"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="3">
+                  <StackLayout Orientation="Horizontal"
+                               Spacing="20">
+                        <Image Source="{Binding PayMethod.CardNumber,Converter={StaticResource CardConverter}}"
+                               HeightRequest="30"/>
+
+                        <Entry HorizontalOptions="FillAndExpand"
+                               Keyboard="Numeric"
+                               Placeholder="Card Number"
+                               PlaceholderColor="{StaticResource primaryDarkColor}"
+                               Text="{Binding CardNumber, Mode=TwoWay}"
+                               Visual="Custom">
+                             <Entry.Behaviors>
+                                  <fastEntry:XamarinFastEntryBehaviour Mask="####-####-####-####" 
+                                                                       MaxLength="19"/>
+                              </Entry.Behaviors>
+                        </Entry>
+                  </StackLayout>
+               </Frame>
+        
+               <Frame HasShadow="false"
+                      Padding="10"
+                      BorderColor="{StaticResource primaryLightColor}"
+                      Margin="30,0,0,0"
+                      Grid.Row="2"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2">
+                  <StackLayout Orientation="Horizontal">
+                        <Image Source="ic_date"
+                               HeightRequest="25"/>
+                        <Entry HorizontalOptions="FillAndExpand"
+                               Keyboard="Numeric"
+                               Placeholder="Expiration"
+                               PlaceholderColor="{StaticResource primaryDarkColor}"
+                               Text="{Binding CardEpirationDate}"
+                               Visual="Custom">
+                            <Entry.Behaviors>
+                              <fastEntry:XamarinFastEntryBehaviour Mask="##/##" 
+                                                                   MaxLength="19"/>
+                          </Entry.Behaviors>
+                        </Entry>
+                  </StackLayout>
+               </Frame>
+        
+                <Frame HasShadow="false"
+                       Padding="10"
+                      BorderColor="{StaticResource primaryLightColor}"
+                      Margin="0,0,30,0"
+                      Grid.Row="2"
+                      Grid.Column="2">
+                  <StackLayout Orientation="Horizontal">
+                       <Image Source="ic_cvv"
+                              HeightRequest="25"/>
+                       <Entry HorizontalOptions="FillAndExpand"
+                              Keyboard="Numeric"
+                              PlaceholderColor="{StaticResource primaryDarkColor}"
+                              Placeholder="CVV"
+                              Text="{Binding CardCvv}"
+                              Visual="Custom">
+                            <Entry.Behaviors>
+                              <fastEntry:XamarinFastEntryBehaviour Mask="###" 
+                                                                   MaxLength="3"/>
+                           </Entry.Behaviors>
+                       </Entry>
+                  </StackLayout>
+               </Frame>
+        </Grid>
+                    <BoxView Style="{StaticResource separatorBoxStyle}" />
+                    <Label Text="Billing Address"
+                           FontAttributes="Bold"
+                           Style="{StaticResource primaryTitleLabel}"/>
+                    
+                    
+                    <Label Text="Name"
+                           Style="{StaticResource primaryDarkBoldLabel}"
                            FontSize="Medium" />
-                    <Entry Text="{Binding PersonName}"
-                           FontSize="Medium" />
+                    <Entry Text="{Binding PayMethod.PersonName}"
+                           PlaceholderColor="{StaticResource primaryDarkColor}"
+                           Placeholder="Name"
+                           FontSize="Medium" />    
+                        
                     <Label Text="Street Address"
+                           Style="{StaticResource primaryDarkBoldLabel}"
                            FontSize="Medium" />
-                    <Entry Text="{Binding Address1}"
+                    <Entry Text="{Binding PayMethod.Address1}"
+                           Placeholder="Street Address"
+                           PlaceholderColor="{StaticResource primaryDarkColor}"
                            FontSize="Medium" />
                     <Label Text="Address 2"
+                           Style="{StaticResource primaryDarkBoldLabel}"
                            FontSize="Medium" />
-                    <Entry Text="{Binding Address2}"
+                    <Entry Text="{Binding PayMethod.Address2}"
+                           PlaceholderColor="{StaticResource primaryDarkColor}"
+                           Placeholder="Apt., Bldg, FL, etc"
                            FontSize="Medium" />
-                    <Label Text="City"
-                           FontSize="Medium" />
-                    <Entry Text="{Binding City}"
-                           FontSize="Medium" />
-                    <Label Text="State"
-                           FontSize="Medium" />
-                    <Entry Text="{Binding State}"
-                           FontSize="Medium" />
-                    <Label Text="Zip"
-                           FontSize="Medium" />
-                    <Entry Text="{Binding Zip}"
-                           FontSize="Medium" />
-                    <Label Text="Card Expire Date:"
-                           FontSize="Medium" />
-                    <Entry Text="{Binding CardExpire}"
-                           FontSize="Medium" />
+                    
+                    
+                    <Grid HeightRequest="230">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100" />
+                            <RowDefinition Height="100" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        
+                        <StackLayout Grid.Row="0" Grid.Column="0">
+                            <Label Text="City"
+                               Style="{StaticResource primaryDarkBoldLabel}"
+                               FontSize="Medium" />
+                            <Entry Text="{Binding PayMethod.City}"
+                                   PlaceholderColor="{StaticResource primaryDarkColor}"
+                                   Placeholder="City"
+                                   FontSize="Medium" />
+                        </StackLayout>
+                            
+                        <StackLayout Grid.Row="0" Grid.Column="1">
+                            <Label Text="State"
+                                   Style="{StaticResource primaryDarkBoldLabel}"
+                                   FontSize="Medium" />
+                            <Entry Text="{Binding PayMethod.State}"
+                                   MaxLength="2"
+                                   Placeholder="State"
+                                   WidthRequest="100"
+                                   PlaceholderColor="{StaticResource primaryDarkColor}"
+                                   HorizontalOptions="Start"
+                                   TextChanged="Handle_TextChanged"
+                                   FontSize="Medium" />
+                        </StackLayout>
+                        
+                        <StackLayout Grid.Row="1" Grid.Column="0">
+                            <Label Text="Zip"
+                                   Style="{StaticResource primaryDarkBoldLabel}"
+                                   FontSize="Medium" />
+                            <Entry Text="{Binding PayMethod.Zip}"
+                                   Keyboard="Numeric"
+                                   PlaceholderColor="{StaticResource primaryDarkColor}"
+                                   Placeholder="Zip"
+                                   FontSize="Medium" />
+                        </StackLayout>
+                            
+                        <StackLayout Grid.Row="1" Grid.Column="1">
+                            <Label Text="Country"
+                                   Style="{StaticResource primaryDarkBoldLabel}"
+                                   FontSize="Medium" />
+                            <Entry Text="{Binding PayMethod.Country}"
+                                   MaxLength="2"
+                                   Placeholder="Country"
+                                   PlaceholderColor="{StaticResource primaryDarkColor}"
+                                   WidthRequest="100"
+                                   HorizontalOptions="Start"
+                                   TextChanged="Handle_TextChanged"
+                                   FontSize="Medium" />
+                        </StackLayout>    
+                    </Grid>
                 </StackLayout>
             </ScrollView>
-
-            <Grid VerticalOptions="EndAndExpand"
+            
+            <Grid VerticalOptions="End"
                   ColumnSpacing="0"
                   RowSpacing="0">
                 <Grid.ColumnDefinitions>
@@ -46,13 +202,13 @@
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="80" />
                 </Grid.RowDefinitions>
 
-                <Button Text="Delete"
-                        Style="{StaticResource dangerButtonStyle}"
+                <Button Text="Cancel"
+                        Style="{StaticResource primaryLightButtonStyle}"
                         VerticalOptions="End"
-                        Clicked="DeletePressed"
+                        Clicked="CancelPressed"
                         Grid.Row="0"
                         Grid.Column="0" />
                 <Button x:Name="addSaveButton"

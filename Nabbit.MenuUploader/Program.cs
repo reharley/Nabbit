@@ -38,6 +38,7 @@ namespace Nabbit.MenuUploader {
 		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
 		private const string getRestOrdersUrl = "http://localhost:7071/api/GetRestOrders/{restaurantId}";
 		private const string postUserUrl = "http://localhost:7071/api/PostUser";
+		private static string getSetupIntentUrl = "http://localhost:7071/api/GetSetupIntent";
 
 		private static HttpClient _client;
 
@@ -69,13 +70,33 @@ namespace Nabbit.MenuUploader {
 			//PushToTable().Wait();
 			//var user = new User();
 			//user.FirstName = "TJ";
-			//PostUser(user).Wait();
 			//GetUser().Wait();
+			var intent = GetSetupIntentAsync();
+			while (!intent.IsCompleted) {
+				Thread.Sleep(10);
+			}
+			var result = intent.Result;
+			//PostUser(user).Wait();
 			//MakeOrder();
 			//PullUserOrders().Wait();
-			PullRestOrders().Wait();
+			//PullRestOrders().Wait();
 			Console.WriteLine("Complete");
 			//SendNotification();
+		}
+
+		public static async Task<Stripe.SetupIntent> GetSetupIntentAsync () {
+			Stripe.SetupIntent setupIntent = null;
+			using (var client = new HttpClient()) {
+				var url = getSetupIntentUrl;
+				using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+					var result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+					if (httpResponse.IsSuccessStatusCode) {
+						setupIntent = JsonConvert.DeserializeObject<Stripe.SetupIntent>(result);
+					}
+				}
+			}
+
+			return setupIntent;
 		}
 
 		public static async Task GetUser () {
@@ -89,6 +110,7 @@ namespace Nabbit.MenuUploader {
 					// skip new users
 					if (httpResponse.IsSuccessStatusCode) {
 						var user = JsonConvert.DeserializeObject<User>(result);
+						await PostUser(user);
 					}
 				}
 			}
@@ -105,14 +127,14 @@ namespace Nabbit.MenuUploader {
 		public static void MakeOrder() {
 			var restaurantId = new Guid("681a6d33-beac-4928-8172-793c3e981bd5");
 			var userId = new Guid("5d2b6da2-3f67-4fd0-a3c8-678cbfb9d4f9");
-			List<OrderItem> orderItems = new List<OrderItem>() {
-				new OrderItem() {
+			List<Models.OrderItem> orderItems = new List<Models.OrderItem>() {
+				new Models.OrderItem() {
 					Quantity = 1,
 					Instructions = "TEST*****",
 				}
 			};
 
-			var order = new Order(userId, restaurantId) {
+			var order = new Models.Order(userId, restaurantId) {
 				OrderId = Guid.NewGuid(),
 				FirstName = "Emma",
 				LastName = "Harley",
@@ -133,7 +155,7 @@ namespace Nabbit.MenuUploader {
 					var result = await client.GetStringAsync(url);
 					if (result == "none")
 						return;
-					var orders = JsonConvert.DeserializeObject<List<Order>>(result);
+					var orders = JsonConvert.DeserializeObject<List<Models.Order>>(result);
 				}
 			} catch (Exception ex) {
 				/// TODO: Log error
@@ -151,7 +173,7 @@ namespace Nabbit.MenuUploader {
 					var result = await client.GetStringAsync(url);
 					if (result == "none")
 						return;
-					var orders = JsonConvert.DeserializeObject<List<Order>>(result);
+					var orders = JsonConvert.DeserializeObject<List<Models.Order>>(result);
 				}
 			} catch (Exception ex) {
 				/// TODO: Log error
@@ -160,7 +182,7 @@ namespace Nabbit.MenuUploader {
 			}
 		}
 
-		public static async Task PostOrder(Order order) {
+		public static async Task PostOrder(Models.Order order) {
 			string url = postOrderUrl;
 			using (var client = new HttpClient()) {
 				var content = new StringContent(JsonConvert.SerializeObject(order), Encoding.UTF8, "application/json");

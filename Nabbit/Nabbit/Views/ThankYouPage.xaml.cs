@@ -14,7 +14,7 @@ namespace Nabbit.Views {
 	public partial class ThankYouPage : ContentPage {
 		public ThankYouPage() {
 			InitializeComponent();
-			Cart.OrderItems.Clear();
+			Cart.ClearCart();
 		}
 
 		private async void ReturnClicked(object sender, EventArgs e) {

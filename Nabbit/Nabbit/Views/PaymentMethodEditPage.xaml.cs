@@ -1,78 +1,142 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using Nabbit.Models;
+using System.Threading.Tasks;
 using Nabbit.Services;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Nabbit.ViewModels;
+using Stripe;
 using Xamarin.Forms;
 
 namespace Nabbit.Views {
 	public partial class PaymentMethodEditPage : ContentPage {
-		PaymentMethod paymentMethod;
+		PaymentMethodEditViewModel viewModel;
 
-		public PaymentMethodEditPage (PaymentMethod payMethod) {
+		public PaymentMethodEditPage () {
 			InitializeComponent();
-			BindingContext = paymentMethod = payMethod;
+			BindingContext = viewModel = new PaymentMethodEditViewModel();
+		}
+
+		public PaymentMethodEditPage (Nabbit.Models.PaymentMethod payMethod) {
+			InitializeComponent();
+			BindingContext = viewModel = new PaymentMethodEditViewModel();
+		}
+
+		async Task<bool> VerifyForm () {
+			var valid = true;
+
+			var cardNumber = viewModel.CardNumber;
+			var cardExp = viewModel.CardEpirationDate;
+			var cvv = viewModel.CardCvv;
+
+			var name = viewModel.PayMethod.PersonName;
+			var address1 = viewModel.PayMethod.Address1;
+			var address2 = viewModel.PayMethod.Address2;
+			var city = viewModel.PayMethod.City;
+			var country = viewModel.PayMethod.Country;
+			var state = viewModel.PayMethod.State;
+			var zip = viewModel.PayMethod.Zip;
+
+
+			if (cardNumber == null || cardNumber.Length < 19) {
+				valid = false;
+				await DisplayAlert("Incomplete Form", "Card Number is incomplete", "Ok");
+			} else if (cardExp == null || cardExp.Length < 5) {
+				valid = false;
+				await DisplayAlert("Incomplete Form", "Card Expiration is incomplete", "Ok");
+			} else if (cvv == null || cvv.Length < 3) {
+				valid = false;
+				await DisplayAlert("Incomplete Form", "Card CVV is incomplete", "Ok");
+			} else if (name == null || name.Length == 0) {
+				valid = false;
+				await DisplayAlert("Incomplete Form", "Name is incomplete", "Ok");
+			} else if (address1 == null || address1.Length == 0) {
+				valid = false;
+				await DisplayAlert("Incomplete Form", "Address 1 is incomplete", "Ok");
+			} else if (city == null || city.Length == 0) {
+				valid = false;
+				await DisplayAlert("Incomplete Form", "City is incomplete", "Ok");
+			} else if (country == null || country.Length == 0) {
+				valid = false;
+				await DisplayAlert("Incomplete Form", "Country is incomplete", "Ok");
+			} else if (state == null || state.Length == 0) {
+				valid = false;
+				await DisplayAlert("Incomplete Form", "State is incomplete", "Ok");
+			} else if (zip == null || zip.Length == 0) {
+				valid = false;
+				await DisplayAlert("Incomplete Form", "Zip is incomplete", "Ok");
+			}
+
+			return valid;
 		}
 
 		async void SavePressed (object sender, EventArgs e) {
-			var baseAddress = new Uri("https://private-anon-7203bc3b4c-fattmerchant.apiary-proxy.com/");
-			var url = $"payment-method/{paymentMethod.PaymentMethodId.ToString()}";
-			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {LocalGlobals.empty}");
+			//if (await VerifyForm() == false)
+			//	return;
 
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
-				using (var response = await httpClient.GetAsync(url)) {
-					string responseData = await response.Content.ReadAsStringAsync();
+			//viewModel.SaveModel();
+			viewModel.TestModel();
+			var payMethod = viewModel.PayMethod;
 
 
-					var paymentMethodsObj = JObject.Parse(responseData);
+			StripeConfiguration.ApiKey = "pk_test_zFFDBaQm00tzDkEh04fd3vOS000CPjQesc";
+			var setupIntent = await StripeService.GetSetupIntentAsync();
 
-
-					// make sure this doesn't have a slash
-					var hey = paymentMethodsObj["card_exp"] = paymentMethod.CardExpire.Remove(2, 3);
-
-					paymentMethodsObj["method"] = "card";
-					paymentMethodsObj["bank_name"] = "n/a";
-					paymentMethodsObj["bank_type"] = "checking";
-					paymentMethodsObj["bank_holder_type"] = "personal";
-					paymentMethodsObj["person_name"] = paymentMethod.PersonName;
-					paymentMethodsObj["address_1"] = paymentMethod.Address1;
-					paymentMethodsObj["address_2"] = paymentMethod.Address2;
-					var city = paymentMethodsObj["address_city"] = paymentMethod.City;
-					var state = paymentMethodsObj["address_state"] = paymentMethod.State;
-					var zip = paymentMethodsObj["address_zip"] = paymentMethod.Zip;
-
-					var wow = paymentMethodsObj.ToString(Formatting.None);
-					var content = new StringContent(paymentMethodsObj.ToString(Formatting.None), Encoding.UTF8, "application/json");
-					var result = await httpClient.PutAsync(url, content);
-					var resultMessage = await result.Content.ReadAsStringAsync();
+			var billing = new BillingDetailsOptions() {
+				Name = payMethod.PersonName,
+				Address = new AddressOptions() {
+					Line1 = payMethod.Address1,
+					Line2 = payMethod.Address2,
+					City = payMethod.City,
+					State = payMethod.State,
+					PostalCode = payMethod.Zip,
+					Country = payMethod.Country
 				}
+			};
+
+			var payOptions = new PaymentMethodCreateOptions {
+				Type = "card",
+				Card = new PaymentMethodCardCreateOptions {
+					Number = payMethod.CardNumber,
+					ExpMonth = long.Parse(payMethod.MonthExpire),
+					ExpYear = long.Parse(payMethod.YearExpire),
+					Cvc = payMethod.CVV
+				},
+				BillingDetails = billing
+			};
+
+			var payService = new PaymentMethodService();
+			var paymentMethod = await payService.CreateAsync(payOptions);
+
+			var confirmOptions = new SetupIntentConfirmOptions() {
+				ClientSecret = setupIntent.ClientSecret,
+				PaymentMethodId = paymentMethod.Id
+			};
+
+			var setupService = new SetupIntentService();
+			try { 
+				var completeSetupIntent = await setupService.ConfirmAsync(setupIntent.Id, confirmOptions);
+				if (completeSetupIntent.Status != "succeeded")
+					return;
+			} catch (Exception exc) {
+				await DisplayAlert("Failed", exc.Message, "Ok");
+				return;
 			}
 
+			bool success = await StripeService.AttachUserPayment(LocalGlobals.User.CustomerId, paymentMethod.Id);
+			if (success)
+				await Navigation.PopAsync();
+			else
+				await DisplayAlert("Failed to save", "Card could not be saved. Please try again.", "Ok");
+		}
+
+		async void CancelPressed (object sender, EventArgs e) {
 			await Navigation.PopAsync();
 		}
 
-		async void DeletePressed (object sender, EventArgs e) {
-			var baseAddress = new Uri("https://apiprod.fattlabs.com/");
-			var url = $"payment-method/{paymentMethod.PaymentMethodId.ToString()}";
+		void Handle_TextChanged (object sender, Xamarin.Forms.TextChangedEventArgs e) {
+			var entry = sender as Entry;
 
-			using (var httpClient = new HttpClient { BaseAddress = baseAddress }) {
-
-
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", $"Bearer {LocalGlobals.empty}");
-
-				httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
-
-				using (var response = await httpClient.DeleteAsync(url)) {
-
-					string responseData = await response.Content.ReadAsStringAsync();
-				}
-			}
-
-			await Navigation.PopAsync();
+			if (e.NewTextValue.ToUpper() != e.NewTextValue)
+				entry.Text = e.NewTextValue.ToUpper();
 		}
 	}
 }

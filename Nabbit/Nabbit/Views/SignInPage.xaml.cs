@@ -3,6 +3,7 @@ using Nabbit.Models;
 using Nabbit.Services;
 using Newtonsoft.Json.Linq;
 using Plugin.SecureStorage;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

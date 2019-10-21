@@ -28,6 +28,8 @@
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.4.0-preview" />
     <PackageReference Include="Microsoft.AppCenter" Version="2.4.0-preview" />
     <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.4.0-preview" />
+    <PackageReference Include="Stripe.net" Version="29.6.0" />
+    <PackageReference Include="XamarinFastEntry.Behaviors" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,8 +58,12 @@
 
   <ItemGroup>
     <Folder Include="Controls\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\ChargeResponse.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Update="Views\AccountPage.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

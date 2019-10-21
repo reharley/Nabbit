@@ -19,23 +19,23 @@ using Plugin.SecureStorage;
 namespace NabbitManager {
 	public partial class App : Application {
 		private static Task printingScheduler;
-		public App() {
+		public App () {
 			InitializeComponent();
 
 			MainPage = new AppShell();
 		}
 
-		protected override void OnStart() {
+		protected override void OnStart () {
 			// Handle when your app starts
 			var task = LocalGlobals.PullObjects();
 
 			while (!task.IsCompleted)
 				Thread.Sleep(3);
 
-			OneSignal.Current.StartInit("fe020159-a228-44d2-96af-8dc46096a219")
-							.InFocusDisplaying(OSInFocusDisplayOption.None)
-							.HandleNotificationReceived(HandleNotificationRecieved)
-							.EndInit();
+			//OneSignal.Current.StartInit("fe020159-a228-44d2-96af-8dc46096a219")
+			//				.InFocusDisplaying(OSInFocusDisplayOption.None)
+			//				.HandleNotificationReceived(HandleNotificationRecieved)
+			//				.EndInit();
 
 			//OneSignal.Current.SetExternalUserId(LocalGlobals.Restaurant.RestaurantId.ToString());
 			//"uwp={Your UWP App secret here};" +
@@ -45,33 +45,34 @@ namespace NabbitManager {
 
 			//printingScheduler = ProcessOrders();
 
-			if (CrossSecureStorage.Current.HasKey("InstallId") == false)
-				CrossSecureStorage.Current.SetValue("InstallId", Guid.NewGuid().ToString());
+
+			if (App.Current.Properties.ContainsKey("InstallId") == false)
+				App.Current.Properties["InstallId"] = Guid.NewGuid().ToString();
 
 
-			var installIdString = CrossSecureStorage.Current.GetValue("InstallId");
+			var installIdString = App.Current.Properties["InstallId"] as string;
 			var installId = Guid.Parse(installIdString);
 			if (LocalGlobals.Restaurant.PrinterId == installId)
-				printingScheduler = Task.Run(ProcessOrders);
+				printingScheduler = ProcessOrders();
 		}
 
-		private async void HandleNotificationRecieved(OSNotification notification) {
+		private async void HandleNotificationRecieved (OSNotification notification) {
 			await OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString());
 			Console.WriteLine();
 		}
 
-		protected override void OnSleep() {
+		protected override void OnSleep () {
 			// Handle when your app sleeps
 		}
 
-		protected override void OnResume() {
+		protected override void OnResume () {
 			// Handle when your app resumes
 			OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString()).Wait();
 		}
 
 
-		async void ProcessOrders() {
-			var lastPing = DateTime.Now;
+		async Task ProcessOrders () {
+			var lastPing = LocalGlobals.Restaurant.LastPing;
 			var restaurantId = LocalGlobals.Restaurant.RestaurantId.ToString();
 			while (true) {
 				var timeDiff = DateTime.Now.Subtract(lastPing);

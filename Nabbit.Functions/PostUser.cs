@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Nabbit.Models;
+using Stripe;
 
 namespace Nabbit.Functions {
     public static class PostUser {
@@ -32,6 +33,10 @@ namespace Nabbit.Functions {
             try {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var user = JsonConvert.DeserializeObject<User>(requestBody);
+				if (user.CustomerId == null || user.CustomerId == "") {
+					user.CustomerId = RegisterStripe(user);
+				}
+
 
                 log.LogInformation($"PostUser,{DateTime.Now},userId={user.UserId}");
                 var storageAccount = new CloudStorageAccount(
@@ -40,14 +45,30 @@ namespace Nabbit.Functions {
                 var tableClient = storageAccount.CreateCloudTableClient();
                 var userTable = tableClient.GetTableReference(userTableName);
 				await userTable.CreateIfNotExistsAsync();
-                var upsertUser = TableOperation.InsertOrReplace(new UserEntity(user.UserId.ToString(), requestBody));
+                var upsertUser = TableOperation
+					.InsertOrReplace(new UserEntity(user.UserId.ToString(),
+									 JsonConvert.SerializeObject(user)));
 
                 await userTable.ExecuteAsync(upsertUser);
-
+                
                 return (ActionResult)new OkResult();
             } catch (Exception ex) {
                 return new BadRequestObjectResult(ex.Message);
             }
         }
+
+		static string RegisterStripe (User user) {
+			StripeConfiguration.ApiKey = "sk_test_NTa0bUkb7wRkI8xuilYnbyFN00dTOvTMNL";
+
+			var options = new CustomerCreateOptions {
+				Name = user.FirstName + " " + user.LastName,
+				Email = user.Email
+			};
+
+			var service = new CustomerService();
+			Customer customer = service.Create(options);
+
+			return customer.Id;
+		}
     }
 }
