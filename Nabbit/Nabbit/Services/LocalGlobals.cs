@@ -34,9 +34,6 @@ namespace Nabbit.Services {
 		static Restaurant restaurant;
 		public static Restaurant Restaurant {
 			get {
-				if (restaurant == null)
-					PullObjects().Wait();
-
 				return restaurant;
 			}
 			set {
@@ -46,11 +43,6 @@ namespace Nabbit.Services {
 		static School school;
 		public static School School {
 			get {
-				if (school == null) {
-					var task = PullObjects();
-					while (!task.IsCompleted)
-						Thread.Sleep(3);
-				}
 
 				return school;
 			}
@@ -79,7 +71,6 @@ namespace Nabbit.Services {
 			get {
 				if (user == null)
 					GetUserInfo();
-
 				return user;
 			}
 			set {
@@ -90,14 +81,11 @@ namespace Nabbit.Services {
 		static void GetUserInfo () {
 			user = new User();
 
-			//if (CrossSecureStorage.Current.HasKey("User")) {
-			//	var userJson = CrossSecureStorage.Current.GetValue("User");
-
-			//	user = JsonConvert.DeserializeObject<User>(userJson);
-
-			//	if (user.UserId != Guid.Empty)
-			//		user.LoggedIn = true;
-			//}
+			if (CrossSecureStorage.Current.HasKey("User")) {
+				var userJson = CrossSecureStorage.Current.GetValue("User");
+				user = JsonConvert.DeserializeObject<User>(userJson);
+				user.LoggedIn = true;
+			}
 		}
 
 		public static async Task GetUser () {
@@ -125,6 +113,9 @@ namespace Nabbit.Services {
 			if (user.CustomerId == null || user.CustomerId == "")
 				await SaveUser();
 
+			if (!CrossSecureStorage.Current.HasKey("User"))
+				CrossSecureStorage.Current.SetValue("User", JsonConvert.SerializeObject(user));
+
 			user.LoggedIn = true;
 		}
 
@@ -141,44 +132,45 @@ namespace Nabbit.Services {
 		/// Once it is saved to the device, it will load from the device instead of pulling from the servers.
 		/// </summary>
 		/// <returns>0 on success; -1 on failure</returns>
-		public static async Task<int> PullObjects () {
-			try {
-				using (var client = new HttpClient()) {
-					var url = getSchoolsUrl.Replace("{userId}", "none");
-					string result = "";
+		public static async Task<int> PullObjects (bool forcePull = false) {
+			bool pull = false;
+			bool schoolPresent = Application.Current.Properties.ContainsKey("school");
+			bool restaurantPresent = Application.Current.Properties.ContainsKey("restaurant");
 
-					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
-						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+			if (forcePull || !schoolPresent || !restaurantPresent)
+				pull = true;
+
+			if (pull) {
+				try {
+					using (var client = new HttpClient()) {
+						var url = getSchoolsUrl.Replace("{userId}", "none");
+						string result = "";
+
+						using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+							result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+						}
+						var schoolEntity = JsonConvert.DeserializeObject<List<SchoolEntity>>(result)[0];
+						school = JsonConvert.DeserializeObject<School>(schoolEntity.JSON);
+						App.Current.Properties["school"] = schoolEntity.JSON;
+
+						url = getRestaurantsUrl.Replace("{userId}", "none").Replace("{schoolId}", School.SchoolId.ToString());
+						using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+							result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+						}
+						var restaurantEntity = JsonConvert.DeserializeObject<List<RestaurantEntity>>(result)[0];
+						restaurant = JsonConvert.DeserializeObject<Restaurant>(restaurantEntity.JSON);
+						App.Current.Properties["restaurant"] = restaurantEntity.JSON;
+
+						await App.Current.SavePropertiesAsync();
 					}
-					var schoolEntity = JsonConvert.DeserializeObject<List<SchoolEntity>>(result)[0];
-					school = JsonConvert.DeserializeObject<School>(schoolEntity.JSON);
-					App.Current.Properties["school"] = schoolEntity.JSON;
-
-					url = getRestaurantsUrl.Replace("{userId}", "none").Replace("{schoolId}", School.SchoolId.ToString());
-					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
-						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-					}
-					var restaurantEntity = JsonConvert.DeserializeObject<List<RestaurantEntity>>(result)[0];
-					restaurant = JsonConvert.DeserializeObject<Restaurant>(restaurantEntity.JSON);
-					App.Current.Properties["restaurant"] = restaurantEntity.JSON;
-
-					await App.Current.SavePropertiesAsync();
+				} catch (Exception ex) {
+					/// TODO: Log error
+					return -1;
 				}
-			} catch (Exception ex) {
-				/// TODO: Log error
-				return -1;
+			} else if (restaurant == null || school == null) {
+				restaurant = JsonConvert.DeserializeObject<Restaurant>((string)App.Current.Properties["restaurant"]);
+				school = JsonConvert.DeserializeObject<School>((string)App.Current.Properties["school"]);
 			}
-
-			/// TODO: Figure out an efficient way to check for version changes
-			//bool schoolPresent = Application.Current.Properties.ContainsKey("school");
-			//bool restaurantPresent = Application.Current.Properties.ContainsKey("restaurant");
-
-			//if (!schoolPresent || !restaurantPresent) {
-
-			//} else if (restaurant == null || School == null) {
-			//	restaurant = JsonConvert.DeserializeObject<Restaurant>((string)App.Current.Properties["restaurant"]);
-			//	school = JsonConvert.DeserializeObject<School>((string)App.Current.Properties["school"]);
-			//}
 
 			return 0;
 		}
@@ -230,7 +222,7 @@ namespace Nabbit.Services {
 			try {
 				using (var client = new HttpClient()) {
 					string result = "";
-					var url = getRestOrdersUrl.Replace("{restaurantId}", restaurant.RestaurantId.ToString());
+					var url = getRestOrdersUrl.Replace("{restaurantId}", Restaurant.RestaurantId.ToString());
 					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
 						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 

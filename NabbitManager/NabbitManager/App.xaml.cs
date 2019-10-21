@@ -27,7 +27,7 @@ namespace NabbitManager {
 
 		protected override void OnStart () {
 			// Handle when your app starts
-			var task = LocalGlobals.PullObjects();
+			var task = LocalGlobals.PullObjects(true);
 
 			while (!task.IsCompleted)
 				Thread.Sleep(3);
@@ -77,7 +77,7 @@ namespace NabbitManager {
 			while (true) {
 				var timeDiff = DateTime.Now.Subtract(lastPing);
 				if (timeDiff > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
-					await OrderQueueService.GetQueueOrders(restaurantId);
+					//await OrderQueueService.GetQueueOrders(restaurantId);
 					lastPing = DateTime.Now;
 					LocalGlobals.Restaurant.LastPing = lastPing;
 					await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);

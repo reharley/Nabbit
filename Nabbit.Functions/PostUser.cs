@@ -15,6 +15,7 @@ using Stripe;
 
 namespace Nabbit.Functions {
     public static class PostUser {
+		static string stripeSecret;
         [FunctionName("PostUser")]
         public static async Task<IActionResult> Run (
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "PostUser")] HttpRequest req,
@@ -29,8 +30,9 @@ namespace Nabbit.Functions {
             var storageName = config["AzureStorageName"];
             var accountKey = config["AzureAccountKey"];
             var userTableName = config["UserTableName"];
+			stripeSecret = config["StripeSecretKey"];
 
-            try {
+			try {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var user = JsonConvert.DeserializeObject<User>(requestBody);
 				if (user.CustomerId == null || user.CustomerId == "") {
@@ -58,7 +60,7 @@ namespace Nabbit.Functions {
         }
 
 		static string RegisterStripe (User user) {
-			StripeConfiguration.ApiKey = "sk_test_NTa0bUkb7wRkI8xuilYnbyFN00dTOvTMNL";
+			StripeConfiguration.ApiKey = stripeSecret;
 
 			var options = new CustomerCreateOptions {
 				Name = user.FirstName + " " + user.LastName,

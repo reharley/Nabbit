@@ -52,11 +52,22 @@ namespace Nabbit.ViewModels {
 			}
 		}
 
-		public List<Models.Menu> Menus { get; set; }
+		List<Models.Menu> _menus;
+		public List<Models.Menu> Menus {
+			get { return _menus; }
+			set { SetProperty(ref _menus, value); }
+		}
 		public Models.Menu SelectedMenu { get; set; }
 
 		public HomeViewModel () {
 			menus = new List<List<ProductCategoryProducts>>();
+			BuildViewModel();
+		}
+
+		public void BuildViewModel () {
+			if (LocalGlobals.Restaurant == null)
+				return;
+
 			BuildCategoryProducts();
 			menuIndex = 0;
 			pcProducts = menus[menuIndex];
@@ -78,6 +89,7 @@ namespace Nabbit.ViewModels {
 		void ChangeTime () {
 			if (LocalGlobals.Restaurant == null)
 				return;
+
 			var dayOfWeek = (int)DateTime.Today.DayOfWeek;
 			var openingTime = SelectedMenu.Hours.Opening[dayOfWeek];
 			var closingTime = SelectedMenu.Hours.Closing[dayOfWeek];

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -20,20 +21,35 @@ namespace Nabbit.Views {
 		public MenuPage () {
 			InitializeComponent();
 
+			BindingContext = viewModel = new HomeViewModel();
+
 			if (LocalGlobals.User.LoggedIn == false) {
 				SignIn();
 			}
 
-			BindingContext = viewModel = new HomeViewModel();
+			if (LocalGlobals.Restaurant == null) {
+				viewModel.IsBusy = true;
+
+				var task = LocalGlobals.PullObjects();
+				task.ContinueWith((getTask) => {
+					viewModel.BuildViewModel();
+					UpdatePage();
+					viewModel.IsBusy = false;
+				});
+			}
+		}
+
+		void UpdatePage () {
+			if (viewModel.Menus == null)
+				return;
 
 			AdjustGroupListHeight();
 
-			if(viewModel.Menus.Count == 1) {
+			if (viewModel.Menus.Count == 1) {
 				menuTabs.IsEnabled = false;
 				menuTabs.IsVisible = false;
 			} else
 				menuTabs.SelectedItem = viewModel.GetMenuName();
-
 		}
 
 		async Task SignIn () {
@@ -42,10 +58,13 @@ namespace Nabbit.Views {
 
 		protected override void OnAppearing () {
 			base.OnAppearing();
-			viewModel.IsBusy = true;
 		}
 
 		void AdjustGroupListHeight () {
+			while (groupList.Children.Count == 0) {
+				Thread.Sleep(10);
+			}
+
 			for (int i = 0; i < groupList.Children.Count; i++) {
 				var stackLayout = groupList.Children[i] as StackLayout;
 				var collectionView = stackLayout.Children[1] as CollectionView;
