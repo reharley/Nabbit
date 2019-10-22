@@ -75,9 +75,9 @@ namespace Nabbit.Views {
 		/// <returns>true if this viewModel.OrderItem is from the same menu as
 		/// Cart.MenuId and same Cart.RestaurantId</returns>
 		async Task<bool> ItemFromSameMenu () {
-			if (Cart.RestaurantId == Guid.Empty)
+			if (Cart.RestaurantId == Guid.Empty) {
 				Cart.RestaurantId = restaurantId;
-			else {
+			} else if (Cart.RestaurantId != restaurantId) {
 				// cannot add item. ABORT
 				var clear = await DisplayAlert("Cart", "The cart can only " +
 					"contain items from one restaurant.\n\n Would you like to " +

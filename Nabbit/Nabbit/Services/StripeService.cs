@@ -12,6 +12,7 @@ namespace Nabbit.Services {
 		private static string getPayMethodsUrl = "https://nabbit.azurewebsites.net/api/GetPayMethods/customerId/{customerId}?code=3MX6pWjMZu1iu1kNaLUVQmUOQfMSz64QBgwiyD7cU/BtBHEaQN83Yw==";
 		private static string getPayIntentUrl = "https://nabbit.azurewebsites.net/api/GetPayIntent/amount/{amount}/customerId/{customerId}/paymentMethodId/{paymentMethodId}?code=YfPY4BuJFeyECvLJXJfOd/bkWz/car8SmWlKeUBu3y0Pnl7DqvMyGA==";
 		private static string attachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/AttachUserPayment/custId/{custId}/payId/{payId}?code=atm9rtlRkGB63oaqZakHrMDRrEJjpaJO4wYGaye/GPIRkx4kfcMRZQ==";
+		private static string detachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/DetachPayMethod/paymentMethodId/{paymentMethodId}?code=2UGRo9G5mYRsOR2TEgWdktQAl9LgrAKIUJiF7NfKmZ93joPTWunJYQ==";
 		private static string pubKey = "pk_test_zFFDBaQm00tzDkEh04fd3vOS000CPjQesc";
 
 		public static async Task<SetupIntent> GetSetupIntentAsync () {
@@ -35,6 +36,15 @@ namespace Nabbit.Services {
 				using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
 					var result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 					return httpResponse.IsSuccessStatusCode;
+				}
+			}
+		}
+
+		public static async Task DetachUserPayment (string paymentMethodId) {
+			using (var client = new HttpClient()) {
+				var url = detachUserPaymentUrl.Replace("{paymentMethodId}", paymentMethodId);
+				using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+					var result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 				}
 			}
 		}

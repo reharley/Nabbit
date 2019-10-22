@@ -54,11 +54,13 @@ namespace Nabbit.Views {
 				return;
 			}
 
+			if (await ValidTime() == false)
+				return;
+
 			if (LocalGlobals.User.LoggedIn) {
 				var pickupDate = viewModel.PickupDate;
 				var pickupTime = viewModel.PickupTime;
 				viewModel.Order.PickupTime = new DateTime(pickupDate.Year, pickupDate.Month, pickupDate.Day, pickupTime.Hours, pickupTime.Minutes, pickupTime.Seconds);
-
 
 				var payMethod = payMethodsList.SelectedItem as PaymentMethod;
 
@@ -80,7 +82,8 @@ namespace Nabbit.Views {
 					await DisplayAlert("Payment Failed", "Please check payment method details and try again. Or use another card.", "Ok");
 				else if (result == "succeeded") {
 					await LocalGlobals.PostOrder(viewModel.Order);
-					await Navigation.PushAsync(new ThankYouPage());
+					Cart.ClearCart();
+					await Navigation.PushAsync(new OrderDetailsPage(viewModel.Order, newOrder:true));
 				}
 			}
 		}
@@ -92,6 +95,10 @@ namespace Nabbit.Views {
 			if (datePicker.SelectedIndex == -1)
 				return;
 
+			await ValidTime();
+		}
+
+		async Task<bool> ValidTime () {
 			var pickupDate = viewModel.PickupDateTimes[datePicker.SelectedIndex];
 			var pickupTime = viewModel.PickupTime;
 
@@ -104,9 +111,11 @@ namespace Nabbit.Views {
 				if (pickupTime < DateTime.Now.TimeOfDay) {
 					await DisplayAlert("Pickup Time", "The pickup time entered was before the current time.", "Ok");
 					viewModel.SetEarliestTime();
+					return false;
 				} else if (pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 4, 0))) {
 					await DisplayAlert("Pickup Time", "Please provide time to process the order.", "Ok");
 					viewModel.SetEarliestTime();
+					return false;
 				}
 			} else if (openHours <= pickupTime && pickupTime <= closingHours) {
 				menuHoursText.TextColor = (Color)App.Current.Resources["primaryColor"];
@@ -114,11 +123,15 @@ namespace Nabbit.Views {
 				await DisplayAlert("Pickup Time", "The pickup time entered was before opening time.", "Ok");
 				//menuHoursText.TextColor = (Color)App.Current.Resources["dangerColor"];
 				viewModel.SetEarliestTime();
+				return false;
 			} else if (closingHours < pickupTime) {
 				await DisplayAlert("Pickup Time", "The pickup time entered was after closing time.", "Ok");
 				//menuHoursText.TextColor = (Color)App.Current.Resources["dangerColor"];
 				viewModel.SetEarliestTime();
+				return false;
 			}
+
+			return true;
 		}
 	}
 }

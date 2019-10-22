@@ -9,15 +9,20 @@ using Xamarin.Forms;
 namespace Nabbit.Views {
 	public partial class PaymentMethodEditPage : ContentPage {
 		PaymentMethodEditViewModel viewModel;
+		bool newPayMethod = false;
 
 		public PaymentMethodEditPage () {
 			InitializeComponent();
 			BindingContext = viewModel = new PaymentMethodEditViewModel();
+			newPayMethod = true;
 		}
 
 		public PaymentMethodEditPage (Nabbit.Models.PaymentMethod payMethod) {
 			InitializeComponent();
-			BindingContext = viewModel = new PaymentMethodEditViewModel();
+			BindingContext = viewModel = new PaymentMethodEditViewModel(payMethod);
+
+			cancelButton.Text = "Delete";
+			cancelButton.BackgroundColor = (Color)App.Current.Resources["dangerColor"];
 		}
 
 		async Task<bool> VerifyForm () {
@@ -69,11 +74,11 @@ namespace Nabbit.Views {
 		}
 
 		async void SavePressed (object sender, EventArgs e) {
-			//if (await VerifyForm() == false)
-			//	return;
+			if (await VerifyForm() == false)
+				return;
 
-			//viewModel.SaveModel();
-			viewModel.TestModel();
+			viewModel.SaveModel();
+			//viewModel.TestModel();
 			var payMethod = viewModel.PayMethod;
 
 
@@ -112,7 +117,7 @@ namespace Nabbit.Views {
 			};
 
 			var setupService = new SetupIntentService();
-			try { 
+			try {
 				var completeSetupIntent = await setupService.ConfirmAsync(setupIntent.Id, confirmOptions);
 				if (completeSetupIntent.Status != "succeeded")
 					return;
@@ -129,6 +134,9 @@ namespace Nabbit.Views {
 		}
 
 		async void CancelPressed (object sender, EventArgs e) {
+			if (newPayMethod == false)
+				await StripeService.DetachUserPayment(viewModel.PayMethod.PaymentMethodId);
+
 			await Navigation.PopAsync();
 		}
 

@@ -205,7 +205,8 @@
                     <RowDefinition Height="80" />
                 </Grid.RowDefinitions>
 
-                <Button Text="Cancel"
+                <Button x:Name="cancelButton"
+                        Text="Cancel"
                         Style="{StaticResource primaryLightButtonStyle}"
                         VerticalOptions="End"
                         Clicked="CancelPressed"

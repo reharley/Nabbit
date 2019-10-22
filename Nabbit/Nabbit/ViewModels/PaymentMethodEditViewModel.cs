@@ -27,6 +27,9 @@ namespace Nabbit.ViewModels {
 		public PaymentMethodEditViewModel () {
 			PayMethod = new PaymentMethod();
 		}
+		public PaymentMethodEditViewModel (PaymentMethod payMethod) {
+			PayMethod = payMethod;
+		}
 
 		public void SaveModel () {
 			PayMethod.CardNumber = CardNumber.Trim(' ');
