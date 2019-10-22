@@ -45,11 +45,7 @@ namespace Nabbit.Views {
 
 			AdjustGroupListHeight();
 
-			if (viewModel.Menus.Count == 1) {
-				menuTabs.IsEnabled = false;
-				menuTabs.IsVisible = false;
-			} else
-				menuTabs.SelectedItem = viewModel.GetMenuName();
+			menuTabs.SelectedItem = viewModel.GetMenuName();
 		}
 
 		async Task SignIn () {

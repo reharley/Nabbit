@@ -42,9 +42,5 @@ namespace Nabbit {
 			if (Cart.OrderItems == null)
 				Cart.OrderItems = new List<OrderItem>();
 		}
-
-		private void DisplayAlert (string v1, string v2) {
-			throw new NotImplementedException();
-		}
 	}
 }

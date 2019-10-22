@@ -1,6 +1,7 @@
 ﻿using Microsoft.AppCenter.Auth;
 using Nabbit.Models;
 using Nabbit.Services;
+using Nabbit.ViewModels;
 using Newtonsoft.Json.Linq;
 using Plugin.SecureStorage;
 using Stripe;
@@ -18,11 +19,14 @@ using Xamarin.Forms.Xaml;
 namespace Nabbit.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class SignInPage : ContentPage {
+		BaseViewModel viewModel;
 		public SignInPage () {
 			InitializeComponent();
+			BindingContext = viewModel = new BaseViewModel();
 		}
 
 		async Task SignIn () {
+			viewModel.IsBusy = true;
 			try {
 				// Sign-in succeeded.
 				UserInformation userInfo = await Auth.SignInAsync();
@@ -41,6 +45,8 @@ namespace Nabbit.Views {
 				// Do something with sign-in failure.
 				signInLabel.Text = "Login Failed... Please try again.";
 			}
+
+			viewModel.IsBusy = false;
 		}
 
 		private async void SignInClicked (object sender, EventArgs e) {

@@ -93,7 +93,7 @@ namespace Nabbit.Views {
 					City = payMethod.City,
 					State = payMethod.State,
 					PostalCode = payMethod.Zip,
-					Country = payMethod.Country
+					Country = payMethod.Country.ToLower()
 				}
 			};
 
@@ -125,6 +125,9 @@ namespace Nabbit.Views {
 				await DisplayAlert("Failed", exc.Message, "Ok");
 				return;
 			}
+
+			if (LocalGlobals.User.CustomerId == null || LocalGlobals.User.CustomerId == "")
+				await LocalGlobals.GetUser();
 
 			bool success = await StripeService.AttachUserPayment(LocalGlobals.User.CustomerId, paymentMethod.Id);
 			if (success)

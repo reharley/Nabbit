@@ -88,7 +88,7 @@ namespace Nabbit.Services {
 			}
 		}
 
-		public static async Task GetUser () {
+		public static async Task GetUser (bool firstTry = true) {
 			using (var client = new HttpClient()) {
 				var url = getUserUrl.Replace("{userId}", user.UserId.ToString());
 				string result = "";
@@ -110,8 +110,11 @@ namespace Nabbit.Services {
 				await SaveUser();
 			}
 
-			if (user.CustomerId == null || user.CustomerId == "")
+			if (user.CustomerId == null || user.CustomerId == "") {
 				await SaveUser();
+				if (firstTry)
+					await GetUser(false);
+			}
 
 			if (!CrossSecureStorage.Current.HasKey("User"))
 				CrossSecureStorage.Current.SetValue("User", JsonConvert.SerializeObject(user));

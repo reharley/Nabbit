@@ -107,7 +107,7 @@
                            Style="{StaticResource primaryTitleLabel}"/>
                     
                     
-                    <Label Text="Name"
+                    <Label Text="Full Name"
                            Style="{StaticResource primaryDarkBoldLabel}"
                            FontSize="Medium" />
                     <Entry Text="{Binding PayMethod.PersonName}"

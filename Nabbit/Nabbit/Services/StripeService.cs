@@ -13,7 +13,12 @@ namespace Nabbit.Services {
 		private static string getPayIntentUrl = "https://nabbit.azurewebsites.net/api/GetPayIntent/amount/{amount}/customerId/{customerId}/paymentMethodId/{paymentMethodId}?code=YfPY4BuJFeyECvLJXJfOd/bkWz/car8SmWlKeUBu3y0Pnl7DqvMyGA==";
 		private static string attachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/AttachUserPayment/custId/{custId}/payId/{payId}?code=atm9rtlRkGB63oaqZakHrMDRrEJjpaJO4wYGaye/GPIRkx4kfcMRZQ==";
 		private static string detachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/DetachPayMethod/paymentMethodId/{paymentMethodId}?code=2UGRo9G5mYRsOR2TEgWdktQAl9LgrAKIUJiF7NfKmZ93joPTWunJYQ==";
+
+#if DEBUG
 		private static string pubKey = "pk_test_zFFDBaQm00tzDkEh04fd3vOS000CPjQesc";
+#else
+		private static string pubKey = "pk_live_QMR35TGi1Q5HTG574dB5gaE100HtPINRzl";
+#endif
 
 		public static async Task<SetupIntent> GetSetupIntentAsync () {
 			SetupIntent setupIntent = null;
