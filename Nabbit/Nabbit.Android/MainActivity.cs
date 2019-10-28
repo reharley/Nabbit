@@ -7,6 +7,12 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 
+#if DEBUG
+[assembly: Application(Debuggable = true)]
+#else
+[assembly: Application(Debuggable = false)]
+#endif
+
 namespace Nabbit.Droid
 {
     [Activity(Label = "Nabbit", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]

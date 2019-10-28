@@ -9,6 +9,7 @@ using Plugin.SecureStorage;
 namespace NabbitManager.ViewModels {
 	public class RestaurantDetailsViewModel : BaseViewModel {
 		public decimal TaxRate { get; set; }
+		public decimal ServiceCharge { get; set; }
 		public int PingDelay { get; set; }
 
 		bool usePrinter = false;
@@ -33,6 +34,7 @@ namespace NabbitManager.ViewModels {
 		void BuildModel () {
 			PingDelay = LocalGlobals.PingMinuteDelay;
 			TaxRate = LocalGlobals.Restaurant.TaxRate;
+			ServiceCharge = LocalGlobals.Restaurant.ServiceCharge;
 
 			var installIdString = App.Current.Properties["InstallId"] as string;
 			var installId = Guid.Parse(installIdString);
@@ -96,6 +98,7 @@ namespace NabbitManager.ViewModels {
 
 			LocalGlobals.Restaurant.BusinessHours = hours;
 			LocalGlobals.Restaurant.TaxRate = TaxRate;
+			LocalGlobals.Restaurant.ServiceCharge = ServiceCharge;
 			LocalGlobals.PingMinuteDelay = PingDelay;
 		}
 	}

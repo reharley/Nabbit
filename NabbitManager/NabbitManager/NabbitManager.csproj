@@ -7,6 +7,7 @@
     <Authors>Nabbit LLC</Authors>
     <Product>Nabbit Manager</Product>
     <Description>Manages the contents of restaurants and their orders.</Description>
+    <ReleaseVersion>0.9.5</ReleaseVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

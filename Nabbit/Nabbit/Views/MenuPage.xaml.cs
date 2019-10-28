@@ -33,8 +33,8 @@ namespace Nabbit.Views {
 				var task = LocalGlobals.PullObjects();
 				task.ContinueWith((getTask) => {
 					viewModel.BuildViewModel();
-					UpdatePage();
 					viewModel.IsBusy = false;
+					UpdatePage();
 				});
 			}
 		}
@@ -44,7 +44,6 @@ namespace Nabbit.Views {
 				return;
 
 			AdjustGroupListHeight();
-
 			menuTabs.SelectedItem = viewModel.GetMenuName();
 		}
 
@@ -62,15 +61,21 @@ namespace Nabbit.Views {
 			}
 
 			for (int i = 0; i < groupList.Children.Count; i++) {
+				var products = viewModel.pcProducts[i].Products;
+				int productCount = products.Count;
+				//int longProductNameCount = 0;
+				//foreach (var prod in products) {
+				//	if (prod.Name.Length > 15)
+				//		longProductNameCount++;
+				//}
+
+				//int productCount = collectionView.ItemsSource.OfType<Product>().Count();
 				var stackLayout = groupList.Children[i] as StackLayout;
 				var collectionView = stackLayout.Children[1] as CollectionView;
 
-				int productCount = collectionView.ItemsSource.OfType<Product>().Count();
-				int labelHeight = 63, space = 10;
-				if (Device.RuntimePlatform == Device.Android)
-					labelHeight = 63;
+				int labelHeight = 100;
 
-				collectionView.HeightRequest = (productCount * labelHeight) + (productCount * space);
+				collectionView.HeightRequest = productCount * labelHeight;
 			}
 		}
 

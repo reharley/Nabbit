@@ -28,6 +28,7 @@ namespace Nabbit.Models {
 		public int Version { get; set; }
 		public Hours BusinessHours { get; set; }
 		public decimal TaxRate { get; set; }
+		public decimal ServiceCharge { get; set; }
 		public bool IsActive { get; set; }
 		public DateTime LastPing { get; set; }
 

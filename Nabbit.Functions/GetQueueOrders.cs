@@ -36,6 +36,9 @@ namespace Nabbit.Functions {
 
 			try {
 				log.LogInformation($"GetQueueOrders,{DateTime.Now},restaurantId={restaurantId}");
+				string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+				var order = JsonConvert.DeserializeObject<List<string>>(requestBody);
+
 				storageAccount = new CloudStorageAccount(
 					new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials(
 						storageName, accountKey), true);

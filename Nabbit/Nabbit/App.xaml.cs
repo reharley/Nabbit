@@ -14,6 +14,7 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Auth;
 
+
 namespace Nabbit {
 	public partial class App : Application {
 		public App () {

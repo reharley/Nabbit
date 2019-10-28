@@ -11,14 +11,11 @@ namespace Nabbit.Services {
 		private static string getCustomerUrl = "https://nabbit.azurewebsites.net/api/GetCustomer/custId/{custId}?code=Izs5DTh9uPnD6bCipXVFWnraQ5W9ypyQFBQLQ9mXtbo6sVGDyQjf8g==";
 		private static string getPayMethodsUrl = "https://nabbit.azurewebsites.net/api/GetPayMethods/customerId/{customerId}?code=3MX6pWjMZu1iu1kNaLUVQmUOQfMSz64QBgwiyD7cU/BtBHEaQN83Yw==";
 		private static string getPayIntentUrl = "https://nabbit.azurewebsites.net/api/GetPayIntent/amount/{amount}/customerId/{customerId}/paymentMethodId/{paymentMethodId}?code=YfPY4BuJFeyECvLJXJfOd/bkWz/car8SmWlKeUBu3y0Pnl7DqvMyGA==";
+		private static string getPubKeyUrl = "https://nabbit.azurewebsites.net/api/GetPubKey?code=mJUsrR07LfUH3haW4Lfu2SZaVHJLqtsFnFeubl9bxcpSNX4r9Ddu0Q==";
 		private static string attachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/AttachUserPayment/custId/{custId}/payId/{payId}?code=atm9rtlRkGB63oaqZakHrMDRrEJjpaJO4wYGaye/GPIRkx4kfcMRZQ==";
 		private static string detachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/DetachPayMethod/paymentMethodId/{paymentMethodId}?code=2UGRo9G5mYRsOR2TEgWdktQAl9LgrAKIUJiF7NfKmZ93joPTWunJYQ==";
 
-#if DEBUG
-		private static string pubKey = "pk_test_zFFDBaQm00tzDkEh04fd3vOS000CPjQesc";
-#else
-		private static string pubKey = "pk_live_QMR35TGi1Q5HTG574dB5gaE100HtPINRzl";
-#endif
+		private static string pubKey = "";
 
 		public static async Task<SetupIntent> GetSetupIntentAsync () {
 			SetupIntent setupIntent = null;
@@ -45,6 +42,18 @@ namespace Nabbit.Services {
 			}
 		}
 
+		public static async Task<bool> GetPubKey () {
+			using (var client = new HttpClient()) {
+				var url = getPubKeyUrl;
+				using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+					pubKey = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+					if (!httpResponse.IsSuccessStatusCode)
+						pubKey = "";
+					return httpResponse.IsSuccessStatusCode;
+				}
+			}
+		}
+
 		public static async Task DetachUserPayment (string paymentMethodId) {
 			using (var client = new HttpClient()) {
 				var url = detachUserPaymentUrl.Replace("{paymentMethodId}", paymentMethodId);
@@ -55,6 +64,8 @@ namespace Nabbit.Services {
 		}
 
 		public static async Task<string> ChargeAsync (string amount, string customerId, string paymentMethodId) {
+			
+
 			using (var client = new HttpClient()) {
 				var url = getPayIntentUrl
 					.Replace("{amount}", amount)
@@ -121,6 +132,71 @@ namespace Nabbit.Services {
 			}
 
 			return payMethods;
+		}
+
+		public static async Task<bool> AttachPayMethod (Models.PaymentMethod payMethod) {
+			if (pubKey == "") {
+				if (await GetPubKey() == false)
+					return false;
+			}
+
+			StripeConfiguration.ApiKey = pubKey;
+			var setupIntent = await StripeService.GetSetupIntentAsync();
+
+			var line1 = payMethod.Address1;
+			var line2 = payMethod.Address2;
+			var city = payMethod.City;
+			var state = payMethod.State;
+			var zip = payMethod.Zip;
+			var country = payMethod.Country;
+			if (country != null)
+				country = country.ToLower();
+
+			var billing = new BillingDetailsOptions() {
+				Name = payMethod.PersonName,
+				Address = new AddressOptions() {
+					Line1 = line1,
+					Line2 = line2,
+					City = city,
+					State = state,
+					PostalCode = zip,
+					Country = country
+				}
+			};
+
+			var payOptions = new PaymentMethodCreateOptions {
+				Type = "card",
+				Card = new PaymentMethodCardCreateOptions {
+					Number = payMethod.CardNumber,
+					ExpMonth = long.Parse(payMethod.MonthExpire),
+					ExpYear = long.Parse(payMethod.YearExpire),
+					Cvc = payMethod.CVV
+				},
+				BillingDetails = billing
+			};
+
+			var payService = new PaymentMethodService();
+			var paymentMethod = await payService.CreateAsync(payOptions);
+
+			var confirmOptions = new SetupIntentConfirmOptions() {
+				ClientSecret = setupIntent.ClientSecret,
+				PaymentMethodId = paymentMethod.Id
+			};
+
+			var setupService = new SetupIntentService();
+			try {
+				var completeSetupIntent = await setupService.ConfirmAsync(setupIntent.Id, confirmOptions);
+				if (completeSetupIntent.Status != "succeeded")
+					return false;
+			} catch (Exception exc) {
+				return false;
+			}
+
+			if (LocalGlobals.User.CustomerId == null || LocalGlobals.User.CustomerId == "")
+				await LocalGlobals.GetUser();
+
+			bool success = await StripeService.AttachUserPayment(LocalGlobals.User.CustomerId, paymentMethod.Id);
+			return success;
 		}
 	}
 }

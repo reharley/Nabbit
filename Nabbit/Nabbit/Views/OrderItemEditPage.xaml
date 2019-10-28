@@ -120,7 +120,6 @@
                         Clicked="AddCartPressed"
                         Grid.Row="0" Grid.Column="1" />
             </Grid>
-
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
