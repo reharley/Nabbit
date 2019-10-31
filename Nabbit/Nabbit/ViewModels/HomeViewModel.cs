@@ -23,6 +23,16 @@ namespace Nabbit.ViewModels {
 			}
 		}
 
+		List<string> menuNames;
+		public List<string> MenuNames {
+			get {
+				return menuNames;
+			}
+			set {
+				SetProperty(ref menuNames, value);
+			}
+		}
+
 		string bussHoursText;
 		public string BussHoursText {
 			get {
@@ -72,15 +82,16 @@ namespace Nabbit.ViewModels {
 			menuIndex = 0;
 			pcProducts = menus[menuIndex];
 			SelectedMenu = Menus[menuIndex];
+			MenuNames = Menus.Select(m => m.Name).ToList();
 			ChangeTime();
 		}
 
-		public Models.Menu GetMenuName () {
-			return Menus[menuIndex];
+		public string GetMenuName () {
+			return MenuNames[menuIndex];
 		}
 
-		public void ChangeMenu (Models.Menu menu) {
-			menuIndex = Menus.IndexOf(menu);
+		public void ChangeMenu (string menuName) {
+			menuIndex = MenuNames.IndexOf(menuName);
 			pcProducts = menus[menuIndex];
 			SelectedMenu = Menus[menuIndex];
 			ChangeTime();

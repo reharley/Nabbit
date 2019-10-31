@@ -137,10 +137,18 @@
     <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\System.Text.Encodings.Web.dll" />
     <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\System.Text.Json.dll" />
     <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\Xamarin.Essentials.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\runtimes\unix\lib\netstandard1.3\System.Text.Encoding.CodePages.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\runtimes\win\lib\netstandard1.3\System.Text.Encoding.CodePages.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\Nabbit.dll" />
+    <None Remove="obj\Release\netcoreapp2.1\PubTmp\Out\bin\Nabbit.pdb" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

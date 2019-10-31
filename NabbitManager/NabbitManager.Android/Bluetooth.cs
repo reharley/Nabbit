@@ -26,39 +26,15 @@ namespace NabbitManager.Droid {
 
 		const int RequestResolveError = 1000;
 
-		public Bth() {
+		public Bth () {
 		}
 
 		#region IBth implementation
 
 		static BluetoothSocket _socket;
 
-		public async Task Test(byte[] bytes) {
-			BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
-			if (adapter == null)
-				throw new Exception("No Bluetooth adapter found.");
-
-			if (!adapter.IsEnabled)
-				throw new Exception("Bluetooth adapter is not enabled.");
-
-
-			if (_socket == null) {
-				BluetoothDevice device = null;
-				foreach (var bd in adapter.BondedDevices) {
-					if (bd.Name.ToLower().Contains("printer")) {
-						device = bd;
-						break;
-					}
-				}
-
-				if (device == null)
-					throw new Exception("Named device not found.");
-
-				_socket = device.CreateRfcommSocketToServiceRecord(UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
-				_socket.ConnectAsync().Wait();
-			} else if (_socket.IsConnected == false) {
-				_socket.ConnectAsync().Wait();
-			}
+		public async Task Test (byte[] bytes) {
+			Connect();
 
 			// Read data from the device
 			//await _socket.InputStream.ReadAsync(buffer, 0, buffer.Length);
@@ -95,28 +71,56 @@ namespace NabbitManager.Droid {
 		/// Start the "reading" loop 
 		/// </summary>
 		/// <param name="name">Name of the paired bluetooth device (also a part of the name)</param>
-		public void Start(byte[] bytes) {
+		public void Start (byte[] bytes) {
 			Test(bytes).Wait();
 		}
 
 
+		void Connect () {
+			BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
+			if (adapter == null)
+				throw new Exception("No Bluetooth adapter found.");
 
-		private async Task loop(string name, int sleepTime, bool readAsCharArray) {
-			
+			if (!adapter.IsEnabled)
+				throw new Exception("Bluetooth adapter is not enabled.");
+
+
+			if (_socket == null) {
+				BluetoothDevice device = null;
+				foreach (var bd in adapter.BondedDevices) {
+					if (bd.Name.ToLower().Contains("printer")) {
+						device = bd;
+						break;
+					}
+				}
+
+				if (device == null)
+					throw new Exception("Named device not found.");
+
+				_socket = device.CreateRfcommSocketToServiceRecord(UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
+				_socket.ConnectAsync().Wait();
+			} else if (_socket.IsConnected == false) {
+				_socket.ConnectAsync().Wait();
+			}
+		}
+
+
+		private async Task loop (string name, int sleepTime, bool readAsCharArray) {
+
 		}
 
 		/// <summary>
 		/// Cancel the Reading loop
 		/// </summary>
 		/// <returns><c>true</c> if this instance cancel ; otherwise, <c>false</c>.</returns>
-		public void Cancel() {
+		public void Cancel () {
 			if (_ct != null) {
 				System.Diagnostics.Debug.WriteLine("Send a cancel to task!");
 				_ct.Cancel();
 			}
 		}
 
-		public ObservableCollection<string> PairedDevices() {
+		public ObservableCollection<string> PairedDevices () {
 			BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
 			ObservableCollection<string> devices = new ObservableCollection<string>();
 

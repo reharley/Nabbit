@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Nabbit.Models;
+using System.Collections.Generic;
 
 namespace Nabbit.Functions {
 	public static class DeleteQueueOrder {
@@ -56,26 +57,22 @@ namespace Nabbit.Functions {
 			return new BadRequestResult();
 		}
 
+
 		static async Task RemoveOrderFromQueue (string restaurantId, string orderId) {
-			var queueClient = storageAccount.CreateCloudQueueClient();
-			var queue = queueClient.GetQueueReference($"orders-{restaurantId}");
-			if (queue == null)
-				return;
-
-			await queue.FetchAttributesAsync();
-			int count = queue.ApproximateMessageCount.GetValueOrDefault();
-			while (count > 0) {
-				var messages = await queue.GetMessagesAsync(count % 32);
-				foreach (var message in messages) {
-					if (message.AsString == orderId) {
-						await queue.DeleteMessageAsync(message);
-						return;
-					}
-				}
-
-				await queue.FetchAttributesAsync();
-				count = queue.ApproximateMessageCount.GetValueOrDefault();
+			TableOperation retrieveOperation = TableOperation.Retrieve<LiveOrdersEntity>(LiveOrdersEntity.PartitionKeyLabel, restaurantId);
+			TableResult retrievedResult = await orderTable.ExecuteAsync(retrieveOperation);
+			LiveOrdersEntity userEntity = null;
+			if (retrievedResult.Result != null) {
+				userEntity = (LiveOrdersEntity)retrievedResult.Result;
 			}
+
+			var liveOrders = JsonConvert.DeserializeObject<List<string>>(userEntity.JSON);
+			liveOrders.Remove(orderId);
+
+			var liveOrderEntity = new LiveOrdersEntity(restaurantId, JsonConvert.SerializeObject(liveOrders));
+			var insertOrder = TableOperation.InsertOrReplace(liveOrderEntity);
+
+			await orderTable.ExecuteAsync(insertOrder);
 		}
 
 		static async Task UpdateOrder(string orderId) {

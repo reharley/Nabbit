@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace NabbitManager.Services {
 	public static class OrderQueueService {
-		private const string getQueueOrdersUrl = "https://nabbit.azurewebsites.net/api/GetQueueOrders/restaurantId/{restaurantId}?code=kXf6aapwz4ScevooekM/4H5INYPzaLsr54IXOFeyG6Xm6SxBR2p9VQ==";
+		private const string getQueueOrdersUrl = "https://nabbit.azurewebsites.net/api/GetQueueOrders/restaurantId/{restaurantId}/allOrders/{allOrders}?code=kXf6aapwz4ScevooekM/4H5INYPzaLsr54IXOFeyG6Xm6SxBR2p9VQ==";
 		private const string deleteQueueOrdersUrl = "https://nabbit.azurewebsites.net/api/DeleteQueueOrder/restaurantId/{restaurantId}/orderId/{orderId}?code=UG1uLRRpacxZnSsBdoMoREMNvX2nDq2rMX1qVxbXHpW6LfgsxKPMSg==";
 		static List<Order> orderQueue;
 		public static List<Order> OrderQueue {
@@ -24,19 +24,24 @@ namespace NabbitManager.Services {
 			}
 		}
 
-		public static async Task GetQueueOrders(string restaurantId) {
+		public static async Task GetQueueOrders (string restaurantId, bool allOrders = false) {
 			if (OrderQueue == null)
 				OrderQueue = new List<Order>();
 
 			try {
 				using (var client = new HttpClient()) {
-					var url = getQueueOrdersUrl.Replace("{restaurantId}", restaurantId);
+					var url = getQueueOrdersUrl.Replace("{restaurantId}", restaurantId).Replace("{allOrders}", allOrders.ToString());
 					string result = "";
 					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
 						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 						if (httpResponse.IsSuccessStatusCode) {
-							OrderQueue = JsonConvert.DeserializeObject<List<Order>>(result)
-								.OrderByDescending(x => x.PickupTime).ToList();
+							var orderList = JsonConvert.DeserializeObject<List<Order>>(result).ToList();
+							if (allOrders)
+								OrderQueue = orderList;
+							else if (orderList.Count > 0)
+								OrderQueue.AddRange(orderList);
+
+							OrderQueue = OrderQueue.OrderByDescending(x => x.PickupTime).ToList();
 						}
 					}
 				}

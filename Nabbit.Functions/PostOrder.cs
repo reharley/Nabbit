@@ -55,7 +55,6 @@ namespace Nabbit.Functions {
 				await AddOrderToTable(order, requestBody);
 				await AddOrderToUser(order);
 				await AddOrderToRestaurantCatelogs(order);
-				// SendNotification("f3ea84de-9287-4fd5-941d-bc585d59a763");
 
 				return (ActionResult)new OkResult();
 			} catch (Exception ex) {

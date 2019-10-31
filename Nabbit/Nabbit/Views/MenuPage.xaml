@@ -56,7 +56,7 @@
                 <CollectionView x:Name="menuTabs"
                                 Margin="0"
                                 HeightRequest="35"
-                                ItemsSource="{Binding Menus}"
+                                ItemsSource="{Binding MenuNames}"
                                 d:ItemsSource="{StaticResource testArray}"
                                 SelectionMode="Single"
                                 SelectionChanged="MenuChanged"
@@ -75,7 +75,7 @@
                                        FontAttributes="Bold"
                                        Margin="5,0,0,0"
                                        FontSize="23"
-                                       Text="{Binding Name}"
+                                       Text="{Binding .}"
                                        d:Text="Poop"/>
                             </StackLayout>
                         </DataTemplate>

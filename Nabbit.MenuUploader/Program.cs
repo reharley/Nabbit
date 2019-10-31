@@ -30,7 +30,7 @@ namespace Nabbit.MenuUploader {
 		private const string getRestaurantsUrl = "http://localhost:7071/api/userId/{userId}/schoolId/{schoolId}";
 		//private const string getUserOrdersUrl = "http://localhost:7071/api/GetUserOrders/userId/{userId}";
 		//private const string getUserOrdersUrl = "https://nabbit.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=X3NJ2NZKahEziqSKZrlX/KxpoyWvuHfYE4wROOAjOLnNleMWGByFIA==";
-		private const string getQueueOrdersUrl = "http://localhost:7071/api/GetQueueOrders/restaurantId/{restaurantId}";
+		private const string getQueueOrdersUrl = "http://localhost:7071/api/GetQueueOrders/restaurantId/{restaurantId}/allOrders/{allOrders}";
 		//private const string getRestaurantsUrl = "https://nabbit.azurewebsites.net/api/userId/{userId}/schoolId/{schoolId}?code=ZX45t3u8uyrT24p6bbBFXhepqeQ7KoKGN9N/lbl1p8vakNTHsgw/ng==";
 		private const string postRestaurantUrl = "http://localhost:7071/api/PostRestaurant";
 		private const string postOrderUrl = "http://localhost:7071/api/PostOrder";
@@ -71,17 +71,42 @@ namespace Nabbit.MenuUploader {
 			//var user = new User();
 			//user.FirstName = "TJ";
 			//GetUser().Wait();
-			var intent = GetSetupIntentAsync();
-			while (!intent.IsCompleted) {
-				Thread.Sleep(10);
-			}
-			var result = intent.Result;
+			//var intent = GetSetupIntentAsync();
+			//while (!intent.IsCompleted) {
+			//	Thread.Sleep(10);
+			//}
+			//var result = intent.Result;
 			//PostUser(user).Wait();
-			//MakeOrder();
+
+			MakeOrder();
+			GetQueueOrders("681a6d33-beac-4928-8172-793c3e981bd5", true).Wait();
+
 			//PullUserOrders().Wait();
 			//PullRestOrders().Wait();
 			Console.WriteLine("Complete");
 			//SendNotification();
+		}
+
+		public static async Task GetQueueOrders (string restaurantId, bool allOrders = false) {
+			var OrderQueue = new List<Order>();
+
+			try {
+				using (var client = new HttpClient()) {
+					var url = getQueueOrdersUrl.Replace("{restaurantId}", restaurantId).Replace("{allOrders}", allOrders.ToString());
+					string result = "";
+					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+						if (httpResponse.IsSuccessStatusCode) {
+							OrderQueue = JsonConvert.DeserializeObject<List<Order>>(result)
+								.OrderByDescending(x => x.PickupTime).ToList();
+						}
+					}
+				}
+			} catch (Exception ex) {
+				/// TODO: Log error
+				Console.WriteLine("Something is missing...", "The app was unable to load data. Please check the your connections and try again.");
+				Console.WriteLine(ex.Message);
+			}
 		}
 
 		public static async Task<Stripe.SetupIntent> GetSetupIntentAsync () {
@@ -134,14 +159,9 @@ namespace Nabbit.MenuUploader {
 				}
 			};
 
-			var order = new Models.Order(userId, restaurantId) {
-				OrderId = Guid.NewGuid(),
-				FirstName = "Emma",
-				LastName = "Harley",
-				PickupTime = DateTime.Now,
-				OrderItems = orderItems,
-				OrderTotal = 5m
-			};
+			var json = "{\"OrderId\":\"9397c098-0a7c-429d-8775-e2e8149bc640\",\"RestaurantId\":\"681a6d33-beac-4928-8172-793c3e981bd5\",\"MenuId\":\"00000000-0000-0000-0000-000000000000\",\"UserId\":\"5d2b6da2-3f67-4fd0-a3c8-678cbfb9d4f9\",\"TransactionId\":\"00000000-0000-0000-0000-000000000000\",\"FirstName\":\"Robert\",\"LastName\":\"Harley\",\"CreationDate\":\"2019-10-29T11:05:57.067274-07:00\",\"PickupTime\":\"2019-10-29T11:10:57\",\"OrderStatus\":\"Created\",\"OrderTotal\":5.65470,\"ServiceCharge\":0.4,\"OrderSubtotal\":4.75,\"OrderTaxes\":0.50470,\"OrderItems\":[{\"OrderItemId\":\"82187a4b-950b-4550-b7de-5bb392eb24b4\",\"Instructions\":\"\",\"Quantity\":1,\"ItemPrice\":4.75,\"Product\":{\"ProductId\":\"6160ec0c-993c-4efa-a5b5-0e08a31b9709\",\"Name\":\"Double Burger\",\"Description\":null,\"Price\":4.75,\"AddonGroupIds\":null},\"Addons\":[{\"AddonId\":\"91675768-12b8-486b-8281-c7901dbc334b\",\"Name\":\"sm\",\"Price\":0.0},{\"AddonId\":\"d5c82f38-47fc-4789-8f32-134ce32c5519\",\"Name\":\"Bacon(4)\",\"Price\":0.0},{\"AddonId\":\"ba5fbe74-f083-42e3-94bb-d92ac2edc07e\",\"Name\":\"White\",\"Price\":0.0}]}],\"CreatedAt\":\"2019-10-29T11:05:57.066942-07:00\"}";
+			var order = JsonConvert.DeserializeObject<Order>(json);
+			order.OrderId = Guid.NewGuid();
 
 			PostOrder(order).Wait();
 		}

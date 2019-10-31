@@ -18,10 +18,11 @@ namespace Nabbit.Functions {
 		static CloudStorageAccount storageAccount;
 		static CloudTableClient tableClient;
 		static CloudTable orderTable;
+
 		[FunctionName("GetQueueOrders")]
-		public static async Task<IActionResult> Run(
-			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "GetQueueOrders/restaurantId/{restaurantId}")] HttpRequest req,
-			string restaurantId,
+		public static async Task<IActionResult> Run (
+			[HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "GetQueueOrders/restaurantId/{restaurantId}/allOrders/{allOrders}")] HttpRequest req,
+			string restaurantId, string allOrders,
 			ILogger log,
 			ExecutionContext context) {
 			var config = new ConfigurationBuilder()
@@ -45,7 +46,7 @@ namespace Nabbit.Functions {
 				tableClient = storageAccount.CreateCloudTableClient();
 				orderTable = tableClient.GetTableReference(orderTableName);
 
-				var orders = await GetQueueOrderList(restaurantId);
+				var orders = await GetQueueOrderList(restaurantId, bool.Parse(allOrders));
 
 				return new OkObjectResult(JsonConvert.SerializeObject(orders));
 			} catch (Exception ex) {
@@ -55,7 +56,7 @@ namespace Nabbit.Functions {
 			return new BadRequestResult();
 		}
 
-		static async Task<List<string>> GetQueueOrderIdList(string restaurantId) {
+		static async Task<List<string>> GetQueueOrderIdList (string restaurantId) {
 			var queueClient = storageAccount.CreateCloudQueueClient();
 			var queue = queueClient.GetQueueReference($"orders-{restaurantId}");
 			if (queue == null)
@@ -68,6 +69,7 @@ namespace Nabbit.Functions {
 				var messages = await queue.GetMessagesAsync(count % 32);
 				foreach (var message in messages) {
 					orderIds.Add(message.AsString);
+					await queue.DeleteMessageAsync(message);
 				}
 
 				await queue.FetchAttributesAsync();
@@ -77,8 +79,39 @@ namespace Nabbit.Functions {
 			return orderIds;
 		}
 
-		static async Task<List<Order>> GetQueueOrderList(string restaurantId) {
+		static async Task<List<string>> AddToLiveOrders (List<string> orderIds, string restaurantId, bool allOrders) {
+			TableOperation retrieveOperation = TableOperation.Retrieve<LiveOrdersEntity>(LiveOrdersEntity.PartitionKeyLabel, restaurantId);
+			TableResult retrievedResult = await orderTable.ExecuteAsync(retrieveOperation);
+			LiveOrdersEntity userEntity = null;
+			List<string> liveOrders = new List<string>();
+			if (retrievedResult.Result != null) {
+				userEntity = (LiveOrdersEntity)retrievedResult.Result;
+				liveOrders = JsonConvert.DeserializeObject<List<string>>(userEntity.JSON);
+			}
+
+			liveOrders.AddRange(orderIds);
+
+			var liveOrderEntity = new LiveOrdersEntity(restaurantId, JsonConvert.SerializeObject(liveOrders));
+			var insertOrder = TableOperation.InsertOrReplace(liveOrderEntity);
+
+			await orderTable.ExecuteAsync(insertOrder);
+
+			if (allOrders)
+				return liveOrders;
+
+			return orderIds;
+		}
+
+		static async Task<List<Order>> GetQueueOrderList (string restaurantId, bool allOrders) {
 			var orderIds = await GetQueueOrderIdList(restaurantId);
+			if (orderIds == null)
+				return null;
+			else if (orderIds.Count == 0 && allOrders == false)
+				return new List<Order>();
+
+			orderIds = await AddToLiveOrders(orderIds, restaurantId, allOrders);
+			if (orderIds.Count == 0)
+				return new List<Order>();
 
 			// create the query filter for the partition key
 			string pkFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, OrderEntity.PartitionKeyLabel);

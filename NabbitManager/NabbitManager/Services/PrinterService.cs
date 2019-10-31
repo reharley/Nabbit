@@ -32,10 +32,6 @@ namespace NabbitManager.Services {
 			var receipt = new List<byte[]>();
 			receipt.Add(e.Initialize());
 			receipt.Add(e.Enable());
-			receipt.Add(e.PrintLine());
-			receipt.Add(e.PrintLine());
-			receipt.Add(e.PrintLine());
-			receipt.Add(e.PrintLine());
 			receipt.Add(e.SetStyles(PrintStyle.DoubleHeight | PrintStyle.DoubleWidth | PrintStyle.Bold));
 			receipt.Add(e.CenterAlign());
 			receipt.Add(e.PrintLine("Nabbit Order"));
@@ -45,7 +41,7 @@ namespace NabbitManager.Services {
 			receipt.Add(e.LeftAlign());
 			receipt.Add(e.PrintLine());
 			receipt.Add(e.PrintLine("Order For"));
-			receipt.Add(e.Print($"{order.FirstName}"));
+			receipt.Add(e.Print($"{order.FirstName} "));
 			receipt.Add(e.PrintLine($"{order.LastName}"));
 			receipt.Add(e.PrintLine("Order Creation\t\tPickup Time"));
 			receipt.Add(e.Print(order.CreationDate.ToString("MM/dd/yy hh:mm tt")));
@@ -116,9 +112,10 @@ namespace NabbitManager.Services {
 			receipt.Add(e.PrintLine(orderTotal));
 
 			receipt.Add(e.PrintLine());
-			receipt.Add(e.PartialCutAfterFeed(5));
+			receipt.Add(e.PartialCutAfterFeed(2));
 
 			IBluetooth service = DependencyService.Get<IBluetooth>();
+			//service.Start(receipt);
 			service.Start(receipt.SelectMany(x => x).ToArray());
 		}
 	}

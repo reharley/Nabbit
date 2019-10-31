@@ -64,7 +64,10 @@ namespace Nabbit.Services {
 		}
 
 		public static async Task<string> ChargeAsync (string amount, string customerId, string paymentMethodId) {
-			
+			if (pubKey == "") {
+				if (await GetPubKey() == false)
+					return "failed";
+			}
 
 			using (var client = new HttpClient()) {
 				var url = getPayIntentUrl

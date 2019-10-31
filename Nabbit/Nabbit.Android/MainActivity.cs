@@ -13,6 +13,7 @@ using Android.OS;
 [assembly: Application(Debuggable = false)]
 #endif
 
+
 namespace Nabbit.Droid
 {
     [Activity(Label = "Nabbit", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]

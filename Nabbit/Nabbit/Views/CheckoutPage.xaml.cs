@@ -49,13 +49,17 @@ namespace Nabbit.Views {
 		}
 
 		private async void PurchaseClicked (object sender, EventArgs e) {
+			viewModel.IsBusy = true;
 			if (payMethodsList.SelectedItem == null) {
 				await DisplayAlert("Pay Method", "Please add a payment method to charge.", "Ok");
+				viewModel.IsBusy = false;
 				return;
 			}
 
-			if (await ValidTime() == false)
+			if (await ValidTime() == false) {
+				viewModel.IsBusy = false;
 				return;
+			}
 
 			if (LocalGlobals.User.LoggedIn) {
 				var pickupDate = viewModel.PickupDate;
@@ -65,9 +69,15 @@ namespace Nabbit.Views {
 				var payMethod = payMethodsList.SelectedItem as PaymentMethod;
 
 				var payMethodId = payMethod.PaymentMethodId;
-				var amount = ((long) (viewModel.Order.OrderTotal * 100m)).ToString();
+				var amount = ((long)(viewModel.Order.OrderTotal * 100m)).ToString();
 				var customerId = LocalGlobals.User.CustomerId;
-				var result = await StripeService.ChargeAsync(amount, customerId, payMethodId);
+				string result = "failed";
+				try {
+					result = await StripeService.ChargeAsync(amount, customerId, payMethodId);
+				} catch (Exception exc) {
+					await DisplayAlert("Payment Failed", exc.Message, "Ok");
+					result = "";
+				}
 				if (result == "failed")
 					await DisplayAlert("Payment Failed", "Could not connect. Please try again.", "Ok");
 				else if (result == "canceled")
@@ -83,9 +93,11 @@ namespace Nabbit.Views {
 				else if (result == "succeeded") {
 					await LocalGlobals.PostOrder(viewModel.Order);
 					Cart.ClearCart();
-					await Navigation.PushAsync(new OrderDetailsPage(viewModel.Order, newOrder:true));
+					viewModel.IsBusy = false;
+					await Navigation.PushAsync(new OrderDetailsPage(viewModel.Order, newOrder: true));
 				}
 			}
+			viewModel.IsBusy = false;
 		}
 
 		async void OnTimePickerChanged (object sender, PropertyChangedEventArgs e) {

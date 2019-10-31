@@ -33,7 +33,6 @@ namespace Nabbit.Views {
 				var task = LocalGlobals.PullObjects();
 				task.ContinueWith((getTask) => {
 					viewModel.BuildViewModel();
-					viewModel.IsBusy = false;
 					UpdatePage();
 				});
 			}
@@ -44,6 +43,12 @@ namespace Nabbit.Views {
 				return;
 
 			AdjustGroupListHeight();
+
+			// without sleeping, menu tab does not appear.
+			// why does this work? I dunnno.
+			//Thread.Sleep(100);
+			viewModel.IsBusy = false;
+			menuTabs.ItemsSource = viewModel.MenuNames;
 			menuTabs.SelectedItem = viewModel.GetMenuName();
 		}
 
@@ -99,8 +104,8 @@ namespace Nabbit.Views {
 		}
 
 		void MenuChanged (object sender, SelectionChangedEventArgs e) {
-			viewModel.ChangeMenu((Models.Menu)e.CurrentSelection[0]);
-			AdjustGroupListHeight();
+			viewModel.ChangeMenu((string)e.CurrentSelection[0]);
+			UpdatePage();
 		}
 	}
 }

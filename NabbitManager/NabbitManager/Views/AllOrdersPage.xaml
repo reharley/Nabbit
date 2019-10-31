@@ -60,7 +60,7 @@
                                         <Label Grid.Row="0" Grid.Column="1"
                                                TextColor="{StaticResource primaryDarkColor}"
                                                FontAttributes="Bold"
-                                               Text="Status" />
+                                               Text="Name" />
                                         <Label Grid.Row="0" Grid.Column="2"
                                                TextColor="{StaticResource primaryDarkColor}"
                                                FontAttributes="Bold"
@@ -68,11 +68,11 @@
                                         
                                         <Label Grid.Row="1" Grid.Column="0"
                                                d:Text="09/23/19"
-                                               Text="{Binding PickupTime, StringFormat='{0:MM/dd/yy}'}" />
+                                               Text="{Binding PickupTime, StringFormat='{0:MM/dd/yy HH:mm tt}'}" />
                                         
                                         <Label Grid.Row="1" Grid.Column="1"
-                                               d:Text="Complete"
-                                               Text="{Binding OrderStatus}" />
+                                               d:Text="Harley"
+                                               Text="{Binding LastName}" />
                                         
                                         <Label Grid.Row="1" Grid.Column="2"
                                                d:Text="$10.50"

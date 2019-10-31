@@ -5,8 +5,8 @@ using System.Text;
 
 namespace NabbitManager.Services {
 	public interface IBluetooth {
-		void Start(byte[] bytes);
-		void Cancel();
-		ObservableCollection<string> PairedDevices();
+		void Start (byte[] bytes);
+		void Cancel ();
+		ObservableCollection<string> PairedDevices ();
 	}
 }
