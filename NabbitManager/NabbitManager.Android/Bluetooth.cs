@@ -71,8 +71,8 @@ namespace NabbitManager.Droid {
 		/// Start the "reading" loop 
 		/// </summary>
 		/// <param name="name">Name of the paired bluetooth device (also a part of the name)</param>
-		public void Start (byte[] bytes) {
-			Test(bytes).Wait();
+		public async Task Start (byte[] bytes) {
+			await Test(bytes);
 		}
 
 

@@ -95,9 +95,9 @@ namespace NabbitManager {
 					}
 
 					if (DateTime.Now >= pickupPrintTime) {
-						//PrinterService.Printer(order);
-						//await OrderQueueService.DeleteQueueOrder(restaurantId, order.OrderId.ToString());
-						//OrderQueueService.OrderQueue.RemoveAt(0);
+						await PrinterService.PrinterAsync(order);
+						Thread.Sleep(3000);
+						await OrderQueueService.DeleteQueueOrder(restaurantId, order);
 					}
 				}
 

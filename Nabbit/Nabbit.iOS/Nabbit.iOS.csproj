@@ -28,10 +28,10 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignProvision>VS: WildCard Development</CodesignProvision>
     <CodesignKey>iPhone Developer: Emmanuel Harley (4QGG8GVCG2)</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <MtouchExtraArgs>-v -v -v -v</MtouchExtraArgs>
+    <CodesignProvision>VS: WildCard Development</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -42,8 +42,9 @@
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
     <ConsolePause>false</ConsolePause>
-    <CodesignProvision>VS: WildCard Development</CodesignProvision>
-    <CodesignKey>iPhone Developer: Emmanuel Harley (4QGG8GVCG2)</CodesignKey>
+    <CodesignKey>iPhone Distribution: Emmanuel Harley (73327LZH3W)</CodesignKey>
+    <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+    <CodesignProvision>Nabbit Prov Prof</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,7 +59,6 @@
     <CodesignKey>iPhone Developer: Emmanuel Harley (4QGG8GVCG2)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>VS: WildCard Development</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -68,9 +68,9 @@
     <WarningLevel>4</WarningLevel>
     <MtouchArch>ARM64</MtouchArch>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer: Emmanuel Harley (4QGG8GVCG2)</CodesignKey>
+    <CodesignKey>iPhone Distribution: Emmanuel Harley (73327LZH3W)</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>VS: WildCard Development</CodesignProvision>
+    <CodesignProvision>Nabbit Prov Prof</CodesignProvision>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -97,12 +97,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="Resources\hot_sale.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\1024.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\120.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\120-1.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\152.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\167.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\180.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\20.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\29.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40.png" />
@@ -113,12 +107,9 @@
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\60.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\76.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80-1.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\87.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-2.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-3.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\76-1.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\29-1.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-3.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80-2.png" />
@@ -181,6 +172,15 @@
     <BundleResource Include="Resources\ic_amex_light%402x.png" />
     <BundleResource Include="Resources\ic_discover_light%403x.png" />
     <BundleResource Include="Resources\ic_mastercard.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\1024-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\87.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\180.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\120.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\120-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\167.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\152.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\76-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

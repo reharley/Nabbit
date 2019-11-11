@@ -73,6 +73,7 @@
                                          BackgroundColor="{StaticResource primaryDarkColor}">
                                 <Label TextColor="{StaticResource primaryTextColor}"
                                        FontAttributes="Bold"
+                                       VerticalOptions="CenterAndExpand"
                                        Margin="5,0,0,0"
                                        FontSize="23"
                                        Text="{Binding .}"

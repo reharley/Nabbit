@@ -260,5 +260,12 @@ namespace Nabbit.Services {
 				Console.WriteLine(ex.Message);
 			}
 		}
+
+		public static void Logout () {
+			if (CrossSecureStorage.Current.HasKey("User"))
+				CrossSecureStorage.Current.DeleteKey("User");
+
+			user = new User();
+		}
 	}
 }

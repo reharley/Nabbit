@@ -32,8 +32,22 @@ namespace Nabbit.Views {
 				UserInformation userInfo = await Auth.SignInAsync();
 				var tokenHandler = new JwtSecurityTokenHandler();
 				var jwToken = tokenHandler.ReadJwtToken(userInfo.IdToken);
-				LocalGlobals.User.FirstName = jwToken.Claims.FirstOrDefault(t => t.Type == "given_name").Value;
-				LocalGlobals.User.LastName = jwToken.Claims.FirstOrDefault(t => t.Type == "family_name").Value;
+
+				var firstNameClaim = jwToken.Claims.FirstOrDefault(t => t.Type == "given_name");
+				var lastNameClaim = jwToken.Claims.FirstOrDefault(t => t.Type == "family_name");
+				var oidClaim = jwToken.Claims.FirstOrDefault(t => t.Type == "oid");
+				var emailClaim = jwToken.Claims.FirstOrDefault(t => t.Type == "emails");
+
+				string firstName = "";
+				string lastName = "";
+
+				if (firstNameClaim != null)
+					firstName = firstNameClaim.Value;
+				if (lastNameClaim != null)
+					lastName = lastNameClaim.Value;
+
+				LocalGlobals.User.FirstName = firstName;
+				LocalGlobals.User.LastName = lastName;
 				LocalGlobals.User.UserId = new Guid(jwToken.Claims.FirstOrDefault(t => t.Type == "oid").Value);
 				LocalGlobals.User.Email = jwToken.Claims.FirstOrDefault(t => t.Type == "emails").Value;
 

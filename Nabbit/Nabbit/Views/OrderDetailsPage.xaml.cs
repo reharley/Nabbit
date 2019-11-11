@@ -31,8 +31,15 @@ namespace Nabbit.Views {
 		}
 
 		protected async override void OnDisappearing () {
-			if (newOrder)
-				await Navigation.PopToRootAsync();
+			if (newOrder) {
+				if (Device.RuntimePlatform == Device.Android)
+					await Navigation.PopToRootAsync();
+				else {
+					var pageCount = Navigation.NavigationStack.Count;
+					for (int i = 0; i < pageCount - 1; i++)
+						await Navigation.PopAsync();
+				}
+			}
 			base.OnDisappearing();
 		}
 	}

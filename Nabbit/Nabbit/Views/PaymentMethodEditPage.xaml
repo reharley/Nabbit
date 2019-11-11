@@ -214,7 +214,8 @@
                         VerticalOptions="End"
                         Clicked="CancelPressed"
                         Grid.Row="0" Grid.Column="0"/>
-                <Button Text="Save"
+                <Button x:Name="saveButton"
+                        Text="Save"
                         Style="{StaticResource primaryButtonStyle}"
                         VerticalOptions="End"
                         Clicked="SavePressed"

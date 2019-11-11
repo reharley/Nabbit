@@ -23,6 +23,8 @@ namespace Nabbit.Views {
 
 			cancelButton.Text = "Delete";
 			cancelButton.BackgroundColor = (Color)App.Current.Resources["dangerColor"];
+
+			saveButton.Opacity = .5;
 		}
 
 		async Task<bool> VerifyForm () {
@@ -62,6 +64,9 @@ namespace Nabbit.Views {
 		}
 
 		async void SavePressed (object sender, EventArgs e) {
+			if (newPayMethod == false)
+				return;
+
 			if (await VerifyForm() == false)
 				return;
 

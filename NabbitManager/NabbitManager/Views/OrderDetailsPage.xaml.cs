@@ -22,7 +22,7 @@ namespace NabbitManager.Views {
 		}
 
 		void PrintReceipt (object sender, System.EventArgs e) {
-			PrinterService.Printer(viewModel.Order);
+			PrinterService.PrinterAsync(viewModel.Order);
 		}
 	}
 }

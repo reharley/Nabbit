@@ -24,18 +24,30 @@
                     <DataTemplate>
                         <StackLayout Style="{StaticResource itemSelectedStyle}">
                             <BoxView Style="{StaticResource separatorBoxStyle}" />
-
-                            <StackLayout Orientation="Horizontal">
+                            
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="80" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="60" />
+                                </Grid.ColumnDefinitions>
+                                
                                 <Label Text="{Binding Product.Name}"
+                                       Grid.Row="0" Grid.Column="0"
                                        Style="{StaticResource primaryDarkBoldTitleLabel}"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="Start"/>
-                                <BoxView HeightRequest="1" WidthRequest="0" />
+                                
+<!--                                <BoxView HeightRequest="1" WidthRequest="0" />-->
                                 <Label Text="{Binding OrderItemPrice, StringFormat='{0:c}'}"
                                        Style="{StaticResource primaryDarkBoldTitleLabel}"
+                                       VerticalOptions="StartAndExpand"
+                                       Grid.Row="0" Grid.Column="1"
                                        FontSize="Default"
                                        HorizontalOptions="EndAndExpand"/>
-                            </StackLayout>
+                            </Grid>
 
                             <Label Text="{Binding Quantity,
 											StringFormat='Quantity: {0}'}" />

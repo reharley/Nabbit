@@ -11,6 +11,10 @@ namespace Nabbit.Models {
 	public class User {
 		public User () {
 			LoggedIn = false;
+			FirstName = "";
+			LastName = "";
+			Email = "";
+			CustomerId = "";
 		}
 
 		/// <summary>Internal system Id</summary>

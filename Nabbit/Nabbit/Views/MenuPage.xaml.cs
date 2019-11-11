@@ -17,6 +17,7 @@ namespace Nabbit.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MenuPage : ContentPage {
 		public HomeViewModel viewModel;
+		bool openingPage = false;
 
 		public MenuPage () {
 			InitializeComponent();
@@ -30,7 +31,7 @@ namespace Nabbit.Views {
 			if (LocalGlobals.Restaurant == null) {
 				viewModel.IsBusy = true;
 
-				var task = LocalGlobals.PullObjects();
+				var task = LocalGlobals.PullObjects(forcePull:true);
 				task.ContinueWith((getTask) => {
 					viewModel.BuildViewModel();
 					UpdatePage();
@@ -44,9 +45,9 @@ namespace Nabbit.Views {
 
 			AdjustGroupListHeight();
 
-			// without sleeping, menu tab does not appear.
+			// without sleeping, menu tab does not appear on ios.
 			// why does this work? I dunnno.
-			//Thread.Sleep(100);
+			Thread.Sleep(100);
 			viewModel.IsBusy = false;
 			menuTabs.ItemsSource = viewModel.MenuNames;
 			menuTabs.SelectedItem = viewModel.GetMenuName();
@@ -58,6 +59,8 @@ namespace Nabbit.Views {
 
 		protected override void OnAppearing () {
 			base.OnAppearing();
+			if (LocalGlobals.Restaurant != null)
+				UpdatePage();
 		}
 
 		void AdjustGroupListHeight () {
@@ -88,6 +91,10 @@ namespace Nabbit.Views {
 			if (e.CurrentSelection.Count == 0)
 				return;
 
+			if (openingPage)
+				return;
+
+			openingPage = true;
 			var product = e.CurrentSelection[0] as Product;
 			if (product == null)
 				return;
@@ -96,6 +103,9 @@ namespace Nabbit.Views {
 
 			var collection = sender as CollectionView;
 			collection.SelectedItem = null;
+
+			Thread.Sleep(30);
+			openingPage = false;
 		}
 
 		void Handle_Swiped (object sender, SwipedEventArgs e) {

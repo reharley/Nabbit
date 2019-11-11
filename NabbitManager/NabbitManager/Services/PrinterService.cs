@@ -10,7 +10,9 @@ using Xamarin.Forms;
 
 namespace NabbitManager.Services {
 	public static class PrinterService {
-		public static void Printer (Order order) {
+		static IBluetooth service;
+
+		public static async Task PrinterAsync (Order order) {
 			string UID;
 			string CreationDate;
 			string PickupTime;
@@ -83,10 +85,10 @@ namespace NabbitManager.Services {
 			receipt.Add(e.PrintLine());
 			receipt.Add(e.PrintLine());
 
-			var orderSubtotal = order.OrderSubtotal.ToString();
-			var serviceCharge = (order.OrderTotal - order.OrderSubtotal - order.OrderTaxes).ToString();
-			var taxes = order.OrderTaxes.ToString();
-			var orderTotal = order.OrderTotal.ToString();
+			var orderSubtotal = order.OrderSubtotal.ToString("00");
+			var serviceCharge = order.ServiceCharge.ToString("00");
+			var taxes = order.OrderTaxes.ToString("00");
+			var orderTotal = order.OrderTotal.ToString("00");
 
 			receipt.Add(e.Print("Order Subtitle "));
 			receipt.Add(e.Print("..........................."));
@@ -114,9 +116,10 @@ namespace NabbitManager.Services {
 			receipt.Add(e.PrintLine());
 			receipt.Add(e.PartialCutAfterFeed(2));
 
-			IBluetooth service = DependencyService.Get<IBluetooth>();
+			if (service == null)
+				service = DependencyService.Get<IBluetooth>();
 			//service.Start(receipt);
-			service.Start(receipt.SelectMany(x => x).ToArray());
+			await service.Start(receipt.SelectMany(x => x).ToArray());
 		}
 	}
 }

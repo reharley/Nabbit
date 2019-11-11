@@ -13,7 +13,8 @@
 	<ContentPage.Content>
 		<ScrollView>
 			<StackLayout Margin="{StaticResource PageMargin}">
-				<Label Text="{Binding AddonGroup.Name}" FontSize="Large"/>
+                <Label Text="Name:" FontSize="Large" />
+                <Entry Text="{Binding AddonGroup.Name}" HorizontalOptions="FillAndExpand"/>
 				<Picker x:Name="groupPicker"
 						Title="Selection Type" 
 						ItemsSource="{Binding PickerTypes}" 

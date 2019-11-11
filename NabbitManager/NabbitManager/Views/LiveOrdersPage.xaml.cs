@@ -41,6 +41,7 @@ namespace NabbitManager.Views {
 		protected override void OnDisappearing () {
 			base.OnDisappearing();
 			StopUpdate();
+			Thread.Sleep(1000);
 		}
 
 		private async void OrderPressed (object sender, ItemTappedEventArgs e) {
@@ -90,6 +91,7 @@ namespace NabbitManager.Views {
 				orderList.ItemsSource = OrderQueueService.OrderQueue;
 				await Task.Delay(1000, ct);
 			}
+			ct.ThrowIfCancellationRequested();
 		}
 	}
 }

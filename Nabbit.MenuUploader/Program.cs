@@ -78,12 +78,13 @@ namespace Nabbit.MenuUploader {
 			//var result = intent.Result;
 			//PostUser(user).Wait();
 
-			MakeOrder();
-			GetQueueOrders("681a6d33-beac-4928-8172-793c3e981bd5", true).Wait();
+			//MakeOrder();
+			//GetQueueOrders("681a6d33-beac-4928-8172-793c3e981bd5", true).Wait();
 
 			//PullUserOrders().Wait();
 			//PullRestOrders().Wait();
-			Console.WriteLine("Complete");
+			decimal temp = 40m;
+			Console.WriteLine(temp.ToString("00"));
 			//SendNotification();
 		}
 

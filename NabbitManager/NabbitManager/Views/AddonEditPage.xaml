@@ -12,9 +12,9 @@
 	<ContentPage.Content>
 		<StackLayout Margin="{StaticResource PageMargin}">
 			<Label Text="Name:" FontSize="Large" />
-			<Label Text="{Binding Name}" Style="{StaticResource managerNameLabelStyle}" />
+			<Entry Text="{Binding Name}" HorizontalOptions="FillAndExpand" />
 			<Label Text="Price:" FontSize="Large" />
-			<Label Text="{Binding Price}" Style="{StaticResource managerPriceLabelStyle}"/>
+			<Entry Text="{Binding Price}" HorizontalOptions="FillAndExpand" />
 
 			<Button x:Name="deleteButton" BackgroundColor="Red" Text="Delete" Clicked="DeletePressed" />
 			<Button Style="{StaticResource saveButtonStyle}" Text="Save" Clicked="SavePressed" />

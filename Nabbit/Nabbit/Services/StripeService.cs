@@ -89,8 +89,13 @@ namespace Nabbit.Services {
 							ClientSecret = paymentIntent.ClientSecret
 						};
 
-						var intent = await service.ConfirmAsync(paymentIntent.Id, paymentIntentOptions);
-						return intent.Status;
+						PaymentIntent intent;
+						try {
+							intent = await service.ConfirmAsync(paymentIntent.Id, paymentIntentOptions);
+							return intent.Status;
+						} catch(Exception e) {
+							return "failed";
+						}
 					}
 				}
 			}
@@ -179,7 +184,12 @@ namespace Nabbit.Services {
 			};
 
 			var payService = new PaymentMethodService();
-			var paymentMethod = await payService.CreateAsync(payOptions);
+			PaymentMethod paymentMethod;
+			try {
+				paymentMethod = await payService.CreateAsync(payOptions);
+			} catch(Exception e) {
+				return false;
+			}
 
 			var confirmOptions = new SetupIntentConfirmOptions() {
 				ClientSecret = setupIntent.ClientSecret,

@@ -70,13 +70,21 @@
 			<CollectionView x:Name="payMethodsList"
 				   SelectionMode="Single">
 				<CollectionView.EmptyView>
-					<StackLayout>
-						<StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" HorizontalOptions="Center">
-							<Label Text="&#xf09d;" Style="{StaticResource solidFALabel}" HorizontalOptions="Center" VerticalOptions="Center" />
-							<Label Text="No Cards Found..." Style="{StaticResource primarySubtitleLabel}" HorizontalOptions="Center" VerticalOptions="Center" />
-						</StackLayout>
-					</StackLayout>
-				</CollectionView.EmptyView>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal"
+                                     VerticalOptions="Start"
+                                     HorizontalOptions="CenterAndExpand">
+                            <Label Text="&#xf09d;"
+                                   Style="{StaticResource solidFALabel}"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Start" />
+                            <Label Text="No Cards Found..."
+                                   Style="{StaticResource primarySubtitleLabel}"
+                                   HorizontalOptions="Start"
+                                   VerticalOptions="Start" />
+                        </StackLayout>
+                    </StackLayout>
+                </CollectionView.EmptyView>
 
 				<CollectionView.ItemsLayout>
 					<ListItemsLayout ItemSpacing="20" SnapPointsAlignment="Start" SnapPointsType="Mandatory">

@@ -34,9 +34,9 @@ namespace Nabbit.Views {
 
 		async Task PullCustomerIds () {
 			var itemSource = await StripeService.GetPayMethodsAsync(LocalGlobals.User.CustomerId);
+			viewModel.IsBusy = false;
 			payMethodsList.ItemsSource = itemSource;
 			payMethodsList.SelectedItem = itemSource[0];
-			viewModel.IsBusy = false;
 		}
 
 
@@ -45,7 +45,7 @@ namespace Nabbit.Views {
 		}
 
 		private async void AddCardPressed (object sender, EventArgs e) {
-			await Navigation.PushModalAsync(new PaymentInfoPage());
+			await Navigation.PushAsync(new PaymentMethodEditPage());
 		}
 
 		private async void PurchaseClicked (object sender, EventArgs e) {

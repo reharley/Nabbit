@@ -41,7 +41,7 @@ namespace NabbitManager.Services {
 							else if (orderList.Count > 0)
 								OrderQueue.AddRange(orderList);
 
-							OrderQueue = OrderQueue.OrderByDescending(x => x.PickupTime).ToList();
+							OrderQueue = OrderQueue.OrderBy(x => x.PickupTime).ToList();
 						}
 					}
 				}
@@ -52,13 +52,15 @@ namespace NabbitManager.Services {
 			}
 		}
 
-		public static async Task DeleteQueueOrder (string restaurantId, string orderId) {
+		public static async Task DeleteQueueOrder (string restaurantId, Order order) {
 			try {
 				using (var client = new HttpClient()) {
-					var url = deleteQueueOrdersUrl.Replace("{restaurantId}", restaurantId).Replace("{orderId}", orderId);
+					var url = deleteQueueOrdersUrl.Replace("{restaurantId}", restaurantId).Replace("{orderId}", order.OrderId.ToString());
 					string result = "";
 					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
 						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+						if (httpResponse.IsSuccessStatusCode)
+							OrderQueue.Remove(order);
 					}
 				}
 			} catch (Exception ex) {

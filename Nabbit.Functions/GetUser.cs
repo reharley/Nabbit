@@ -54,7 +54,7 @@ namespace Nabbit.Functions {
 					user.CustomerId = RegisterStripe(user);
 				}
 
-				return new OkObjectResult(userEntity.JSON);
+				return new OkObjectResult(JsonConvert.SerializeObject(user));
 			} catch (Exception e) {
 				return new BadRequestObjectResult("Please pass a name on the query string or in the request body");
 			}

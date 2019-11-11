@@ -40,5 +40,13 @@ namespace Nabbit.Views {
 		private async void EditProfileClicked (object sender, EventArgs e) {
 			await Navigation.PushAsync(new PaymentMethodsPage());
 		}
+
+		private async void LogoutClicked (object sender, EventArgs e) {
+			Auth.SignOut();
+			LocalGlobals.Logout();
+
+			await DisplayAlert("Logout Successful", "Restarting the app may be required to see changes.", "Ok");
+			await Navigation.PushModalAsync(new SignInPage());
+		}
 	}
 }

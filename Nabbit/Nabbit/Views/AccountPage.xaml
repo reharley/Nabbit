@@ -7,59 +7,64 @@
              Visual="Material"
              x:Class="Nabbit.Views.AccountPage">
     <ContentPage.Content>
-        <StackLayout Margin="{StaticResource PageMargin}">
-            <Label Text="Profile" 
+        <ScrollView>
+            <StackLayout Margin="{StaticResource PageMargin}">
+                <Label Text="Profile" 
                    Style="{StaticResource primaryDarkBoldTitleLabel}"
                    HorizontalOptions="Center" />
-            
-            <Image Source="big_user" 
+
+                <Image Source="big_user" 
                    HeightRequest="150"/>
-            
-            
-            <Label Text="{Binding UserInfo.FirstName, 
+
+
+                <Label Text="{Binding UserInfo.FirstName, 
                             StringFormat='Welcome, {0}'}"
                    d:Text="Welcome, Emmanuel"
                    Margin="0,20,0,20"
                    Style="{StaticResource primaryDarkLabel}"/>
-                
-            <Label Text="First Name" 
+
+                <Label Text="First Name" 
                    FontSize="Medium"
                    FontAttributes="Bold"
                    TextColor="{StaticResource primaryLightColor}"/>
-            <Label Text="{Binding UserInfo.FirstName}"
+                <Label Text="{Binding UserInfo.FirstName}"
                    Style="{StaticResource primaryDarkLabel}"
-                   FontSize="Large"
+                   FontSize="Medium"
                    d:Text="Emmanuel" />
-            
-            <Label Text="Last Name" 
+
+                <Label Text="Last Name" 
                    FontSize="Medium"
                    FontAttributes="Bold"
                    TextColor="{StaticResource primaryLightColor}"/>
-            <Label Text="{Binding UserInfo.LastName}"
+                <Label Text="{Binding UserInfo.LastName}"
                    Style="{StaticResource primaryDarkLabel}"
-                   FontSize="Large"
+                   FontSize="Medium"
                    d:Text="Harley" />
-            
-            <Label Text="School" 
+
+                <Label Text="School" 
                    FontSize="Medium"
                    FontAttributes="Bold"
                    TextColor="{StaticResource primaryLightColor}"/>
-            <Label Text="{Binding SchoolName}"
+                <Label Text="{Binding SchoolName}"
                    Style="{StaticResource primaryDarkLabel}"
-                   FontSize="Large"
+                   FontSize="Medium"
                    d:Text="Western Washington University" />
-            
-            <!--<Button Text="Edit Profile"
+
+                <!--<Button Text="Edit Profile"
                     VerticalOptions="EndAndExpand"
                     Clicked="EditProfileClicked"
                     Style="{StaticResource primaryButtonStyle}"/>-->
-            <Button Text="Order History"
+                <Button Text="Order History"
                     VerticalOptions="EndAndExpand"
                     Clicked="OrderHistoryClicked" 
                     Style="{StaticResource primaryButtonStyle}"/>
-            <Button Text="Payment Methods"
+                <Button Text="Payment Methods"
                     Clicked="PaymentMethodsClicked"
                     Style="{StaticResource primaryButtonStyle}" />
-        </StackLayout>
+                <Button Text="Logout"
+                    Clicked="LogoutClicked"
+                    Style="{StaticResource primaryButtonStyle}" />
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

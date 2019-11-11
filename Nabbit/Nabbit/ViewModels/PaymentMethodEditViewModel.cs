@@ -29,6 +29,9 @@ namespace Nabbit.ViewModels {
 		}
 		public PaymentMethodEditViewModel (PaymentMethod payMethod) {
 			PayMethod = payMethod;
+			CardNumber = "****-****-****-" + payMethod.CardLastFour;
+			CardCvv = "***";
+			CardEpirationDate = payMethod.MonthExpire + "/" + payMethod.YearExpire;
 		}
 
 		public void SaveModel () {
