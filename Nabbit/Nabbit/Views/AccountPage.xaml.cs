@@ -45,7 +45,6 @@ namespace Nabbit.Views {
 			Auth.SignOut();
 			LocalGlobals.Logout();
 
-			await DisplayAlert("Logout Successful", "Restarting the app may be required to see changes.", "Ok");
 			await Navigation.PushModalAsync(new SignInPage());
 		}
 	}

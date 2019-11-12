@@ -38,7 +38,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.nabbit.nabbit</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.7</string>
+	<string>1.0.10</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
@@ -49,9 +49,9 @@
 		<string>fa-brands-400.ttf</string>
 		<string>fa-solid-900.ttf</string>
 	</array>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.10</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/NabbitIcon.appiconset</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0.7</string>
 </dict>
 </plist>

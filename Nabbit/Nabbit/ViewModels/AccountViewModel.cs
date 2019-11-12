@@ -6,12 +6,22 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Nabbit.ViewModels {
-	public class AccountViewModel {
-		public User UserInfo { get; set; }
+	public class AccountViewModel : BaseViewModel {
+		User user;
+		public User UserInfo {
+			get {
+				if (user == null)
+					user = LocalGlobals.User;
+				return user;
+			}
+			set {
+				SetProperty(ref user, value);
+			}
+		}
 		public string SchoolName { get; set; }
 
-		public AccountViewModel() {
-			UserInfo = LocalGlobals.User;
+		public AccountViewModel () {
+			user = LocalGlobals.User;
 			SchoolName = LocalGlobals.School.Name;
 		}
 	}

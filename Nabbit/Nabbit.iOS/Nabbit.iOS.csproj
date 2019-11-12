@@ -97,25 +97,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </BundleResource>
     <BundleResource Include="Resources\hot_sale.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\20.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\29.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-1.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-2.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-1.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\60.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\76.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-2.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-3.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\29-1.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-3.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80-2.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-4.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\60-1.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-4.png" />
     <BundleResource Include="Resources\shopping_cart.png" />
     <BundleResource Include="Resources\user.png" />
     <BundleResource Include="Resources\nabbit_logo_transparent_outline.png" />
@@ -172,15 +153,26 @@
     <BundleResource Include="Resources\ic_amex_light%402x.png" />
     <BundleResource Include="Resources\ic_discover_light%403x.png" />
     <BundleResource Include="Resources\ic_mastercard.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\1024-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\60.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\87.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\180.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\120.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\120-1.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\167.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\152.png" />
-    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\76-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\180.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\20.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\29.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\58-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\40-2.png" />
     <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\80-1.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\76.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\152.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\167.png" />
+    <ImageAsset Include="Assets.xcassets\NabbitIcon.appiconset\1024.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -205,6 +197,8 @@
     <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
     <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
     <Folder Include="Renderers\" />
+    <Folder Include="Assets.xcassets\NabbitIcon.imageset\" />
+    <Folder Include="Assets.xcassets\NabbitIcon.appiconset\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nabbit\Nabbit.csproj">

@@ -29,16 +29,26 @@
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand">
             <StackLayout Margin="{StaticResource PageMargin}">
-                <StackLayout Orientation="Horizontal">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="55" />
+                    </Grid.ColumnDefinitions>
+
                     <Label Text="{Binding OrderItem.Product.Name}"
-                           d:Text="Product Name"
+                           d:Text="Very Very Long Product Name"
+                           Grid.Row="0" Grid.Column="0"
                            Style="{StaticResource primaryDarkBoldTitleLabel}" />
                     <Label Text="{Binding OrderItem.Product.Price, StringFormat='{0:c}'}"
-                           d:Text="$4.50" HorizontalOptions="EndAndExpand"
-                           
+                           d:Text="$45.50"
+                           HorizontalOptions="EndAndExpand"
                            VerticalOptions="Center"
+                           Grid.Row="0" Grid.Column="1"
                            FontSize="Medium" />
-                </StackLayout>
+                </Grid>
                 <Label Text="{Binding OrderItem.Product.Description}"
                        FontSize="Medium" />
                 <StackLayout Orientation="Horizontal">

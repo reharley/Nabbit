@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Nabbit.Models {
@@ -28,29 +29,22 @@ namespace Nabbit.Models {
 			}
 			var addonGroups = AddonGroupAddons.BuildAddonGroups(x);
 
+			var addons = x.Addons.ToList();
+			var addonIds = addons.Select(a => a.AddonId);
 			AddonCost = 0m;
 			AddonText = "with ";
 			var addonCount = 0;
 			for (int i = 0; i < addonGroups.Count; i++) {
-				if (addonGroups[i].SelectionMode == SelectionMode.Multiple) {
-					if (addonGroups[i].DefaultAddons.Count == 0)
-						continue;
-
-					for (int j = 0; j < addonGroups[i].DefaultAddons.Count; j++) {
-						var addon = addonGroups[i].DefaultAddons[j];
-						AddonText += string.Format("{0}-{1} ({2:c})", addonGroups[i].Name, addon.Name, addon.Price);
+				var groupAddonIds = addonGroups[i].Addons.Select(a => a.AddonId);
+				for (int j = 0; j < addons.Count; j++) {
+					if (groupAddonIds.Contains(addons[j].AddonId)) {
+						var addon = addons[j];
+						AddonText += string.Format("{0}-{1} ({2:c})\n", addonGroups[i].Name, addon.Name, addon.Price);
 						AddonCost += addon.Price;
-						if (j + 1 != addonGroups[i].DefaultAddons.Count && addonCount + 1 < Addons.Count)
-							AddonText += ",\n";
 						addonCount++;
+						addons.RemoveAt(j);
 					}
-				} else {
-					var addon = addonGroups[i].DefaultAddon;
-					AddonText += string.Format("{0}-{1} ({2:c})", addonGroups[i].Name, addon.Name, addon.Price);
-					AddonCost += addon.Price;
-					addonCount++;
 				}
-
 				if (i + 1 < Addons.Count)
 					AddonText += ",\n";
 			}

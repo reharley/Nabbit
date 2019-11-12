@@ -50,7 +50,8 @@ namespace Nabbit.Views {
 			Thread.Sleep(100);
 			viewModel.IsBusy = false;
 			menuTabs.ItemsSource = viewModel.MenuNames;
-			menuTabs.SelectedItem = viewModel.GetMenuName();
+			if (Device.RuntimePlatform == Device.Android)
+				menuTabs.SelectedItem = viewModel.GetMenuName();
 		}
 
 		async Task SignIn () {

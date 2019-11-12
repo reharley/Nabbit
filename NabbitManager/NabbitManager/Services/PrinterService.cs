@@ -85,31 +85,31 @@ namespace NabbitManager.Services {
 			receipt.Add(e.PrintLine());
 			receipt.Add(e.PrintLine());
 
-			var orderSubtotal = order.OrderSubtotal.ToString("00");
-			var serviceCharge = order.ServiceCharge.ToString("00");
-			var taxes = order.OrderTaxes.ToString("00");
-			var orderTotal = order.OrderTotal.ToString("00");
+			var orderSubtotal = string.Format("{0:C}", order.OrderSubtotal);
+			var serviceCharge = string.Format("{0:C}", order.ServiceCharge);
+			var taxes = string.Format("{0:C}", order.OrderTaxes);
+			var orderTotal = string.Format("{0:C}", order.OrderTotal);
 
 			receipt.Add(e.Print("Order Subtitle "));
-			receipt.Add(e.Print("..........................."));
+			receipt.Add(e.Print("........................"));
 			receipt.Add(e.RightAlign());
 			receipt.Add(e.PrintLine(orderSubtotal));
 
 			receipt.Add(e.LeftAlign());
 			receipt.Add(e.Print("Service Charge "));
-			receipt.Add(e.Print("..........................."));
+			receipt.Add(e.Print("........................"));
 			receipt.Add(e.RightAlign());
 			receipt.Add(e.PrintLine(orderSubtotal));
 
 			receipt.Add(e.LeftAlign());
 			receipt.Add(e.Print("Taxes "));
-			receipt.Add(e.Print("..........................."));
+			receipt.Add(e.Print("........................"));
 			receipt.Add(e.RightAlign());
 			receipt.Add(e.PrintLine(taxes));
 
 			receipt.Add(e.LeftAlign());
 			receipt.Add(e.Print("Order Total "));
-			receipt.Add(e.Print("..........................."));
+			receipt.Add(e.Print("........................"));
 			receipt.Add(e.RightAlign());
 			receipt.Add(e.PrintLine(orderTotal));
 
