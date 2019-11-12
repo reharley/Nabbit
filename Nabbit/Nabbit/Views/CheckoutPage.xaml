@@ -56,7 +56,7 @@
 					<Label Text="0 People ahead" 
                            HorizontalOptions="Center" 
                            HorizontalTextAlignment="Center"/>
-					<Label Text="Estimated Time Ready: then" 
+					<Label Text="Estimated Time Ready: n/a" 
                            HorizontalOptions="Center"
                            HorizontalTextAlignment="Center"/>
 				</StackLayout>

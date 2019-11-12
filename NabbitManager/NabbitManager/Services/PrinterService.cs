@@ -66,16 +66,24 @@ namespace NabbitManager.Services {
 				receipt.Add(e.SetStyles(PrintStyle.DoubleHeight | PrintStyle.DoubleWidth | PrintStyle.Bold));
 				receipt.Add(e.PrintLine($"Quantity: {item.Quantity}"));
 				receipt.Add(e.PrintLine());
-				receipt.Add(e.SetStyles(PrintStyle.None));
-				receipt.Add(e.SetStyles(PrintStyle.DoubleHeight));
-				receipt.Add(e.PrintLine($"Special Instructions:"));
-				receipt.Add(e.PrintLine($"{item.Instructions}"));
-				receipt.Add(e.PrintLine());
 
-				receipt.Add(e.PrintLine("Addons"));
-				receipt.Add(e.SetStyles(PrintStyle.DoubleHeight | PrintStyle.Bold));
-				foreach (var addonLine in item.AddonText.Split('\n')) {
-					receipt.Add(e.PrintLine($"{addonLine}"));
+				if (item.Instructions != null || item.Instructions != "") {
+					receipt.Add(e.SetStyles(PrintStyle.None));
+					receipt.Add(e.SetStyles(PrintStyle.DoubleHeight));
+					receipt.Add(e.PrintLine($"Special Instructions:"));
+					receipt.Add(e.SetStyles(PrintStyle.None));
+					receipt.Add(e.PrintLine($"{item.Instructions}"));
+					receipt.Add(e.PrintLine());
+				}
+
+				if (item.Addons.Count == 0) {
+					receipt.Add(e.PrintLine("Addons"));
+					receipt.Add(e.SetStyles(PrintStyle.DoubleHeight));
+					receipt.Add(e.SetStyles(PrintStyle.None));
+
+					foreach (var addonLine in item.AddonText.Split('\n')) {
+						receipt.Add(e.PrintLine($"{addonLine}"));
+					}
 				}
 			}
 

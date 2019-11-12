@@ -7,6 +7,14 @@ using Stripe;
 
 namespace Nabbit.Services {
 	public static class StripeService {
+#if DEBUG
+		private static string getSetupIntentUrl = "https://nabbitdev.azurewebsites.net/api/GetSetupIntent?code=gaIBcw8vXtVJpDZVwlsPq9ZYrYNfRhznNC0Y32thvXCd2JRf31Tztg==";
+		private static string getPayMethodsUrl = "https://nabbitdev.azurewebsites.net/api/GetPayMethods/customerId/{customerId}?code=Pp55GvJeqXmYe6CHumcqVCaTSnQtwMxANZchOUTrfq9dZLeH0KaArg==";
+		private static string getPayIntentUrl = "https://nabbitdev.azurewebsites.net/api/GetPayIntent/amount/{amount}/customerId/{customerId}/paymentMethodId/{paymentMethodId}?code=Y9N6KaCl8TztqghstJysL82zraCFHVddvHcbQp4GU8DBegEGn9GN5w==";
+		private static string getPubKeyUrl = "https://nabbitdev.azurewebsites.net/api/GetPubKey?code=Raxl0hKzCEMQnWyKiBT0NKUhaxtHU0IFL72nXugzm9BmfBwbgx2fcw==";
+		private static string attachUserPaymentUrl = "https://nabbitdev.azurewebsites.net/api/AttachUserPayment/custId/{custId}/payId/{payId}?code=KyjQKC7X/tv2JPolWqK4CaT54KjWF9voVIgLIurdafmZoyZgjRlnEw==";
+		private static string detachUserPaymentUrl = "https://nabbitdev.azurewebsites.net/api/DetachPayMethod/paymentMethodId/{paymentMethodId}?code=269Ts6EiL4gesUSJsvwwlo7EYOMNuj0irnP08EeGWluZKvkaK17k9w==";
+#else
 		private static string getSetupIntentUrl = "https://nabbit.azurewebsites.net/api/GetSetupIntent?code=BLdO/jwQS6KaHihe1ZaVnkDhtbaUvckE6iflqNRZ9oRJgFltDdZKng==";
 		private static string getCustomerUrl = "https://nabbit.azurewebsites.net/api/GetCustomer/custId/{custId}?code=Izs5DTh9uPnD6bCipXVFWnraQ5W9ypyQFBQLQ9mXtbo6sVGDyQjf8g==";
 		private static string getPayMethodsUrl = "https://nabbit.azurewebsites.net/api/GetPayMethods/customerId/{customerId}?code=3MX6pWjMZu1iu1kNaLUVQmUOQfMSz64QBgwiyD7cU/BtBHEaQN83Yw==";
@@ -14,7 +22,7 @@ namespace Nabbit.Services {
 		private static string getPubKeyUrl = "https://nabbit.azurewebsites.net/api/GetPubKey?code=mJUsrR07LfUH3haW4Lfu2SZaVHJLqtsFnFeubl9bxcpSNX4r9Ddu0Q==";
 		private static string attachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/AttachUserPayment/custId/{custId}/payId/{payId}?code=atm9rtlRkGB63oaqZakHrMDRrEJjpaJO4wYGaye/GPIRkx4kfcMRZQ==";
 		private static string detachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/DetachPayMethod/paymentMethodId/{paymentMethodId}?code=2UGRo9G5mYRsOR2TEgWdktQAl9LgrAKIUJiF7NfKmZ93joPTWunJYQ==";
-
+#endif
 		private static string pubKey = "";
 
 		public static async Task<SetupIntent> GetSetupIntentAsync () {

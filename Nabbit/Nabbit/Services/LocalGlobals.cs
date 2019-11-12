@@ -16,6 +16,16 @@ using Xamarin.Forms;
 
 namespace Nabbit.Services {
 	public static class LocalGlobals {
+#if DEBUG
+		private const string getSchoolsUrl = "https://nabbitdev.azurewebsites.net/api/userId/{userId}?code=0y3yfBDdRd4iZBAgUmQzuxZAma1uvtRUCZ3iAi9TvY7Pbp7CO35Rvw==";
+		private const string getRestaurantsUrl = "https://nabbitdev.azurewebsites.net/api/userId/{userId}/schoolId/{schoolId}?code=IPJvBINpgLWBtZMltTWzp1gKhp7K3UYr8GDZH8XlSoRMgyiFhq9Okg==";
+		private const string postRestaurantUrl = "https://nabbitdev.azurewebsites.net/api/PostRestaurant?code=ex3tlHiPFt8vM41DpscY3CM6hJTpUG8J8iXr7NGB8NOkRhTf9O/K/w==";
+		private const string postOrderUrl = "https://nabbitdev.azurewebsites.net/api/PostOrder?code=Jtr7df6LsRbjAem1bNNOA0Ud2ShquAmH4/gKej/azcDIPazMfRPI1g==";
+		private const string postUserUrl = "https://nabbitdev.azurewebsites.net/api/PostUser?code=stI4oljW/w4fJRBQas45SES2D54FuLWX7Rk4b6Wgl1nfBGGfvxuc4g==";
+		private const string getUserUrl = "https://nabbitdev.azurewebsites.net/api/GetUser/userId/{userId}?code=dH3WJmZ9759Z9SCNP9zsrOZHwFhXlXn048AfRypgjswv17wNkRRJng==";
+		private const string getUserOrdersUrl = "https://nabbitdev.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=sBwwBqgdOcGrdtWUFDn13d71nnoz2pMz2124c99IUHqxalN749TkFg==";
+		private const string getRestOrdersUrl = "https://nabbitdev.azurewebsites.net/api/GetRestOrders/{restaurantId}?code=uxhruPqapLoeiV65pNDmN8wEEmW0/ul4Z9Q0whqohHEcYxwWUSRO4w==";
+#else
 		private const string getSchoolsUrl = "https://nabbit.azurewebsites.net/api/userId/{userId}?code=ztgeYLZ/QNjKE26BoC9fb/R6PpvL0dNAlzH3r2dC0QUtwtaKs2tWsg==";
 		private const string getRestaurantsUrl = "https://nabbit.azurewebsites.net/api/userId/{userId}/schoolId/{schoolId}?code=ZX45t3u8uyrT24p6bbBFXhepqeQ7KoKGN9N/lbl1p8vakNTHsgw/ng==";
 		private const string postRestaurantUrl = "https://nabbit.azurewebsites.net/api/PostRestaurant?code=z/t3ObzhSTN1sHzTpHz8gS8rQdh7fATP9fO0sERiO334V3qNhdLl9A==";
@@ -24,7 +34,7 @@ namespace Nabbit.Services {
 		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
 		private const string getUserOrdersUrl = "https://nabbit.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=X3NJ2NZKahEziqSKZrlX/KxpoyWvuHfYE4wROOAjOLnNleMWGByFIA==";
 		private const string getRestOrdersUrl = "https://nabbit.azurewebsites.net/api/GetRestOrders/{restaurantId}?code=ZCJqEFJhas1iI2fsO0yQq24TAXRULXzx8ebr/s8Dr43MOSYGxNlZnA==";
-
+#endif
 		public const decimal TaxRate = 0.098m;
 
 		public static int PingMinuteDelay = 1;
