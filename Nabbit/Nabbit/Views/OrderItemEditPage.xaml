@@ -122,12 +122,15 @@
                         Style="{StaticResource primaryLightButtonStyle}"
                         VerticalOptions="End"
                         Clicked="CancelPressed"
+                        HeightRequest="45"
                         Grid.Row="0" Grid.Column="0"/>
                 <Button x:Name="addSaveButton"
                         Text="Add To Cart"
                         Style="{StaticResource primaryButtonStyle}"
                         VerticalOptions="End"
+                        FontSize="Medium"
                         Clicked="AddCartPressed"
+                        HeightRequest="45"
                         Grid.Row="0" Grid.Column="1" />
             </Grid>
         </StackLayout>

@@ -15,6 +15,7 @@ namespace Nabbit.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class CheckoutPage : ContentPage {
 		CheckoutViewModel viewModel;
+		bool purchaseComplete = false;
 
 		public CheckoutPage () {
 			InitializeComponent();
@@ -94,6 +95,7 @@ namespace Nabbit.Views {
 					await LocalGlobals.PostOrder(viewModel.Order);
 					Cart.ClearCart();
 					viewModel.IsBusy = false;
+					purchaseComplete = true;
 					await Navigation.PushAsync(new OrderDetailsPage(viewModel.Order, newOrder: true));
 				}
 			}
@@ -107,7 +109,8 @@ namespace Nabbit.Views {
 			if (datePicker.SelectedIndex == -1)
 				return;
 
-			await ValidTime();
+			if (purchaseComplete == false)
+				await ValidTime();
 		}
 
 		async Task<bool> ValidTime () {

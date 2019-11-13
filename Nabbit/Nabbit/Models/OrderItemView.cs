@@ -39,7 +39,7 @@ namespace Nabbit.Models {
 				for (int j = 0; j < addons.Count; j++) {
 					if (groupAddonIds.Contains(addons[j].AddonId)) {
 						var addon = addons[j];
-						AddonText += string.Format("{0}-{1} ({2:c})\n", addonGroups[i].Name, addon.Name, addon.Price);
+						AddonText += string.Format("{0}-{1} ({2:c})", addonGroups[i].Name, addon.Name, addon.Price);
 						AddonCost += addon.Price;
 						addonCount++;
 						addons.RemoveAt(j);
