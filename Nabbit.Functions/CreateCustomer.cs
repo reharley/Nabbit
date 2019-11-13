@@ -8,18 +8,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Configuration;
+using Stripe;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using Nabbit.Models;
-using Stripe;
 
 namespace Nabbit.Functions {
-	public static class GetUser {
-		static string stripeSecret;
-
-		[FunctionName("GetUser")]
+	public static class CreateCustomer {
+		[FunctionName("CreateCustomer")]
 		public static async Task<IActionResult> Run (
-			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetUser/userId/{userId}")] HttpRequest req,
+			[HttpTrigger(AuthorizationLevel.Function, "get",
+			Route = "CreateCustomer/userId/{userId}")] HttpRequest req,
 			string userId,
 			ILogger log,
 			ExecutionContext context) {
@@ -29,13 +28,13 @@ namespace Nabbit.Functions {
 				.AddEnvironmentVariables()
 				.Build();
 
+			var stripeKey = config["StripeSecretKey"];
 			var storageName = config["AzureStorageName"];
-			var accountKey = config["AzureAccountKey"];
 			var userTableName = config["UserTableName"];
-			stripeSecret = config["StripeSecretKey"];
+			var accountKey = config["AzureAccountKey"];
 
 			try {
-				log.LogInformation($"GetUser,{DateTime.Now},user={userId}");
+				log.LogInformation($"CreateCustomer,{DateTime.Now},user={userId}");
 				var storageAccount = new CloudStorageAccount(
 					new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials(
 						storageName, accountKey), true);
@@ -46,33 +45,29 @@ namespace Nabbit.Functions {
 				TableOperation retrieveOperation = TableOperation.Retrieve<UserEntity>(UserEntity.PartitionKeyLabel, userId);
 				TableResult retrievedResult = await userTable.ExecuteAsync(retrieveOperation);
 				UserEntity userEntity = null;
-				if (retrievedResult.Result != null) {
-					userEntity = (UserEntity)retrievedResult.Result;
+				if (retrievedResult.Result == null) {
+					var error = "user not found";
+					log.LogInformation($"CreateCustomer,{DateTime.Now},user={userId},error={error}");
+					return new BadRequestObjectResult(error);
 				}
 
+				userEntity = (UserEntity)retrievedResult.Result;
 				var user = JsonConvert.DeserializeObject<User>(userEntity.JSON);
-				if (user.CustomerId == null || user.CustomerId == "") {
-					user.CustomerId = RegisterStripe(user);
-				}
 
-				return new OkObjectResult(JsonConvert.SerializeObject(user));
+				StripeConfiguration.ApiKey = stripeKey;
+				var options = new CustomerCreateOptions {
+					Name = user.FirstName + " " + user.LastName,
+					Email = user.Email
+				};
+
+				var service = new CustomerService();
+				Customer customer = service.Create(options);
+
+				return (ActionResult)new OkObjectResult(customer.Id);
 			} catch (Exception e) {
+				log.LogInformation($"CreateCustomer,{DateTime.Now},user={userId},error={e.Message}");
 				return new BadRequestObjectResult(e.Message);
 			}
-		}
-
-		static string RegisterStripe (User user) {
-			StripeConfiguration.ApiKey = stripeSecret;
-
-			var options = new CustomerCreateOptions {
-				Name = user.FirstName + " " + user.LastName,
-				Email = user.Email
-			};
-
-			var service = new CustomerService();
-			Customer customer = service.Create(options);
-
-			return customer.Id;
 		}
 	}
 }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -26,7 +27,9 @@ namespace Nabbit.Views {
 
 
 		protected override void OnAppearing () {
+			base.OnAppearing();
 			if (LocalGlobals.User.LoggedIn == false) {
+				viewModel.UserInfo = LocalGlobals.User;
 				orderHistoryButton.IsEnabled = false;
 				payMethodsButton.IsEnabled = false;
 				logoutButton.Text = "Login";

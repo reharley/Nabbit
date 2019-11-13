@@ -50,6 +50,17 @@ namespace Nabbit.Services {
 			}
 		}
 
+		public static async Task<(bool success, string customerId)> CreateCustomer (string userId) {
+			using (var client = new HttpClient()) {
+				var url = attachUserPaymentUrl.Replace("{userId}", userId);
+				using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+					var result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+					var customerId = result;
+					return (httpResponse.IsSuccessStatusCode, customerId);
+				}
+			}
+		}
+
 		public static async Task<bool> GetPubKey () {
 			using (var client = new HttpClient()) {
 				var url = getPubKeyUrl;
@@ -101,7 +112,7 @@ namespace Nabbit.Services {
 						try {
 							intent = await service.ConfirmAsync(paymentIntent.Id, paymentIntentOptions);
 							return intent.Status;
-						} catch(Exception e) {
+						} catch (Exception e) {
 							return "failed";
 						}
 					}
@@ -195,7 +206,7 @@ namespace Nabbit.Services {
 			PaymentMethod paymentMethod;
 			try {
 				paymentMethod = await payService.CreateAsync(payOptions);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				return false;
 			}
 

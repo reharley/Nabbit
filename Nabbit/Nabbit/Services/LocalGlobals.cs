@@ -119,9 +119,11 @@ namespace Nabbit.Services {
 			}
 
 			if (user.CustomerId == null || user.CustomerId == "") {
-				await SaveUser();
-				if (firstTry)
-					await GetUser(false);
+				var t = await StripeService.CreateCustomer(user.UserId.ToString());
+				if (t.success) {
+					user.CustomerId = t.customerId;
+					await SaveUser();
+				}
 			}
 
 			if (!CrossSecureStorage.Current.HasKey("User"))
