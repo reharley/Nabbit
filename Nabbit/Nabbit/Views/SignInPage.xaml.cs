@@ -66,5 +66,10 @@ namespace Nabbit.Views {
 		private async void SignInClicked (object sender, EventArgs e) {
 			await SignIn();
 		}
+
+
+		private async void CancelClicked (object sender, EventArgs e) {
+			await Navigation.PopModalAsync();
+		}
 	}
 }

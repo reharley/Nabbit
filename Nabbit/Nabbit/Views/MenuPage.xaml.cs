@@ -24,10 +24,6 @@ namespace Nabbit.Views {
 
 			BindingContext = viewModel = new HomeViewModel();
 
-			if (LocalGlobals.User.LoggedIn == false) {
-				SignIn();
-			}
-
 			if (LocalGlobals.Restaurant == null) {
 				viewModel.IsBusy = true;
 
@@ -52,10 +48,6 @@ namespace Nabbit.Views {
 			menuTabs.ItemsSource = viewModel.MenuNames;
 			if (Device.RuntimePlatform == Device.Android)
 				menuTabs.SelectedItem = viewModel.GetMenuName();
-		}
-
-		async Task SignIn () {
-			await Navigation.PushModalAsync(new SignInPage());
 		}
 
 		protected override void OnAppearing () {

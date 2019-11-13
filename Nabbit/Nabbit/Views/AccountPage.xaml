@@ -70,14 +70,17 @@
                     VerticalOptions="EndAndExpand"
                     Clicked="EditProfileClicked"
                     Style="{StaticResource primaryButtonStyle}"/>-->
-                <Button Text="Order History"
+                <Button x:Name="orderHistoryButton"
+                        Text="Order History"
                     VerticalOptions="EndAndExpand"
                     Clicked="OrderHistoryClicked" 
                     Style="{StaticResource primaryButtonStyle}"/>
-                <Button Text="Payment Methods"
+                <Button x:Name="payMethodsButton"
+                        Text="Payment Methods"
                     Clicked="PaymentMethodsClicked"
                     Style="{StaticResource primaryButtonStyle}" />
-                <Button Text="Logout"
+                <Button x:Name="logoutButton"
+                        Text="Logout"
                     Clicked="LogoutClicked"
                     Style="{StaticResource primaryButtonStyle}" />
             </StackLayout>
