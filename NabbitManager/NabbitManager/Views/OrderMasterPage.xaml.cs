@@ -10,6 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace NabbitManager.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class OrderMasterPage : ContentPage {
+#if DEBUG
+		string mode = "DEBUG";
+#else
+		string mode = "PRODUCTION";
+#endif
 		public OrderMasterPage() {
 			InitializeComponent();
 
@@ -39,6 +44,8 @@ namespace NabbitManager.Views {
 					};
 				}
 				navButtons.Children.Add(button);
+
+				modeLabel.Text = mode;
 			}
 		}
 	}

@@ -6,7 +6,17 @@
              mc:Ignorable="d"
              x:Class="NabbitManager.Views.OrderMasterPage">
     <ContentPage.Content>
-		<StackLayout x:Name="navButtons" Margin="{StaticResource PageMargin}">
-		</StackLayout>
-	</ContentPage.Content>
+        <StackLayout>
+
+            <StackLayout x:Name="navButtons" Margin="{StaticResource PageMargin}">
+            </StackLayout>
+            <Label Text="Mode: "
+                   VerticalOptions="EndAndExpand"/>
+            <Label x:Name="modeLabel"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   VerticalOptions="End" />
+        </StackLayout>
+
+    </ContentPage.Content>
 </ContentPage>

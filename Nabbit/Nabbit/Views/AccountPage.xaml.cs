@@ -28,8 +28,13 @@ namespace Nabbit.Views {
 
 		protected override void OnAppearing () {
 			base.OnAppearing();
+			UpdatePage();
+		}
+
+		void UpdatePage () {
+			viewModel.UserInfo = LocalGlobals.User;
+
 			if (LocalGlobals.User.LoggedIn == false) {
-				viewModel.UserInfo = LocalGlobals.User;
 				orderHistoryButton.IsEnabled = false;
 				payMethodsButton.IsEnabled = false;
 				logoutButton.Text = "Login";
@@ -42,7 +47,9 @@ namespace Nabbit.Views {
 		}
 
 		async Task SignIn () {
-			await Navigation.PushModalAsync(new SignInPage());
+			var signInPage = new SignInPage();
+			signInPage.Disappearing += UpdateEventHandler;
+			await Navigation.PushModalAsync(signInPage);
 		}
 
 		private async void OrderHistoryClicked (object sender, EventArgs e) {
@@ -57,14 +64,17 @@ namespace Nabbit.Views {
 			await Navigation.PushAsync(new PaymentMethodsPage());
 		}
 
+		void UpdateEventHandler (object sender, EventArgs e) {
+			UpdatePage();
+		}
+
 		private async void LogoutClicked (object sender, EventArgs e) {
 			if (LocalGlobals.User.LoggedIn == false) {
 				SignIn();
 			} else {
 				Auth.SignOut();
 				LocalGlobals.Logout();
-
-				await Navigation.PushModalAsync(new SignInPage());
+				UpdatePage();
 			}
 		}
 	}
