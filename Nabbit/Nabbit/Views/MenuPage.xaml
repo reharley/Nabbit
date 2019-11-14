@@ -24,7 +24,7 @@
                 <Setter Property="TextColor"
                         Value="{StaticResource secondaryTextColor}" />
             </Style>
-            
+
             <Style x:Key="itemSelectedMenu"
                    TargetType="StackLayout">
                 <Setter Property="VisualStateManager.VisualStateGroups">
@@ -41,11 +41,11 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
-            
+
             <x:Array x:Key="testArray" Type="{x:Type x:String}">
-              <x:String>Baboon</x:String>
-              <x:String>Capuchin Monkey</x:String>
-              <x:String>Blue Monkey</x:String>
+                <x:String>Baboon</x:String>
+                <x:String>Capuchin Monkey</x:String>
+                <x:String>Blue Monkey</x:String>
             </x:Array>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -65,7 +65,7 @@
                     <CollectionView.ItemsLayout>
                         <ListItemsLayout Orientation="Horizontal" />
                     </CollectionView.ItemsLayout>
-                    
+
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Margin="0,0,5,0"
@@ -83,8 +83,11 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </StackLayout>
-            
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" HeightRequest="40" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               HeightRequest="40"
+                               VerticalOptions="Start" HorizontalOptions="Center">
                 <ActivityIndicator.WidthRequest>
                     <OnPlatform x:TypeArguments="x:Double" iOS="100" Android="100" WinPhone="400" />
                 </ActivityIndicator.WidthRequest>
@@ -92,7 +95,14 @@
                     <OnPlatform x:TypeArguments="Color" iOS="{StaticResource secondaryColor}" WinPhone="{StaticResource secondaryColor}" />
                 </ActivityIndicator.Color>
             </ActivityIndicator>
-            
+
+            <Button x:Name="refreshButton"
+                    Text="Refresh Menu"
+                    HorizontalOptions="Center"
+                    Padding="10"
+                    Style="{StaticResource primaryButtonStyle}"
+                    IsVisible="false"
+                    Clicked="RefreshClicked"/>
             <StackLayout>
                 <Label d:Text="Business Hours: 12:00 AM - 12:00 PM"
                        Text="{Binding BussHoursText}"
@@ -111,7 +121,7 @@
                        HorizontalTextAlignment="Center"
                        d:Text="A description of the menu"/>
             </StackLayout>
-                
+
             <ScrollView HorizontalScrollBarVisibility="Never">
                 <StackLayout x:Name="groupList"
                              BindableLayout.ItemsSource="{Binding pcProducts}"
@@ -119,7 +129,7 @@
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
                             <StackLayout>
-                                
+
                                 <Label Text="{Binding CategoryName}"
                                        d:Text="CategoryName"
                                        Style="{StaticResource menuCategoryNameStyle}" />
@@ -129,7 +139,7 @@
                                                 VerticalOptions="Start"
                                                 SelectionMode="Single"
                                                 SelectionChanged="OnItemSelected">
-                                    
+
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate>
                                             <StackLayout Style="{StaticResource itemSelectedStyle}">
@@ -144,7 +154,7 @@
                                                         <ColumnDefinition Width="80" />
                                                         <ColumnDefinition Width="30" />
                                                     </Grid.ColumnDefinitions>
-                                                    
+
                                                     <Label Text="{Binding Name}"
                                                            Grid.Row="0"
                                                            Grid.Column="0"

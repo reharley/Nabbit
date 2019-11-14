@@ -80,6 +80,7 @@ namespace NabbitManager.Services {
 					receipt.Add(e.SetStyles(PrintStyle.None));
 					receipt.Add(e.SetStyles(PrintStyle.DoubleHeight | PrintStyle.Bold));
 					receipt.Add(e.PrintLine("Addons"));
+					receipt.Add(e.SetStyles(PrintStyle.None));
 
 					foreach (var addonLine in item.AddonText.Split('\n')) {
 						receipt.Add(e.PrintLine($"{addonLine}"));

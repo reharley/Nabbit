@@ -27,12 +27,23 @@ namespace Nabbit.Views {
 			if (LocalGlobals.Restaurant == null) {
 				viewModel.IsBusy = true;
 
-				var task = LocalGlobals.PullObjects(forcePull:true);
-				task.ContinueWith((getTask) => {
-					viewModel.BuildViewModel();
-					UpdatePage();
-				});
+				LoadMenu();
 			}
+		}
+
+		void LoadMenu () {
+			var task = LocalGlobals.PullObjects(forcePull: true);
+			task.ContinueWith((getTask) => {
+				if (getTask.Result == -1) {
+					viewModel.IsBusy = false;
+					refreshButton.IsVisible = true;
+					return;
+				}
+
+				viewModel.BuildViewModel();
+				UpdatePage();
+				refreshButton.IsVisible = false;
+			});
 		}
 
 		void UpdatePage () {
@@ -99,6 +110,12 @@ namespace Nabbit.Views {
 
 			Thread.Sleep(30);
 			openingPage = false;
+		}
+
+
+		private void RefreshClicked (object sender, EventArgs e) {
+			viewModel.IsBusy = true;
+			LoadMenu();
 		}
 
 		void Handle_Swiped (object sender, SwipedEventArgs e) {
