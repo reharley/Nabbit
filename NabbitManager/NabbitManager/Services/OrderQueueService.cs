@@ -11,11 +11,13 @@ namespace NabbitManager.Services {
 	public static class OrderQueueService {
 #if DEBUG
 		private const string getQueueOrdersUrl = "https://nabbitdev.azurewebsites.net/api/GetQueueOrders/restaurantId/{restaurantId}/allOrders/{allOrders}?code=arzTwHbEMUeCaWjjRlBHpykC3D8vjO2Ii9mto9HpURocnB/dgB2lIQ==";
-		private const string deleteQueueOrdersUrl = "https://nabbitdev.azurewebsites.net/api/DeleteQueueOrder/restaurantId/{restaurantId}/orderId/{orderId}?code=IEy1H8aKmk4qhj1LZma9kPzSJWSUC/72iBOqRoFjZcWkDsm0UM1Veg==";
+		private const string deleteQueueOrdersUrl = "https://nabbitdev.azurewebsites.net/api/DeleteQueueOrder/restaurantId/{restaurantId}/orderId/{orderId}/orderNumber/{orderNumber}?code=IEy1H8aKmk4qhj1LZma9kPzSJWSUC/72iBOqRoFjZcWkDsm0UM1Veg==";
 #else
 		private const string getQueueOrdersUrl = "https://nabbit.azurewebsites.net/api/GetQueueOrders/restaurantId/{restaurantId}/allOrders/{allOrders}?code=kXf6aapwz4ScevooekM/4H5INYPzaLsr54IXOFeyG6Xm6SxBR2p9VQ==";
 		private const string deleteQueueOrdersUrl = "https://nabbit.azurewebsites.net/api/DeleteQueueOrder/restaurantId/{restaurantId}/orderId/{orderId}?code=UG1uLRRpacxZnSsBdoMoREMNvX2nDq2rMX1qVxbXHpW6LfgsxKPMSg==";
 #endif
+
+		public static int OrderNumber = 0;
 
 		static List<Order> orderQueue;
 		public static List<Order> OrderQueue {
@@ -61,7 +63,9 @@ namespace NabbitManager.Services {
 		public static async Task DeleteQueueOrder (string restaurantId, Order order) {
 			try {
 				using (var client = new HttpClient()) {
-					var url = deleteQueueOrdersUrl.Replace("{restaurantId}", restaurantId).Replace("{orderId}", order.OrderId.ToString());
+					var url = deleteQueueOrdersUrl.Replace("{restaurantId}", restaurantId)
+						.Replace("{orderId}", order.OrderId.ToString())
+						.Replace("{orderNumber}", order.OrderNumber.ToString());
 					string result = "";
 					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
 						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);

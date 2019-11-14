@@ -23,11 +23,10 @@ namespace Nabbit.ViewModels {
 
 		public OrderDetailsViewModel (Order order) {
 			Order = order;
-			// is first name in there?
 			OrderItems = Order.OrderItems.Select(x => new OrderItemView(x)).ToList();
 
-			var uid = order.UserId.ToString();
-			UID = uid.Substring(uid.Length - 7).ToUpper().Insert(3, "-");
+			var uid = order.OrderId.ToString();
+			UID = uid.Substring(uid.Length - 6).ToUpper().Insert(3, "-");
 
 			CreationDate = Order.CreationDate.ToString("MM/dd/yy hh:mm tt");
 			PickupTime = Order.PickupTime.ToString("MM/dd/yy hh:mm tt");

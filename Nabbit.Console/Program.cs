@@ -25,23 +25,9 @@ namespace Nabbit.Console {
 				System.Console.Beep();
 				System.Console.Beep();
 				System.Console.Beep();
+				bool serviceUp = false;
 				var lastPing = DateTime.Now.TimeOfDay;
 				while (true) {
-					var diff = DateTime.Now.TimeOfDay - lastPing;
-					if (diff > new TimeSpan(0, 30, 0)) {
-						CheckConnection().Wait();
-						var liveDiff = DateTime.Now.TimeOfDay - LocalGlobals.Restaurant.LastPing.TimeOfDay;
-						if (liveDiff > new TimeSpan(0, 1, 30)) {
-							System.Console.Beep();
-							System.Console.Beep();
-							System.Console.Beep();
-							System.Console.WriteLine();
-							System.Console.WriteLine("Service is Down!");
-							System.Console.WriteLine();
-						} else {
-							System.Console.WriteLine($"Ping: {DateTime.Now.ToString("hh:mm:ss tt")}");
-						}
-					}
 
 					LocalGlobals.GetRestaurant().Wait();
 
@@ -52,8 +38,20 @@ namespace Nabbit.Console {
 					System.Console.WriteLine($"Ping: {now.ToString("hh:mm::ss tt")}");
 					System.Console.WriteLine($"Last Rest Ping: {restPing.ToString("hh:mm:ss tt")}");
 					System.Console.WriteLine($"Ping diff: {updateDiff.ToString("h'h 'm'm 's's'")}");
+					serviceUp = true;
+					if (updateDiff > new TimeSpan(0, 1, 30)) {
+						System.Console.Beep();
+						System.Console.Beep();
+						System.Console.Beep();
+						System.Console.WriteLine("Service is Down!");
+						serviceUp = false;
+					}
 					lastPing = DateTime.Now.TimeOfDay;
-					Thread.Sleep(80000);
+
+					if (serviceUp)
+						Thread.Sleep(80000);
+					else
+						Thread.Sleep(1000);
 				}
 			} catch (Exception e) {
 				System.Console.WriteLine(e.Message);

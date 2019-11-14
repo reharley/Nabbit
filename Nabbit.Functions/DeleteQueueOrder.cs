@@ -23,9 +23,10 @@ namespace Nabbit.Functions {
 		public static async Task<IActionResult> Run (
 			[HttpTrigger(AuthorizationLevel.Function,
 			"get",
-			Route = "DeleteQueueOrder/restaurantId/{restaurantId}/orderId/{orderId}")] HttpRequest req,
+			Route = "DeleteQueueOrder/restaurantId/{restaurantId}/orderId/{orderId}/orderNumber/{orderNumber}")] HttpRequest req,
 			string restaurantId,
 			string orderId,
+			string orderNumber,
 			ILogger log,
 			ExecutionContext context) {
 			var config = new ConfigurationBuilder()
@@ -47,7 +48,7 @@ namespace Nabbit.Functions {
 				orderTable = tableClient.GetTableReference(orderTableName);
 
 				await RemoveOrderFromQueue(restaurantId, orderId);
-				await UpdateOrder(orderId);
+				await UpdateOrder(orderId, orderNumber);
 
 				return new OkResult();
 			} catch (Exception ex) {
@@ -75,7 +76,7 @@ namespace Nabbit.Functions {
 			await orderTable.ExecuteAsync(insertOrder);
 		}
 
-		static async Task UpdateOrder(string orderId) {
+		static async Task UpdateOrder(string orderId, string orderNumber) {
 			var tableOperation = TableOperation.Retrieve<OrderEntity>(OrderEntity.PartitionKeyLabel, orderId);
 			var result = await orderTable.ExecuteAsync(tableOperation);
 			var orderEntity = result.Result as OrderEntity;
@@ -83,6 +84,10 @@ namespace Nabbit.Functions {
 			if (orderEntity != null) {
 				var order = JsonConvert.DeserializeObject<Order>(orderEntity.JSON);
 				order.OrderStatus = OrderStatus.Complete;
+
+				int num = 0;
+				int.TryParse(orderNumber, out num);
+				order.OrderNumber = num;
 
 				orderEntity.JSON = JsonConvert.SerializeObject(order);
 				var updateOperation = TableOperation.Replace(orderEntity);

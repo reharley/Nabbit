@@ -22,8 +22,9 @@ namespace NabbitManager.Services {
 
 			orderItems = order.OrderItems.Select(x => new OrderItemView(x)).ToList();
 
-			var uid = order.UserId.ToString();
-			UID = uid.Substring(uid.Length - 7).ToUpper().Insert(3, "-");
+			var orderNumber = order.OrderNumber;
+			var uid = order.OrderId.ToString();
+			UID = uid.Substring(uid.Length - 6).ToUpper().Insert(3, "-");
 
 			CreationDate = order.CreationDate.ToString("MM/dd/yy hh:mm tt");
 			PickupTime = order.PickupTime.ToString("MM/dd/yy hh:mm tt");
@@ -39,6 +40,7 @@ namespace NabbitManager.Services {
 			receipt.Add(e.PrintLine("Nabbit Order"));
 			receipt.Add(e.PrintLine($"{LocalGlobals.Restaurant.Name}"));
 			receipt.Add(e.PrintLine($"UID: {UID}"));
+			receipt.Add(e.PrintLine($"Order #: {orderNumber.ToString()}"));
 			receipt.Add(e.SetStyles(PrintStyle.None));
 			receipt.Add(e.LeftAlign());
 			receipt.Add(e.PrintLine());

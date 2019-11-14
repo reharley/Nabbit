@@ -95,6 +95,8 @@ namespace NabbitManager {
 					}
 
 					if (DateTime.Now >= pickupPrintTime) {
+						OrderQueueService.OrderNumber++;
+						order.OrderNumber = OrderQueueService.OrderNumber;
 						await PrinterService.PrinterAsync(order);
 						Thread.Sleep(3000);
 						await OrderQueueService.DeleteQueueOrder(restaurantId, order);
