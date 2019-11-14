@@ -39,7 +39,7 @@ namespace Nabbit.Console {
 							System.Console.WriteLine("Service is Down!");
 							System.Console.WriteLine();
 						} else {
-							System.Console.WriteLine($"Ping: {DateTime.Now.ToString("hh:mm::ss tt")}");
+							System.Console.WriteLine($"Ping: {DateTime.Now.ToString("hh:mm:ss tt")}");
 						}
 					}
 
@@ -50,7 +50,7 @@ namespace Nabbit.Console {
 					var updateDiff = now - restPing;
 					System.Console.WriteLine();
 					System.Console.WriteLine($"Ping: {now.ToString("hh:mm::ss tt")}");
-					System.Console.WriteLine($"Last Rest Ping: {restPing.ToString("hh:mm::ss tt")}");
+					System.Console.WriteLine($"Last Rest Ping: {restPing.ToString("hh:mm:ss tt")}");
 					System.Console.WriteLine($"Ping diff: {updateDiff.ToString("h'h 'm'm 's's'")}");
 					lastPing = DateTime.Now.TimeOfDay;
 					Thread.Sleep(80000);

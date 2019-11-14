@@ -29,11 +29,15 @@
                                  HorizontalOptions="Center"
                                  VerticalOptions="Start"
                                  Margin="0">
-    					<Picker x:Name="datePicker"
+    					<!--<Picker x:Name="datePicker"
     							ItemsSource="{Binding PickupDates}"
     							WidthRequest="100"
     							SelectedItem="0"
-    							FontSize="12" />
+    							FontSize="12" />-->
+                        <Label Text="Today"
+                               TextColor="Black"
+                               VerticalOptions="Center"
+                               FontSize="12" />
     					<TimePicker x:Name="timePicker"
                                     FontSize="12"
                                     WidthRequest="83"

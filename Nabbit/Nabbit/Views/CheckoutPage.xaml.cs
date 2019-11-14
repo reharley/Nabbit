@@ -23,14 +23,14 @@ namespace Nabbit.Views {
 			BindingContext = viewModel = new CheckoutViewModel();
 			var thiccness = (Thickness)App.Current.Resources["PageMargin"];
 			payMethodsList.Margin = new Thickness(thiccness.HorizontalThickness, 0);
-			datePicker.SelectedIndex = 0;
+			//datePicker.SelectedIndex = 0;
 		}
 
 
 		protected override void OnAppearing () {
 			base.OnAppearing();
 			viewModel.IsBusy = true;
-			PullCustomerIds();
+			_ = PullCustomerIds();
 		}
 
 		async Task PullCustomerIds () {
@@ -42,7 +42,7 @@ namespace Nabbit.Views {
 
 
 		private void OnDatePickerIndexChanged (object sender, EventArgs e) {
-			viewModel.ChangeMenuHours(datePicker.SelectedIndex);
+			//viewModel.ChangeMenuHours(datePicker.SelectedIndex);
 		}
 
 		private async void AddCardPressed (object sender, EventArgs e) {
@@ -106,15 +106,15 @@ namespace Nabbit.Views {
 			if (viewModel == null)
 				return;
 
-			if (datePicker.SelectedIndex == -1)
-				return;
+			//if (datePicker.SelectedIndex == -1)
+			//	return;
 
 			if (purchaseComplete == false)
 				await ValidTime();
 		}
 
 		async Task<bool> ValidTime () {
-			var pickupDate = viewModel.PickupDateTimes[datePicker.SelectedIndex];
+			var pickupDate = viewModel.PickupDateTimes[0];
 			var pickupTime = viewModel.PickupTime;
 
 			var dayOfWeek = (int)pickupDate.DayOfWeek;
@@ -122,16 +122,15 @@ namespace Nabbit.Views {
 			var openHours = hours.Opening[dayOfWeek].Value;
 			var closingHours = hours.Closing[dayOfWeek].Value;
 
-			if ((string)datePicker.SelectedItem == "Today") {
-				if (pickupTime < DateTime.Now.TimeOfDay) {
-					await DisplayAlert("Pickup Time", "The pickup time entered was before the current time.", "Ok");
-					viewModel.SetEarliestTime();
-					return false;
-				} else if (pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 4, 0))) {
-					await DisplayAlert("Pickup Time", "Please provide time to process the order.", "Ok");
-					viewModel.SetEarliestTime();
-					return false;
-				}
+			//if ((string)datePicker.SelectedItem == "Today") {
+			if (pickupTime < DateTime.Now.TimeOfDay) {
+				await DisplayAlert("Pickup Time", "The pickup time entered was before the current time.", "Ok");
+				viewModel.SetEarliestTime();
+				return false;
+			} else if (pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 4, 0))) {
+				await DisplayAlert("Pickup Time", "Please provide time to process the order.", "Ok");
+				viewModel.SetEarliestTime();
+				return false;
 			} else if (openHours <= pickupTime && pickupTime <= closingHours) {
 				menuHoursText.TextColor = (Color)App.Current.Resources["primaryColor"];
 			} else if (openHours > pickupTime) {
@@ -142,7 +141,7 @@ namespace Nabbit.Views {
 			} else if (closingHours < pickupTime) {
 				await DisplayAlert("Pickup Time", "The pickup time entered was after closing time.", "Ok");
 				//menuHoursText.TextColor = (Color)App.Current.Resources["dangerColor"];
-				viewModel.SetEarliestTime();
+				viewModel.SetLatestTime();
 				return false;
 			}
 

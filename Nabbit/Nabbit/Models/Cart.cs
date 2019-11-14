@@ -14,5 +14,11 @@ namespace Nabbit.Models {
 			RestaurantId = Guid.Empty;
 			MenuId = Guid.Empty;
 		}
+
+		public static void ClearCart (Guid restaurantId, Guid menuId) {
+			OrderItems.Clear();
+			RestaurantId = restaurantId;
+			MenuId = menuId;
+		}
 	}
 }

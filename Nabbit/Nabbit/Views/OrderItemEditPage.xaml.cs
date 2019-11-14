@@ -84,7 +84,7 @@ namespace Nabbit.Views {
 					"clear the cart and add this item?", "Clear Cart", "Cancel");
 
 				if (clear) {
-					ClearCart();
+					Cart.ClearCart(restaurantId, menuId);
 				} else {
 					await Navigation.PopAsync();
 					return false;
@@ -100,7 +100,7 @@ namespace Nabbit.Views {
 					"clear the cart?", "Clear", "Cancel");
 
 				if (clear) {
-					ClearCart();
+					Cart.ClearCart(restaurantId, menuId);
 				} else {
 					await Navigation.PopAsync();
 					return false;
@@ -108,12 +108,6 @@ namespace Nabbit.Views {
 			}
 
 			return true;
-		}
-
-		void ClearCart () {
-			Cart.ClearCart();
-			Cart.MenuId = menuId;
-			Cart.RestaurantId = restaurantId;
 		}
 
 		void AdjustGroupListHeight () {
