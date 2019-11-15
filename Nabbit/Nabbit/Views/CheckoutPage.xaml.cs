@@ -63,7 +63,7 @@ namespace Nabbit.Views {
 			}
 
 			if (LocalGlobals.User.LoggedIn) {
-				var pickupDate = viewModel.PickupDate;
+				var pickupDate = DateTime.Now;
 				var pickupTime = viewModel.PickupTime;
 				viewModel.Order.PickupTime = new DateTime(pickupDate.Year, pickupDate.Month, pickupDate.Day, pickupTime.Hours, pickupTime.Minutes, pickupTime.Seconds);
 
@@ -114,7 +114,7 @@ namespace Nabbit.Views {
 		}
 
 		async Task<bool> ValidTime () {
-			var pickupDate = viewModel.PickupDateTimes[0];
+			var pickupDate = DateTime.Now;
 			var pickupTime = viewModel.PickupTime;
 
 			var dayOfWeek = (int)pickupDate.DayOfWeek;
@@ -127,7 +127,7 @@ namespace Nabbit.Views {
 				await DisplayAlert("Pickup Time", "The pickup time entered was before the current time.", "Ok");
 				viewModel.SetEarliestTime();
 				return false;
-			} else if (pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 4, 0))) {
+			} else if (pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 4, 0)) && pickupTime != closingHours) {
 				await DisplayAlert("Pickup Time", "Please provide time to process the order.", "Ok");
 				viewModel.SetEarliestTime();
 				return false;

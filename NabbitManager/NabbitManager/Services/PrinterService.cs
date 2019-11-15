@@ -16,7 +16,6 @@ namespace NabbitManager.Services {
 			string UID;
 			string CreationDate;
 			string PickupTime;
-			decimal ServiceCharge;
 
 			List<OrderItemView> orderItems;
 
@@ -29,7 +28,6 @@ namespace NabbitManager.Services {
 			CreationDate = order.CreationDate.ToString("MM/dd/yy hh:mm tt");
 			PickupTime = order.PickupTime.ToString("MM/dd/yy hh:mm tt");
 
-			ServiceCharge = order.OrderTotal - order.OrderSubtotal - order.OrderTaxes;
 
 			ICommandEmitter e = new EPSON();
 			var receipt = new List<byte[]>();
@@ -110,7 +108,7 @@ namespace NabbitManager.Services {
 			receipt.Add(e.Print("Service Charge "));
 			receipt.Add(e.Print("........................"));
 			receipt.Add(e.RightAlign());
-			receipt.Add(e.PrintLine(orderSubtotal));
+			receipt.Add(e.PrintLine(serviceCharge));
 
 			receipt.Add(e.LeftAlign());
 			receipt.Add(e.Print("Taxes "));

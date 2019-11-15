@@ -77,9 +77,9 @@ namespace Nabbit.ViewModels {
 		}
 
 		public void ChangeMenuHours (int pickupDatesIndex) {
-			this.pickupDatesIndex = pickupDatesIndex;
-			PickupDate = PickupDateTimes[pickupDatesIndex];
-			var dayOfWeek = (int)PickupDateTimes[pickupDatesIndex].DayOfWeek;
+			//this.pickupDatesIndex = pickupDatesIndex;
+			//PickupDate = PickupDateTimes[pickupDatesIndex];
+			var dayOfWeek = (int)DateTime.Now.DayOfWeek;
 			var openingTime = Menu.Hours.Opening[dayOfWeek];
 			var closingTime = Menu.Hours.Closing[dayOfWeek];
 			string menuOpeningHours, menuClosingHours;
@@ -101,24 +101,24 @@ namespace Nabbit.ViewModels {
 		}
 
 		public void SetEarliestTime () {
-			var dayOfWeek = (int)PickupDateTimes[pickupDatesIndex].DayOfWeek;
+			var dayOfWeek = (int)DateTime.Now.DayOfWeek;
 			var openingTime = Menu.Hours.Opening[dayOfWeek].Value;
+			var closingTime = Menu.Hours.Closing[dayOfWeek].Value;
 
-			if ((string)PickupDates[pickupDatesIndex] == "Today") {
-				var now = DateTime.Now.TimeOfDay;
-				if (now >= openingTime)
-					PickupTime = now.Add(new TimeSpan(0, 5, 0));
-				else if (now <= openingTime.Subtract(new TimeSpan(0, 10, 0)))
-					PickupTime = openingTime;
-				else
-					PickupTime = now.Add(new TimeSpan(0, 5, 0));
-			} else {
+			var now = DateTime.Now.TimeOfDay;
+			if (now >= openingTime)
+				PickupTime = now.Add(new TimeSpan(0, 5, 0));
+			else if (now <= openingTime.Subtract(new TimeSpan(0, 10, 0)))
 				PickupTime = openingTime;
-			}
+			else
+				PickupTime = now.Add(new TimeSpan(0, 5, 0));
+
+			if (closingTime < PickupTime)
+				SetLatestTime();
 		}
 
 		public void SetLatestTime () {
-			var dayOfWeek = (int)PickupDateTimes[pickupDatesIndex].DayOfWeek;
+			var dayOfWeek = (int)DateTime.Now.DayOfWeek;
 			var closingTime = Menu.Hours.Closing[dayOfWeek].Value;
 
 			PickupTime = closingTime;
