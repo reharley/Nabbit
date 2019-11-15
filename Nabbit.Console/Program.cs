@@ -35,7 +35,7 @@ namespace Nabbit.Console {
 					var restPing = LocalGlobals.Restaurant.LastPing;
 					var updateDiff = now - restPing;
 					System.Console.WriteLine();
-					System.Console.WriteLine($"Ping: {now.ToString("hh:mm::ss tt")}");
+					System.Console.WriteLine($"Ping: {now.ToString("hh:mm:ss tt")}");
 					System.Console.WriteLine($"Last Rest Ping: {restPing.ToString("hh:mm:ss tt")}");
 					System.Console.WriteLine($"Ping diff: {updateDiff.ToString("h'h 'm'm 's's'")}");
 					serviceUp = true;
