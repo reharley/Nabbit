@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using Xamarin.Forms.Xaml;
 
 namespace Nabbit.Views {
@@ -25,6 +26,8 @@ namespace Nabbit.Views {
 			restaurantId = LocalGlobals.Restaurant.RestaurantId;
 			BindingContext = viewModel = new OrderItemEditViewModel(itemId);
 			BuildPage();
+
+			On<Xamarin.Forms.PlatformConfiguration.iOS>().SetUseSafeArea(true);
 		}
 
 		void BuildPage () {

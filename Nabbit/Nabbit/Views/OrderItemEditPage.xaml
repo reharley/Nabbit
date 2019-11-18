@@ -28,7 +28,8 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand">
-            <StackLayout Margin="{StaticResource PageMargin}">
+            <StackLayout Margin="15,5,15,0"
+                         VerticalOptions="FillAndExpand">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="70" />
@@ -66,48 +67,52 @@
                 </StackLayout>
 
                 <ScrollView VerticalOptions="FillAndExpand">
-                    <StackLayout x:Name="groupList"
-                                 BindableLayout.ItemsSource="{Binding AddonGroups}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <StackLayout>
-                                    <Label Text="{Binding Name}"
+                    <StackLayout VerticalOptions="FillAndExpand">
+                        <StackLayout x:Name="groupList"
+                                     BindableLayout.ItemsSource="{Binding AddonGroups}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout>
+                                        <Label Text="{Binding Name}"
                                            Style="{StaticResource orderNameLabelStyle}" />
-                                    <CollectionView ItemsSource="{Binding Addons}"
+                                        <CollectionView ItemsSource="{Binding Addons}"
                                                     SelectionMode="{Binding SelectionMode}"
                                                     SelectedItem="{Binding DefaultAddon}"
                                                     SelectedItems="{Binding DefaultAddons}"
                                                     SelectionChanged="CalculatePricesEvent"
                                                     VerticalOptions="Start"
                                                     Margin="0">
-                                        <CollectionView.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackLayout Style="{StaticResource itemSelectedStyle}">
-                                                    <Label Style="{StaticResource addonNameLabelStyle}"
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackLayout Style="{StaticResource itemSelectedStyle}">
+                                                        <Label Style="{StaticResource addonNameLabelStyle}"
                                                            Text="{Binding Name}" />
-                                                    <Label Style="{StaticResource priceLabelStyle}"
+                                                        <Label Style="{StaticResource priceLabelStyle}"
                                                            Text="{Binding Price, StringFormat='{0:c}'}" />
-                                                </StackLayout>
-                                            </DataTemplate>
-                                        </CollectionView.ItemTemplate>
-                                    </CollectionView>
-                                </StackLayout>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+
+                        <Label Text="{Binding Price, StringFormat='Total: {0:c}'}"
+                           FontSize="Large" d:Text="Total: $4.50"
+                           Margin="0,0,15,0"
+                           TextColor="{StaticResource primaryDarkColor}"
+                           FontAttributes="Bold" HorizontalOptions="End"
+                           VerticalOptions="EndAndExpand" />
+                        <Label Text="Special Instructions:" VerticalOptions="End" />
+
+                        <Entry Text="{Binding OrderItem.Instructions}"
+                            FontSize="Medium"
+                            VerticalOptions="End" />
                     </StackLayout>
                 </ScrollView>
             </StackLayout>
-            
-            <Label Text="{Binding Price, StringFormat='Total: {0:c}'}"
-                   FontSize="Large" d:Text="Total: $4.50"
-                   Margin="0,0,15,0"
-                   TextColor="{StaticResource primaryDarkColor}"
-                   FontAttributes="Bold" HorizontalOptions="End"
-                   VerticalOptions="EndAndExpand" />
-            <Label Text="Special Instructions:" VerticalOptions="End" />
-            <Entry Text="{Binding OrderItem.Instructions}"
-                   FontSize="Medium"
-                   VerticalOptions="End" />
+
             <Grid ColumnSpacing="0" RowSpacing="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
