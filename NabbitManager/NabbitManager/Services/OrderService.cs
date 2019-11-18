@@ -11,11 +11,13 @@ namespace NabbitManager.Services {
 		private static Task orderTask;
 
 		static void StartService () {
+			IsConnected = false;
 			ctsProcessor = new CancellationTokenSource();
 			orderTask = ProcessOrders(ctsProcessor.Token);
 		}
 
 		static void StopService () {
+			IsConnected = false;
 			if (ctsProcessor != null) ctsProcessor.Cancel();
 			ctsProcessor = null;
 			orderTask = null;

@@ -13,6 +13,16 @@ namespace NabbitManager.ViewModels {
 			}
 		}
 
+		string connectionStatus = "Offline";
+		public string ConnectionStatus {
+			get {
+				return connectionStatus;
+			}
+			set {
+				SetProperty(ref connectionStatus, value);
+			}
+		}
+
 		public OrderMasterViewModel () {
 		}
 	}

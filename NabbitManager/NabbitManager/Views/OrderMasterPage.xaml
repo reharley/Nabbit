@@ -14,6 +14,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition Height="30" />
+                    <RowDefinition Height="20" />
                     <RowDefinition Height="30" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -39,8 +40,14 @@
                        FontAttributes="Bold"
                        VerticalOptions="End" />
 
-                <Label x:Name="connectLabel"
-                       Grid.Row="2" Grid.ColumnSpan="2" />
+                <Label Text="Connected?"
+                       Grid.Row="2" Grid.Column="0" />
+                <Label d:Text="OFFLINE"
+                       BindingContext="{Binding ConnectionStatus}"
+                       Grid.Row="3" Grid.Column="0"
+                       FontSize="Large"
+                       FontAttributes="Bold"
+                       VerticalOptions="End" />
             </Grid>
             <Button x:Name="reconnectButton"
                     IsEnabled="False"

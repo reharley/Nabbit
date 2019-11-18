@@ -28,46 +28,67 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand">
-            <StackLayout Margin="15,5,15,0"
+            <ScrollView x:Name="mainScrollView"
+                        VerticalScrollBarVisibility="Never"
+                        HorizontalScrollBarVisibility="Never"
+                        VerticalOptions="FillAndExpand">
+                <Grid Margin="{StaticResource PageMargin}"
+                      x:Name="mainGrid"
                          VerticalOptions="FillAndExpand">
-                <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="70" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="55" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Text="{Binding OrderItem.Product.Name}"
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="70" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="40" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="55" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding OrderItem.Product.Name}"
                            d:Text="Very Very Long Product Name"
                            Grid.Row="0" Grid.Column="0"
                            Style="{StaticResource primaryDarkBoldTitleLabel}" />
-                    <Label Text="{Binding OrderItem.Product.Price, StringFormat='{0:c}'}"
+                        <Label Text="{Binding OrderItem.Product.Price, StringFormat='{0:c}'}"
                            d:Text="$45.50"
                            HorizontalOptions="EndAndExpand"
                            VerticalOptions="Center"
                            Grid.Row="0" Grid.Column="1"
                            FontSize="Medium" />
-                </Grid>
-                <Label Text="{Binding OrderItem.Product.Description}"
-                       FontSize="Medium" />
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="{Binding Source={x:Reference stepperQty},
-							Path=Value,
-							StringFormat='Quantity: {0}'}"
-                           VerticalTextAlignment="Center"
-                           FontSize="Medium" />
-                    <Stepper Minimum="1"
-                             Maximum="10"
-                             Increment="1"
-                             x:Name="stepperQty"
-                             ValueChanged="CalculatePricesEvent"
-                             Value="{Binding OrderItem.Quantity}" />
-                </StackLayout>
+                        <Label Text="{Binding OrderItem.Product.Description}"
+                               Grid.Row="1" Grid.ColumnSpan="2"
+                               d:Text="A very long description. A very long description.A very long description.A very long description.A very long description.A very long description.A very long description.A very long description."
+                                FontSize="Medium" />
+                        <StackLayout Orientation="Horizontal"
+                                     Grid.Row="2" Grid.ColumnSpan="2">
+                            <Label Text="{Binding Source={x:Reference stepperQty},
+							                Path=Value,
+							                StringFormat='Quantity: {0}'}"
+                                   d:Text="Qunatity: 2"
+                                   VerticalTextAlignment="Center"
+                                   FontSize="Medium" />
+                            <Stepper Minimum="1"
+                                     Maximum="10"
+                                     Increment="1"
+                                     x:Name="stepperQty"
+                                     ValueChanged="CalculatePricesEvent"
+                                     Value="{Binding OrderItem.Quantity}" />
+                        </StackLayout>
+                    </Grid>
 
-                <ScrollView VerticalOptions="FillAndExpand">
-                    <StackLayout VerticalOptions="FillAndExpand">
+                    <ScrollView Grid.Row="1"
+                                HorizontalScrollBarVisibility="Never"
+                                VerticalOptions="Start">
                         <StackLayout x:Name="groupList"
                                      BindableLayout.ItemsSource="{Binding AddonGroups}">
                             <BindableLayout.ItemTemplate>
@@ -97,23 +118,31 @@
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
+                    </ScrollView>
 
+                    <StackLayout Grid.Row="2"
+                                 x:Name="instructionsStack"
+                                 HeightRequest="80"
+                                 VerticalOptions="EndAndExpand">
                         <Label Text="{Binding Price, StringFormat='Total: {0:c}'}"
-                           FontSize="Large" d:Text="Total: $4.50"
-                           Margin="0,0,15,0"
-                           TextColor="{StaticResource primaryDarkColor}"
-                           FontAttributes="Bold" HorizontalOptions="End"
-                           VerticalOptions="EndAndExpand" />
+                               FontSize="Large" d:Text="Total: $4.50"
+                               Margin="0,0,15,0"
+                               TextColor="{StaticResource primaryDarkColor}"
+                               FontAttributes="Bold"
+                               HorizontalOptions="End"
+                               VerticalOptions="End"/>
                         <Label Text="Special Instructions:" VerticalOptions="End" />
 
                         <Entry Text="{Binding OrderItem.Instructions}"
-                            FontSize="Medium"
-                            VerticalOptions="End" />
+                                FontSize="Medium"
+                               d:Text="Very special instructions."
+                                VerticalOptions="End" />
                     </StackLayout>
-                </ScrollView>
-            </StackLayout>
+                </Grid>
+            </ScrollView>
 
-            <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid ColumnSpacing="0"
+                  RowSpacing="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />

@@ -38,6 +38,24 @@ namespace Nabbit.Views {
 				RegisterSelectedItems();
 			}
 			AdjustGroupListHeight();
+			AdjustMainGridHeight();
+		}
+
+		async void AdjustMainGridHeight () {
+			var instructionsHeight = 130;
+			if (Device.RuntimePlatform == Device.iOS)
+				instructionsHeight = 80;
+
+			instructionsStack.HeightRequest = instructionsHeight;
+
+			await Task.Delay(80);
+			var n = mainGrid.Children.Count;
+			var titleHeight = mainGrid.Children[0].Height;
+			var scrollHeight = mainScrollView.Height;
+			var littleSmaller = 30.0;
+
+			var gridLength = new GridLength(scrollHeight - titleHeight - instructionsHeight - littleSmaller, GridUnitType.Absolute);
+			mainGrid.RowDefinitions[1].Height = gridLength;
 		}
 
 		private async void CancelPressed (object sender, EventArgs e) {

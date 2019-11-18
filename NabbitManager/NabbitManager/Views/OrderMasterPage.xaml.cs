@@ -18,7 +18,7 @@ namespace NabbitManager.Views {
 #else
 		string mode = "PRODUCTION";
 #endif
-		OrderMasterViewModel viewModel;
+		static OrderMasterViewModel viewModel;
 		Task printingScheduler;
 		bool IsConnected = false;
 		Task checkTask;
@@ -63,6 +63,7 @@ namespace NabbitManager.Views {
 		protected override void OnAppearing () {
 			base.OnAppearing();
 			Reconnect();
+			StartUpdate();
 		}
 
 		protected override void OnDisappearing () {
@@ -94,10 +95,12 @@ namespace NabbitManager.Views {
 		}
 
 		async Task CheckConnection (CancellationToken ct) {
-			int i = 0;
 			while (!ct.IsCancellationRequested) {
-				connectLabel.Text = $"{IsConnected.ToString()} {i++}";
-				await Task.Delay(1000, ct);
+				if (OrderService.IsConnected)
+					viewModel.ConnectionStatus = "ONLINE";
+				else
+					viewModel.ConnectionStatus = "OFFLINE";
+				await Task.Delay(500, ct);
 			}
 
 			ct.ThrowIfCancellationRequested();
