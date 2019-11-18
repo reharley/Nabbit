@@ -201,11 +201,12 @@ namespace Nabbit.Services {
 			}
 		}
 
-		public static async Task UpdateRestaurant (Restaurant rest) {
+		public static async Task<bool> UpdateRestaurant (Restaurant rest) {
 			string url = postRestaurantUrl;
 			using (var client = new HttpClient()) {
 				var content = new StringContent(JsonConvert.SerializeObject(rest), Encoding.UTF8, "application/json");
 				var result = await client.PostAsync(url, content);
+				return result.IsSuccessStatusCode;
 			}
 		}
 

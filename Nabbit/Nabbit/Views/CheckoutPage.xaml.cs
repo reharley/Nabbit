@@ -70,7 +70,7 @@ namespace Nabbit.Views {
 				var payMethod = payMethodsList.SelectedItem as PaymentMethod;
 
 				var payMethodId = payMethod.PaymentMethodId;
-				var amount = ((long)(viewModel.Order.OrderTotal * 100m)).ToString();
+				var amount = ((long)Math.Ceiling(viewModel.Order.OrderTotal * 100m)).ToString();
 				var customerId = LocalGlobals.User.CustomerId;
 				string result = "failed";
 				try {

@@ -17,7 +17,6 @@ namespace Nabbit.Console {
 		private const string getRestaurantsUrl = "https://nabbit.azurewebsites.net/api/userId/{userId}/schoolId/{schoolId}?code=ZX45t3u8uyrT24p6bbBFXhepqeQ7KoKGN9N/lbl1p8vakNTHsgw/ng==";
 #endif
 
-
 		static void Main (string[] args) {
 			try {
 				Init().Wait();
@@ -40,23 +39,29 @@ namespace Nabbit.Console {
 					System.Console.WriteLine($"Ping diff: {updateDiff.ToString("h'h 'm'm 's's'")}");
 					serviceUp = true;
 					if (updateDiff > new TimeSpan(0, 1, 30)) {
-						System.Console.Beep();
-						System.Console.Beep();
-						System.Console.Beep();
-						System.Console.WriteLine("Service is Down!");
+						serviceUp = false;
+					} else if (LocalGlobals.Restaurant.IsActive == false) {
 						serviceUp = false;
 					}
 					lastPing = DateTime.Now.TimeOfDay;
 
 					if (serviceUp)
 						Thread.Sleep(80000);
-					else
+					else {
 						Thread.Sleep(1000);
+						System.Console.Beep();
+						System.Console.Beep();
+						System.Console.Beep();
+						System.Console.WriteLine("Service is Down!");
+					}
 				}
 			} catch (Exception e) {
 				System.Console.WriteLine(e.Message);
 				System.Console.WriteLine("Exited");
 			}
+
+			for (int i = 0; i < 20; i ++)
+				System.Console.Beep();
 		}
 
 		static async Task Init () {

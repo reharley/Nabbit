@@ -26,6 +26,11 @@ namespace Nabbit.Views {
 		protected override void OnAppearing () {
 			base.OnAppearing();
 			viewModel.RefreshCart();
+
+			if (Cart.OrderItems.Count < 1)
+				checkoutButton.IsEnabled = false;
+			else
+				checkoutButton.IsEnabled = true;
 		}
 
 		async void HandleItemPressed (object sender, SelectionChangedEventArgs e) {

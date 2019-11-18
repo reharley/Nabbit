@@ -16,11 +16,13 @@ using Xamarin.Forms.Xaml;
 namespace NabbitManager.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LiveOrdersPage : ContentPage {
+		LiveOrdersViewModel viewModel;
 		private CancellationTokenSource cts;
 
 		public LiveOrdersPage () {
 			InitializeComponent();
-			orderList.ItemsSource = OrderQueueService.OrderQueue;
+			BindingContext = viewModel = new LiveOrdersViewModel();
+			viewModel.Orders = OrderQueueService.OrderQueue;
 
 			if (LocalGlobals.Restaurant.IsActive) {
 				stopStartButton.Text = "Stop";
@@ -41,7 +43,6 @@ namespace NabbitManager.Views {
 		protected override void OnDisappearing () {
 			base.OnDisappearing();
 			StopUpdate();
-			Thread.Sleep(1000);
 		}
 
 		private async void OrderPressed (object sender, ItemTappedEventArgs e) {
@@ -56,7 +57,7 @@ namespace NabbitManager.Views {
 
 		private void RefreshQueue (object sender, EventArgs e) {
 			OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString()).Wait();
-			orderList.ItemsSource = OrderQueueService.OrderQueue;
+			viewModel.Orders = OrderQueueService.OrderQueue;
 		}
 
 		private async void StartStopClicked (object sender, EventArgs e) {
@@ -88,8 +89,8 @@ namespace NabbitManager.Views {
 
 		public async Task UpdaterAsync (CancellationToken ct) {
 			while (!ct.IsCancellationRequested) {
-				orderList.ItemsSource = OrderQueueService.OrderQueue;
-				await Task.Delay(1000, ct);
+				viewModel.Orders = OrderQueueService.OrderQueue;
+				await Task.Delay(300, ct);
 			}
 			ct.ThrowIfCancellationRequested();
 		}

@@ -45,13 +45,15 @@ namespace Nabbit.Functions {
 				TableOperation retrieveOperation = TableOperation.Retrieve<UserEntity>(UserEntity.PartitionKeyLabel, userId);
 				TableResult retrievedResult = await userTable.ExecuteAsync(retrieveOperation);
 				UserEntity userEntity = null;
+				if (retrievedResult.Result != null) {
+					userEntity = (UserEntity)retrievedResult.Result;
+				}
 				if (retrievedResult.Result == null) {
 					var error = "user not found";
 					log.LogInformation($"CreateCustomer,{DateTime.Now},user={userId},error={error}");
 					return new BadRequestObjectResult(error);
 				}
 
-				userEntity = (UserEntity)retrievedResult.Result;
 				var user = JsonConvert.DeserializeObject<User>(userEntity.JSON);
 
 				StripeConfiguration.ApiKey = stripeKey;

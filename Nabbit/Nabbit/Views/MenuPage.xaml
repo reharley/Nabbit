@@ -97,11 +97,12 @@
             </ActivityIndicator>
 
             <Button x:Name="refreshButton"
+                    Padding="10"
+                    IsVisible="false"
+                    CornerRadius="25"
                     Text="Refresh Menu"
                     HorizontalOptions="Center"
-                    Padding="10"
                     Style="{StaticResource primaryButtonStyle}"
-                    IsVisible="false"
                     Clicked="RefreshClicked"/>
             <StackLayout>
                 <Label d:Text="Business Hours: 12:00 AM - 12:00 PM"

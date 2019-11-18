@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-
+using Nabbit.Services;
+using NabbitManager.Services;
+using NabbitManager.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,8 +18,15 @@ namespace NabbitManager.Views {
 #else
 		string mode = "PRODUCTION";
 #endif
-		public OrderMasterPage() {
+		OrderMasterViewModel viewModel;
+		Task printingScheduler;
+		bool IsConnected = false;
+		Task checkTask;
+		private CancellationTokenSource ctsStatus;
+
+		public OrderMasterPage () {
 			InitializeComponent();
+			BindingContext = viewModel = new OrderMasterViewModel();
 
 			List<Button> Buttons = new List<Button>();
 			List<string> titles = new List<string>() {
@@ -44,9 +54,77 @@ namespace NabbitManager.Views {
 					};
 				}
 				navButtons.Children.Add(button);
-
-				modeLabel.Text = mode;
 			}
+
+			modeLabel.Text = mode;
+		}
+
+
+		protected override void OnAppearing () {
+			base.OnAppearing();
+			Reconnect();
+		}
+
+		protected override void OnDisappearing () {
+			base.OnDisappearing();
+			StopUpdate();
+		}
+
+
+		void Reconnect () {
+			if (LocalGlobals.Restaurant == null) {
+				LoadRestaurant();
+			} else {
+				if (OrderService.StartOrderProcessing() == true)
+					viewModel.PrinterStatus = "Yes";
+			}
+		}
+
+		public void StartUpdate () {
+			StopUpdate();
+
+			ctsStatus = new CancellationTokenSource();
+			checkTask = CheckConnection(ctsStatus.Token);
+		}
+
+		public void StopUpdate () {
+			if (ctsStatus != null) ctsStatus.Cancel();
+
+			ctsStatus = null;
+		}
+
+		async Task CheckConnection (CancellationToken ct) {
+			int i = 0;
+			while (!ct.IsCancellationRequested) {
+				connectLabel.Text = $"{IsConnected.ToString()} {i++}";
+				await Task.Delay(1000, ct);
+			}
+
+			ct.ThrowIfCancellationRequested();
+		}
+
+		private void ReconnectClicked (object sender, EventArgs e) {
+			Reconnect();
+		}
+
+
+
+		void LoadRestaurant () {
+			viewModel.IsBusy = true;
+			reconnectButton.IsEnabled = false;
+
+			var task = LocalGlobals.PullObjects(forcePull: true);
+			task.ContinueWith((getTask) => {
+				if (getTask.Result == -1) {
+					viewModel.IsBusy = false;
+					reconnectButton.IsEnabled = true;
+					return;
+				}
+
+				viewModel.IsBusy = false;
+				reconnectButton.IsEnabled = false;
+				Reconnect();
+			});
 		}
 	}
 }

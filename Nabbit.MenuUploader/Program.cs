@@ -83,9 +83,16 @@ namespace Nabbit.MenuUploader {
 
 			//PullUserOrders().Wait();
 			//PullRestOrders().Wait();
+			CreateCust().Wait();
 			decimal temp = 40m;
 			Console.WriteLine(temp.ToString("00"));
 			//SendNotification();
+		}
+
+		static async Task CreateCust () {
+			var t = await StripeService.CreateCustomer("0fa89f66-5504-4915-a366-af6133e3ad72");
+			var a = t.success;
+			var b = t.customerId;
 		}
 
 		public static async Task GetQueueOrders (string restaurantId, bool allOrders = false) {

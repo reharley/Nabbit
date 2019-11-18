@@ -11,6 +11,7 @@ namespace Nabbit.Models {
 	public class User {
 		public User () {
 			LoggedIn = false;
+			EmailVerified = false;
 			FirstName = "";
 			LastName = "";
 			Email = "";
@@ -29,5 +30,6 @@ namespace Nabbit.Models {
 		public string Email { get; set; }
 
 		public bool LoggedIn { get; set; }
+		public bool EmailVerified { get; set; }
 	}
 }

@@ -5,39 +5,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="NabbitManager.Views.LiveOrdersPage">
-	<ContentPage.Content>
-		<StackLayout Margin="{StaticResource PageMargin}">
-			<Frame x:Name="stateIndicator" BackgroundColor="Green"></Frame>
+    <ContentPage.Content>
+        <StackLayout Margin="{StaticResource PageMargin}">
+            <Frame x:Name="stateIndicator" BackgroundColor="Green"></Frame>
             <ListView x:Name="orderList"
-            ItemTapped="OrderPressed"
-            CachingStrategy="RecycleElement"
+                      ItemTapped="OrderPressed"
+                      ItemsSource="{Binding Orders}"
+                      CachingStrategy="RecycleElement"
 					  HasUnevenRows="True">
 
-				<ListView.ItemTemplate>
-					<DataTemplate>
-						<ViewCell>
-							<StackLayout>
-								<StackLayout Orientation="Horizontal">
-									<Label Text="{Binding FirstName}" 
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding FirstName}" 
 								   Style="{DynamicResource ListItemTextStyle}" />
-									<Label Text="{Binding LastName}" 
+                                    <Label Text="{Binding LastName}" 
 								   Style="{DynamicResource ListItemDetailTextStyle}"/>
-								</StackLayout>
-								<Label Text="{Binding PickupTime, StringFormat='{0:ddd, MMM d, hh:mm tt}'}"
+                                </StackLayout>
+                                <Label Text="{Binding PickupTime, StringFormat='{0:ddd, MMM d, hh:mm tt}'}"
 							   Style="{DynamicResource ListItemDetailTextStyle}"/>
-							</StackLayout>
-						</ViewCell>
-					</DataTemplate>
-				</ListView.ItemTemplate>
-			</ListView>
-            
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
             <Button x:Name="stopStartButton" 
                     BackgroundColor="Red"
                     TextColor="White"
                     Font="Subtitle"
                     FontAttributes="Bold"
                     HorizontalOptions="FillAndExpand" Text="Stop Orders" Clicked="StartStopClicked" />
-			<Button Text="Refresh" Clicked="RefreshQueue" />
-		</StackLayout>
-	</ContentPage.Content>
+            <Button Text="Refresh" Clicked="RefreshQueue" />
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

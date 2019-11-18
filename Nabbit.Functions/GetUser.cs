@@ -50,29 +50,10 @@ namespace Nabbit.Functions {
 					userEntity = (UserEntity)retrievedResult.Result;
 				}
 
-				var user = JsonConvert.DeserializeObject<User>(userEntity.JSON);
-				if (user.CustomerId == null || user.CustomerId == "") {
-					user.CustomerId = RegisterStripe(user);
-				}
-
-				return new OkObjectResult(JsonConvert.SerializeObject(user));
+				return new OkObjectResult(userEntity.JSON);
 			} catch (Exception e) {
 				return new BadRequestObjectResult(e.Message);
 			}
-		}
-
-		static string RegisterStripe (User user) {
-			StripeConfiguration.ApiKey = stripeSecret;
-
-			var options = new CustomerCreateOptions {
-				Name = user.FirstName + " " + user.LastName,
-				Email = user.Email
-			};
-
-			var service = new CustomerService();
-			Customer customer = service.Create(options);
-
-			return customer.Id;
 		}
 	}
 }

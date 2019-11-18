@@ -155,6 +155,8 @@ namespace Nabbit.ViewModels {
 		void BuildOrder () {
 			Order.OrderStatus = OrderStatus.Created;
 			Order.OrderItems = new List<OrderItem>(Cart.OrderItems);
+			Order.MenuId = Cart.MenuId;
+			Order.RestaurantId = Cart.RestaurantId;
 			ServiceCharge = LocalGlobals.Restaurant.ServiceCharge;
 			CalculateOrderCost();
 			PickupTime = DateTime.Now.TimeOfDay;

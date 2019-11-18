@@ -82,7 +82,8 @@
                        MaxLines="1" />
             </StackLayout>
 
-            <Button Text="Checkout"
+            <Button x:Name="checkoutButton"
+                    Text="Checkout"
                     Style="{StaticResource primaryButtonStyle}"
                     HorizontalOptions="FillAndExpand"
                     Clicked="CheckoutClicked" />

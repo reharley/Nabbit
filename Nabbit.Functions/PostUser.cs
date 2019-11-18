@@ -35,10 +35,6 @@ namespace Nabbit.Functions {
 			try {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var user = JsonConvert.DeserializeObject<User>(requestBody);
-				if (user.CustomerId == null || user.CustomerId == "") {
-					user.CustomerId = RegisterStripe(user);
-				}
-
 
                 log.LogInformation($"PostUser,{DateTime.Now},userId={user.UserId}");
                 var storageAccount = new CloudStorageAccount(
@@ -59,18 +55,5 @@ namespace Nabbit.Functions {
             }
         }
 
-		static string RegisterStripe (User user) {
-			StripeConfiguration.ApiKey = stripeSecret;
-
-			var options = new CustomerCreateOptions {
-				Name = user.FirstName + " " + user.LastName,
-				Email = user.Email
-			};
-
-			var service = new CustomerService();
-			Customer customer = service.Create(options);
-
-			return customer.Id;
-		}
     }
 }

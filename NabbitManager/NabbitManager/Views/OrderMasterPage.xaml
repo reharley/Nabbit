@@ -7,15 +7,48 @@
              x:Class="NabbitManager.Views.OrderMasterPage">
     <ContentPage.Content>
         <StackLayout>
-
             <StackLayout x:Name="navButtons" Margin="{StaticResource PageMargin}">
             </StackLayout>
-            <Label Text="Mode: "
-                   VerticalOptions="EndAndExpand"/>
-            <Label x:Name="modeLabel"
-                   FontSize="Large"
-                   FontAttributes="Bold"
-                   VerticalOptions="End" />
+
+            <Grid VerticalOptions="EndAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+
+                <Label Text="Mode:"
+                       Grid.Row="0" Grid.Column="0" />
+                <Label x:Name="modeLabel"
+                       d:Text="DEBUG"
+                       Grid.Row="1" Grid.Column="0"
+                       FontSize="Large"
+                       FontAttributes="Bold"
+                       VerticalOptions="End" />
+
+                <Label Text="This Printer?"
+                       Grid.Row="0" Grid.Column="1" />
+                <Label x:Name="printerLabel"
+                       Text="{Binding PrinterStatus}"
+                       Grid.Row="1" Grid.Column="1"
+                       FontSize="Large"
+                       FontAttributes="Bold"
+                       VerticalOptions="End" />
+
+                <Label x:Name="connectLabel"
+                       Grid.Row="2" Grid.ColumnSpan="2" />
+            </Grid>
+            <Button x:Name="reconnectButton"
+                    IsEnabled="False"
+                    CornerRadius="0"
+                    Clicked="ReconnectClicked"
+                    Text="Reconnect"
+                    TextColor="{StaticResource primaryTextColor}"
+                    BackgroundColor="{StaticResource primaryColor}"/>
         </StackLayout>
 
     </ContentPage.Content>

@@ -20,7 +20,6 @@ namespace Nabbit.Models {
 		public Guid RestaurantId { get; set; }
 		public Guid MenuId { get; set; }
 		public Guid UserId { get; set; }
-		public Guid TransactionId { get; set; }
 		public int OrderNumber { get; set; }
 
 		public string FirstName { get; set; }
