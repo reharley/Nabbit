@@ -23,6 +23,16 @@ namespace NabbitManager.ViewModels {
 			}
 		}
 
+		string openStatus= "Closed";
+		public string OpenStatus {
+			get {
+				return openStatus;
+			}
+			set {
+				SetProperty(ref openStatus, value);
+			}
+		}
+
 		public OrderMasterViewModel () {
 		}
 	}

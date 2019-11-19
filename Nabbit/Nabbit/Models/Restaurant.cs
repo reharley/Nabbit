@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Nabbit.Models {
 	public class Restaurant : BaseEntity {
-		public Restaurant(Guid schoolId, string name) {
+		public Restaurant (Guid schoolId, string name) {
 			RestaurantId = Guid.NewGuid();
 			SchoolId = schoolId;
 			Name = name;
@@ -15,7 +15,7 @@ namespace Nabbit.Models {
 			ProductCategories = new List<ProductCategory>();
 		}
 
-		public Restaurant() {}
+		public Restaurant () { }
 
 		public Guid RestaurantId { get; set; }
 		public Guid SchoolId { get; set; }
@@ -37,5 +37,20 @@ namespace Nabbit.Models {
 		public List<Menu> Menus { get; set; }
 		public List<Product> Products { get; set; }
 		public List<ProductCategory> ProductCategories { get; set; }
+
+		public bool IsOpen () {
+			var now = DateTime.Now.TimeOfDay;
+			var dayOfWeek = (int)DateTime.Now.DayOfWeek;
+			var hours = BusinessHours;
+			var openingHours = hours.Opening[dayOfWeek];
+			var closingHours = hours.Closing[dayOfWeek];
+
+			if (openingHours != null && closingHours != null) {
+				if (openingHours.Value <= now && now <= closingHours.Value)
+					return true;
+			}
+
+			return false;
+		}
 	}
 }
