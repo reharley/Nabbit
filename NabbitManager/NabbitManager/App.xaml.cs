@@ -52,7 +52,6 @@ namespace NabbitManager {
 
 		protected override void OnResume () {
 			// Handle when your app resumes
-			OrderQueueService.GetQueueOrders(LocalGlobals.Restaurant.RestaurantId.ToString()).Wait();
 		}
 	}
 }

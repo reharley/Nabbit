@@ -32,6 +32,8 @@ namespace NabbitManager.ViewModels {
 		}
 
 		void BuildModel () {
+			if (LocalGlobals.Restaurant == null)
+				return;
 			PingDelay = LocalGlobals.PingMinuteDelay;
 			TaxRate = LocalGlobals.Restaurant.TaxRate;
 			ServiceCharge = LocalGlobals.Restaurant.ServiceCharge;
