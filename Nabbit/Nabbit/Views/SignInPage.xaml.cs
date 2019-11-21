@@ -1,6 +1,8 @@
 ﻿using Microsoft.AppCenter.Auth;
+using Microsoft.Identity.Client;
 using Nabbit.Models;
 using Nabbit.Services;
+using Nabbit.Services.LogOn;
 using Nabbit.ViewModels;
 using Newtonsoft.Json.Linq;
 using Plugin.SecureStorage;
@@ -19,10 +21,13 @@ using Xamarin.Forms.Xaml;
 namespace Nabbit.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class SignInPage : ContentPage {
+		protected readonly IAuthenticationService authenticationService;
 		BaseViewModel viewModel;
+
 		public SignInPage () {
 			InitializeComponent();
 			BindingContext = viewModel = new BaseViewModel();
+			authenticationService = DependencyService.Get<IAuthenticationService>();
 		}
 
 		async Task SignIn () {
@@ -46,14 +51,6 @@ namespace Nabbit.Views {
 				if (lastNameClaim != null)
 					lastName = lastNameClaim.Value;
 
-				LocalGlobals.User.FirstName = firstName;
-				LocalGlobals.User.LastName = lastName;
-				LocalGlobals.User.UserId = new Guid(jwToken.Claims.FirstOrDefault(t => t.Type == "oid").Value);
-				LocalGlobals.User.Email = jwToken.Claims.FirstOrDefault(t => t.Type == "emails").Value;
-
-				await LocalGlobals.GetUser();
-
-				signInLabel.Text = "Login Success!";
 				await App.Current.MainPage.Navigation.PopModalAsync();
 			} catch (Exception e) {
 				// Do something with sign-in failure.
@@ -63,13 +60,54 @@ namespace Nabbit.Views {
 			viewModel.IsBusy = false;
 		}
 
+		/*
 		private async void SignInClicked (object sender, EventArgs e) {
 			await SignIn();
 		}
-
+		*/
 
 		private async void CancelClicked (object sender, EventArgs e) {
 			await Navigation.PopModalAsync();
+		}
+
+		async void SignInClicked (object sender, EventArgs e) {
+			try {
+				if (LocalGlobals.User.LoggedIn == false) {
+					var userContext = await authenticationService.SignInAsync();
+					await UpdateUserInfo(userContext);
+				} else {
+					var userContext = await authenticationService.SignOutAsync();
+					await UpdateUserInfo(userContext);
+				}
+			} catch (Exception ex) {
+				// Checking the exception message 
+				// should ONLY be done for B2C
+				// reset and not any other error.
+				if (ex.Message.Contains("AADB2C90118"))
+					OnPasswordReset();
+				// Alert if any exception excluding user cancelling sign-in dialog
+				//else if (((ex as MsalException)?.ErrorCode != "authentication_canceled"))
+				//	await DisplayAlert($"Exception:", ex.ToString(), "Dismiss");
+			}
+		}
+
+		async void OnPasswordReset () {
+			try {
+				var userContext = await authenticationService.ResetPasswordAsync();
+				await UpdateUserInfo(userContext);
+			} catch (Exception ex) {
+				// Alert if any exception excludig user cancelling sign-in dialog
+				if (((ex as MsalException)?.ErrorCode != "authentication_canceled"))
+					await DisplayAlert($"Exception:", ex.ToString(), "Dismiss");
+			}
+		}
+
+		public async Task UpdateUserInfo (UserContext userContext) {
+			LocalGlobals.User.FirstName = userContext.Name;
+			LocalGlobals.User.LastName = userContext.FamilyName;
+			LocalGlobals.User.Email = userContext.EmailAddress;
+			LocalGlobals.User.UserId = new Guid(userContext.UserIdentifier);
+			await LocalGlobals.GetUser();
 		}
 	}
 }
