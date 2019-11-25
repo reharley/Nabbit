@@ -24,7 +24,11 @@
                 <Label Text="Ping Delay (Minutes)" />
                 <Entry Text="{Binding PingDelay}" Keyboard="Numeric"/>
             </StackLayout>
-            
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Pickup Delay (Minutes)" />
+                <Entry Text="{Binding PickupDelay}" Keyboard="Numeric"/>
+            </StackLayout>
+
             <CollectionView ItemsSource="{Binding Hours}"
                             d:ItemsSource="{StaticResource testArray}">
                 <CollectionView.Header>

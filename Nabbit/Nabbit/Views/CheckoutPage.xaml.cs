@@ -121,13 +121,14 @@ namespace Nabbit.Views {
 			var hours = viewModel.Menu.Hours;
 			var openHours = hours.Opening[dayOfWeek].Value;
 			var closingHours = hours.Closing[dayOfWeek].Value;
+			var pickupDelay = LocalGlobals.Restaurant.PickupDelay;
 
 			//if ((string)datePicker.SelectedItem == "Today") {
 			if (pickupTime < DateTime.Now.TimeOfDay) {
 				await DisplayAlert("Pickup Time", "The pickup time entered was before the current time.", "Ok");
 				viewModel.SetEarliestTime();
 				return false;
-			} else if (pickupTime < DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 4, 0)) && pickupTime != closingHours) {
+			} else if (pickupTime < DateTime.Now.TimeOfDay.Add(pickupDelay) && pickupTime != closingHours) {
 				await DisplayAlert("Pickup Time", "Please provide time to process the order.", "Ok");
 				viewModel.SetEarliestTime();
 				return false;

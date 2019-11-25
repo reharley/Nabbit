@@ -11,6 +11,7 @@ namespace NabbitManager.ViewModels {
 		public decimal TaxRate { get; set; }
 		public decimal ServiceCharge { get; set; }
 		public int PingDelay { get; set; }
+		public int PickupDelay { get; set; }
 
 		bool usePrinter = false;
 		public bool UsePrinter {
@@ -102,6 +103,7 @@ namespace NabbitManager.ViewModels {
 			LocalGlobals.Restaurant.TaxRate = TaxRate;
 			LocalGlobals.Restaurant.ServiceCharge = ServiceCharge;
 			LocalGlobals.PingMinuteDelay = PingDelay;
+			LocalGlobals.Restaurant.PickupDelay = new TimeSpan(0, PickupDelay, 0);
 		}
 	}
 }
