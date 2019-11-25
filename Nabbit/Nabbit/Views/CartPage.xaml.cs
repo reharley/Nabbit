@@ -100,13 +100,13 @@ namespace Nabbit.Views {
 					Cart.ClearCart();
 					return;
 				} else if (now.TimeOfDay < menuHours.Opening[dayOfWeek]) {
-					var menuOpeningTime = new DateTime(menuHours.Opening[dayOfWeek].Value.Ticks);
-					await DisplayAlert("Menu Not Available",
-									   "This menu is not offered yet. " +
-									   "It will be available at " +
-									   $"{menuOpeningTime.ToString("hh:mm tt")}.",
-									   "OK");
-					return;
+					//var menuOpeningTime = new DateTime(menuHours.Opening[dayOfWeek].Value.Ticks);
+					//await DisplayAlert("Menu Not Available",
+					//				   "This menu is not offered yet. " +
+					//				   "It will be available at " +
+					//				   $"{menuOpeningTime.ToString("hh:mm tt")}.",
+					//				   "OK");
+					//return;
 				} else if (menuHours.Closing[dayOfWeek] < now.TimeOfDay) {
 					await DisplayAlert("Menu Not Available",
 						"This menu is no longer available today. " +
