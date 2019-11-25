@@ -32,7 +32,7 @@ namespace NabbitManager.Services {
 			}
 		}
 
-		public static async Task GetQueueOrders (string restaurantId, bool allOrders = false) {
+		public static async Task<bool> GetQueueOrders (string restaurantId, bool allOrders = false) {
 			if (OrderQueue == null)
 				OrderQueue = new List<Order>();
 
@@ -50,7 +50,11 @@ namespace NabbitManager.Services {
 								OrderQueue.AddRange(orderList);
 
 							OrderQueue = OrderQueue.OrderBy(x => x.PickupTime).ToList();
+
+
 						}
+
+						return httpResponse.IsSuccessStatusCode;
 					}
 				}
 			} catch (Exception ex) {
@@ -58,9 +62,11 @@ namespace NabbitManager.Services {
 				Console.WriteLine("Something is missing...", "The app was unable to load data. Please check the your connections and try again.");
 				Console.WriteLine(ex.Message);
 			}
+
+			return false;
 		}
 
-		public static async Task DeleteQueueOrder (string restaurantId, Order order) {
+		public static async Task<bool> DeleteQueueOrder (string restaurantId, Order order) {
 			try {
 				using (var client = new HttpClient()) {
 					var url = deleteQueueOrdersUrl.Replace("{restaurantId}", restaurantId)
@@ -71,6 +77,8 @@ namespace NabbitManager.Services {
 						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 						if (httpResponse.IsSuccessStatusCode)
 							OrderQueue.Remove(order);
+
+						return httpResponse.IsSuccessStatusCode;
 					}
 				}
 			} catch (Exception ex) {
@@ -78,6 +86,8 @@ namespace NabbitManager.Services {
 				Console.WriteLine("Something is missing...", "The app was unable to load data. Please check the your connections and try again.");
 				Console.WriteLine(ex.Message);
 			}
+
+			return false;
 		}
 	}
 }

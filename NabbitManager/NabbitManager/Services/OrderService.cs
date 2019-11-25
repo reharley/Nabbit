@@ -50,12 +50,17 @@ namespace NabbitManager.Services {
 
 			await OrderQueueService.GetQueueOrders(restaurantId, true);
 			while (!ct.IsCancellationRequested) {
+				if (LocalGlobals.Restaurant.IsOpen() == false)
+					continue;
+
 				var timeDiff = DateTime.Now.Subtract(lastPing);
 				if (timeDiff > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
-					await OrderQueueService.GetQueueOrders(restaurantId);
-					lastPing = DateTime.Now;
-					LocalGlobals.Restaurant.LastPing = lastPing;
-					IsConnected = await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
+					IsConnected = await OrderQueueService.GetQueueOrders(restaurantId);
+					if (IsConnected) {
+						lastPing = DateTime.Now;
+						LocalGlobals.Restaurant.LastPing = lastPing;
+						IsConnected = await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
+					}
 				}
 
 				if (OrderQueueService.OrderQueue.Count > 0) {
@@ -72,14 +77,19 @@ namespace NabbitManager.Services {
 						order.OrderNumber = OrderQueueService.OrderNumber;
 						await PrinterService.PrinterAsync(order);
 						await Task.Delay(3000, ct);
-						await OrderQueueService.DeleteQueueOrder(restaurantId, order);
+						IsConnected = await OrderQueueService.DeleteQueueOrder(restaurantId, order);
 					}
 				}
 
-				await Task.Delay(1000, ct);
+				if (IsConnected)
+					await Task.Delay(1000, ct);
+				else
+					await Task.Delay(200, ct);
 			}
 
 			ct.ThrowIfCancellationRequested();
 		}
+
+		
 	}
 }

@@ -18,7 +18,7 @@ namespace NabbitManager.Views {
 #else
 		string mode = "PRODUCTION";
 #endif
-		static OrderMasterViewModel viewModel;
+		OrderMasterViewModel viewModel;
 		Task printingScheduler;
 		bool IsConnected = false;
 		Task checkTask;
@@ -73,11 +73,14 @@ namespace NabbitManager.Views {
 
 
 		void Reconnect () {
+			viewModel.IsBusy = true;
+
 			if (LocalGlobals.Restaurant == null) {
 				LoadRestaurant();
 			} else {
 				if (OrderService.StartOrderProcessing() == true)
 					viewModel.PrinterStatus = "Yes";
+				viewModel.IsBusy = false;
 			}
 		}
 
@@ -96,36 +99,41 @@ namespace NabbitManager.Views {
 
 		async Task CheckConnection (CancellationToken ct) {
 			while (!ct.IsCancellationRequested) {
-				if (OrderService.IsConnected)
-					viewModel.ConnectionStatus = "ONLINE";
-				else
-					viewModel.ConnectionStatus = "OFFLINE";
+				if (OrderService.IsConnected) {
+					if (viewModel.ConnectionStatus != "ONLINE")
+						viewModel.ConnectionStatus = "ONLINE";
+					viewModel.IsBusy = false;
+				} else {
+					if (viewModel.ConnectionStatus != "OFFLINE")
+						viewModel.ConnectionStatus = "OFFLINE";
+				}
+
+				if (LocalGlobals.Restaurant == null) {
+					if (viewModel.OpenStatus != "CLOSED")
+						viewModel.OpenStatus = "CLOSED";
+				} else if (LocalGlobals.Restaurant.IsOpen()) {
+					if (viewModel.OpenStatus != "OPEN")
+						viewModel.OpenStatus = "OPEN";
+				} else {
+					if (viewModel.OpenStatus != "CLOSED")
+						viewModel.OpenStatus = "CLOSED";
+				}
+
 				await Task.Delay(500, ct);
 			}
 
 			ct.ThrowIfCancellationRequested();
 		}
 
-		private void ReconnectClicked (object sender, EventArgs e) {
-			Reconnect();
-		}
-
-
-
 		void LoadRestaurant () {
 			viewModel.IsBusy = true;
-			reconnectButton.IsEnabled = false;
 
 			var task = LocalGlobals.PullObjects(forcePull: true);
-			task.ContinueWith((getTask) => {
+			task.ContinueWith(async (getTask) => {
 				if (getTask.Result == -1) {
-					viewModel.IsBusy = false;
-					reconnectButton.IsEnabled = true;
-					return;
+					await Task.Delay(500);
 				}
 
-				viewModel.IsBusy = false;
-				reconnectButton.IsEnabled = false;
 				Reconnect();
 			});
 		}
