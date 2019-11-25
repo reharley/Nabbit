@@ -22,7 +22,8 @@ namespace Nabbit.ViewModels {
 
 		public AccountViewModel () {
 			user = LocalGlobals.User;
-			SchoolName = LocalGlobals.School.Name;
+			if (LocalGlobals.School != null)
+				SchoolName = LocalGlobals.School.Name;
 		}
 	}
 }

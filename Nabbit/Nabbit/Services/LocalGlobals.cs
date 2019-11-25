@@ -48,6 +48,7 @@ namespace Nabbit.Services {
 				restaurant = value;
 			}
 		}
+
 		static School school;
 		public static School School {
 			get {
