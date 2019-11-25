@@ -105,6 +105,7 @@ namespace Nabbit.ViewModels {
 			var openingTime = Menu.Hours.Opening[dayOfWeek].Value;
 			var closingTime = Menu.Hours.Closing[dayOfWeek].Value;
 			var pickupDelay = LocalGlobals.Restaurant.PickupDelay;
+			pickupDelay = pickupDelay.Add(new TimeSpan(0,1,0));
 
 			var now = DateTime.Now.TimeOfDay;
 			if (now >= openingTime)

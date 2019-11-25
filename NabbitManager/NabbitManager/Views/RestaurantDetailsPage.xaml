@@ -22,11 +22,11 @@
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Ping Delay (Minutes)" />
-                <Entry Text="{Binding PingDelay}" Keyboard="Numeric"/>
+                <Entry Text="{Binding PingDelay}" Keyboard="Numeric" WidthRequest="40"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Pickup Delay (Minutes)" />
-                <Entry Text="{Binding PickupDelay}" Keyboard="Numeric"/>
+                <Entry Text="{Binding PickupDelay}" Keyboard="Numeric" WidthRequest="40" />
             </StackLayout>
 
             <CollectionView ItemsSource="{Binding Hours}"
