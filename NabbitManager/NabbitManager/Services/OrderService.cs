@@ -50,8 +50,10 @@ namespace NabbitManager.Services {
 
 			await OrderQueueService.GetQueueOrders(restaurantId, true);
 			while (!ct.IsCancellationRequested) {
-				if (LocalGlobals.Restaurant.IsOpen() == false)
+				if (LocalGlobals.Restaurant.IsOpen() == false) {
+					IsConnected = false;
 					continue;
+				}
 
 				var timeDiff = DateTime.Now.Subtract(lastPing);
 				if (timeDiff > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
@@ -90,6 +92,6 @@ namespace NabbitManager.Services {
 			ct.ThrowIfCancellationRequested();
 		}
 
-		
+
 	}
 }

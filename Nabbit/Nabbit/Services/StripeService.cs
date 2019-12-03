@@ -214,7 +214,7 @@ namespace Nabbit.Services {
 
 			var confirmOptions = new SetupIntentConfirmOptions() {
 				ClientSecret = setupIntent.ClientSecret,
-				PaymentMethodId = paymentMethod.Id
+				PaymentMethod = paymentMethod.Id
 			};
 
 			var setupService = new SetupIntentService();

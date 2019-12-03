@@ -26,16 +26,29 @@ namespace Nabbit.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Microsoft.AppCenter.Auth.Resource.Color.browser_actions_bg_grey = global::Nabbit.Droid.Resource.Color.browser_actions_bg_grey;
+			global::Microsoft.AppCenter.Auth.Resource.Color.browser_actions_divider_color = global::Nabbit.Droid.Resource.Color.browser_actions_divider_color;
+			global::Microsoft.AppCenter.Auth.Resource.Color.browser_actions_text_color = global::Nabbit.Droid.Resource.Color.browser_actions_text_color;
+			global::Microsoft.AppCenter.Auth.Resource.Color.browser_actions_title_color = global::Nabbit.Droid.Resource.Color.browser_actions_title_color;
+			global::Microsoft.AppCenter.Auth.Resource.Dimension.browser_actions_context_menu_max_width = global::Nabbit.Droid.Resource.Dimension.browser_actions_context_menu_max_width;
+			global::Microsoft.AppCenter.Auth.Resource.Dimension.browser_actions_context_menu_min_padding = global::Nabbit.Droid.Resource.Dimension.browser_actions_context_menu_min_padding;
 			global::Microsoft.AppCenter.Auth.Resource.Dimension.http_auth_dialog_padding_bottom = global::Nabbit.Droid.Resource.Dimension.http_auth_dialog_padding_bottom;
 			global::Microsoft.AppCenter.Auth.Resource.Dimension.http_auth_dialog_padding_left = global::Nabbit.Droid.Resource.Dimension.http_auth_dialog_padding_left;
 			global::Microsoft.AppCenter.Auth.Resource.Dimension.http_auth_dialog_padding_right = global::Nabbit.Droid.Resource.Dimension.http_auth_dialog_padding_right;
 			global::Microsoft.AppCenter.Auth.Resource.Dimension.http_auth_dialog_padding_top = global::Nabbit.Droid.Resource.Dimension.http_auth_dialog_padding_top;
 			global::Microsoft.AppCenter.Auth.Resource.Id.LinearLayout1 = global::Nabbit.Droid.Resource.Id.LinearLayout1;
+			global::Microsoft.AppCenter.Auth.Resource.Id.browser_actions_header_text = global::Nabbit.Droid.Resource.Id.browser_actions_header_text;
+			global::Microsoft.AppCenter.Auth.Resource.Id.browser_actions_menu_item_icon = global::Nabbit.Droid.Resource.Id.browser_actions_menu_item_icon;
+			global::Microsoft.AppCenter.Auth.Resource.Id.browser_actions_menu_item_text = global::Nabbit.Droid.Resource.Id.browser_actions_menu_item_text;
+			global::Microsoft.AppCenter.Auth.Resource.Id.browser_actions_menu_items = global::Nabbit.Droid.Resource.Id.browser_actions_menu_items;
+			global::Microsoft.AppCenter.Auth.Resource.Id.browser_actions_menu_view = global::Nabbit.Droid.Resource.Id.browser_actions_menu_view;
 			global::Microsoft.AppCenter.Auth.Resource.Id.common_auth_webview = global::Nabbit.Droid.Resource.Id.common_auth_webview;
 			global::Microsoft.AppCenter.Auth.Resource.Id.editPassword = global::Nabbit.Droid.Resource.Id.editPassword;
 			global::Microsoft.AppCenter.Auth.Resource.Id.editUserName = global::Nabbit.Droid.Resource.Id.editUserName;
 			global::Microsoft.AppCenter.Auth.Resource.Id.webview = global::Nabbit.Droid.Resource.Id.webview;
 			global::Microsoft.AppCenter.Auth.Resource.Layout.activity_authentication = global::Nabbit.Droid.Resource.Layout.activity_authentication;
+			global::Microsoft.AppCenter.Auth.Resource.Layout.browser_actions_context_menu_page = global::Nabbit.Droid.Resource.Layout.browser_actions_context_menu_page;
+			global::Microsoft.AppCenter.Auth.Resource.Layout.browser_actions_context_menu_row = global::Nabbit.Droid.Resource.Layout.browser_actions_context_menu_row;
 			global::Microsoft.AppCenter.Auth.Resource.Layout.common_activity_authentication = global::Nabbit.Droid.Resource.Layout.common_activity_authentication;
 			global::Microsoft.AppCenter.Auth.Resource.Layout.http_auth_dialog = global::Nabbit.Droid.Resource.Layout.http_auth_dialog;
 			global::Microsoft.AppCenter.Auth.Resource.Raw.msal_default_config = global::Nabbit.Droid.Resource.Raw.msal_default_config;
