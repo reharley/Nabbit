@@ -42,8 +42,17 @@ namespace Nabbit.Views {
 			var state = viewModel.PayMethod.State;
 			var zip = viewModel.PayMethod.Zip;
 
+			var cardIncomplete = false;
 
-			if (cardNumber == null || cardNumber.Length < 19) {
+			if (cardNumber == null) {
+				cardIncomplete = true;
+			} else if (cardNumber.Length < 19) {
+				cardIncomplete = true;
+				if (cardNumber.Contains("-") == false && cardNumber.Length == 16)
+					cardIncomplete = false;
+			}
+
+			if (cardIncomplete) {
 				valid = false;
 				await DisplayAlert("Incomplete Form", "Card Number is incomplete", "Ok");
 			} else if (cardExp == null || cardExp.Length < 5) {
