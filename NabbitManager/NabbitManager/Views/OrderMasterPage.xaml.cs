@@ -71,7 +71,6 @@ namespace NabbitManager.Views {
 			StopUpdate();
 		}
 
-
 		void Reconnect () {
 			viewModel.IsBusy = true;
 

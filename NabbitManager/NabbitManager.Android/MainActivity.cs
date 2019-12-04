@@ -8,7 +8,7 @@ using Android.Widget;
 using Android.OS;
 
 namespace NabbitManager.Droid {
-	[Activity(Label = "Nabbit Manager", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	[Activity(Label = "Nabbit Manager", Icon = "@mipmap/ic_launcher", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
 	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity {
 		protected override void OnCreate(Bundle savedInstanceState) {
 			TabLayoutResource = Resource.Layout.Tabbar;

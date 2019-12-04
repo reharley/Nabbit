@@ -7,7 +7,9 @@
              x:Class="NabbitManager.Views.LiveOrdersPage">
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
-            <Frame x:Name="stateIndicator" BackgroundColor="Green"></Frame>
+            <Frame x:Name="stateIndicator"
+                   HeightRequest="100"
+                   BackgroundColor="White"/>
             <ListView x:Name="orderList"
                       ItemTapped="OrderPressed"
                       ItemsSource="{Binding Orders}"

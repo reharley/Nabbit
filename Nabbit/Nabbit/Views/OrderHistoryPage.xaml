@@ -29,13 +29,13 @@
                                 SelectionMode="Single"
                                 SelectionChanged="OnItemSelected"
                                 d:ItemsSource="{StaticResource testArray}">
-                    <CollectionView.ItemsLayout>
+                    <!--<CollectionView.ItemsLayout>
                         <ListItemsLayout ItemSpacing="20">
                             <x:Arguments>
                                 <ItemsLayoutOrientation>Vertical</ItemsLayoutOrientation>    
                             </x:Arguments>
                         </ListItemsLayout>
-                    </CollectionView.ItemsLayout>
+                    </CollectionView.ItemsLayout>-->
                     
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

@@ -6,7 +6,17 @@
              mc:Ignorable="d"
              x:Class="NabbitManager.Views.ProductMasterPage">
     <ContentPage.Content>
-		<StackLayout x:Name="navButtons" Margin="{StaticResource PageMargin}">
-		</StackLayout>
-	</ContentPage.Content>
+        <StackLayout Margin="{StaticResource PageMargin}">
+            <StackLayout x:Name="navButtons">
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Shortcuts"
+                       FontAttributes="Bold"
+                       FontSize="Large"/>
+                <StackLayout x:Name="shortcutButtons">
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

@@ -49,7 +49,7 @@ namespace NabbitManager.Views {
 		async void DeletePressed(object sender, EventArgs e) {
 			if (!isNew) {
 				var response = await DisplayAlert(viewModel.Product.Name,
-										"Are you sure you want to delete this category?",
+										"Are you sure you want to delete this item?",
 										"Delete", "Cancel");
 
 				if (response == true) {

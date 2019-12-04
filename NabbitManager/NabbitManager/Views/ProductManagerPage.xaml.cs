@@ -16,37 +16,35 @@ namespace NabbitManager.Views {
 	public partial class ProductManagerPage : ContentPage {
 		ProductManagerViewModel viewModel;
 
-		public ProductManagerPage() {
+		public ProductManagerPage () {
 			InitializeComponent();
 
 			BindingContext = viewModel = new ProductManagerViewModel();
-		}
 
-		protected override void OnAppearing() {
-			base.OnAppearing();
-			productListView.ItemsSource = LocalGlobals.Restaurant.Products.OrderBy(p => p.Name);
 
-			viewModel.pickerCats = new List<string>();
-			viewModel.pickerCats.Add("All");
-			viewModel.pickerCats.AddRange(LocalGlobals.Restaurant
-											.ProductCategories
-											.Select(c => c.Name)
-											.ToList());
 			picker.ItemsSource = viewModel.pickerCats;
 			picker.SelectedIndex = 0;
 		}
 
-		async void HandleItemPressed(object sender, ItemTappedEventArgs e) {
-			if (e.Item == null)
-				return;
+		public ProductManagerPage (string categoryFilter) {
+			InitializeComponent();
 
-			await Navigation.PushAsync(new ProductEditPage(((Product)e.Item).ProductId));
+			BindingContext = viewModel = new ProductManagerViewModel();
 
-			((ListView)sender).SelectedItem = null;
+			var index = viewModel.pickerCats.IndexOf(categoryFilter);
+			picker.ItemsSource = viewModel.pickerCats;
+			picker.SelectedIndex = index;
 		}
 
-		private void OnCategoryIndexChanged(object sender, EventArgs e) {
-			var picker = (Picker)sender;
+		protected override void OnAppearing () {
+			base.OnAppearing();
+			PopulateList();
+		}
+
+		void PopulateList () {
+			if (LocalGlobals.Restaurant == null)
+				return;
+
 			int selectedIndex = picker.SelectedIndex;
 
 			if (selectedIndex == 0) {
@@ -59,8 +57,21 @@ namespace NabbitManager.Views {
 											.OrderBy(p => p.Name);
 			}
 		}
+		
+		async void HandleItemPressed (object sender, ItemTappedEventArgs e) {
+			if (e.Item == null)
+				return;
 
-		async void AddItemPressed(object sender, EventArgs e) {
+			await Navigation.PushAsync(new ProductEditPage(((Product)e.Item).ProductId));
+
+			((ListView)sender).SelectedItem = null;
+		}
+
+		private void OnCategoryIndexChanged (object sender, EventArgs e) {
+			PopulateList();
+		}
+
+		async void AddItemPressed (object sender, EventArgs e) {
 			await Navigation.PushAsync(new ProductEditPage());
 		}
 	}

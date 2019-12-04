@@ -90,13 +90,13 @@
                     </StackLayout>
                 </CollectionView.EmptyView>
 
-				<CollectionView.ItemsLayout>
+				<!--<CollectionView.ItemsLayout>
 					<ListItemsLayout ItemSpacing="20" SnapPointsAlignment="Start" SnapPointsType="Mandatory">
 						<x:Arguments>
 							<ItemsLayoutOrientation>Vertical</ItemsLayoutOrientation>
 						</x:Arguments>
 					</ListItemsLayout>
-				</CollectionView.ItemsLayout>
+				</CollectionView.ItemsLayout>-->
 
 				<CollectionView.ItemTemplate>
 					<DataTemplate>
