@@ -1,4 +1,5 @@
-﻿using Nabbit.Models;
+﻿using Microsoft.Identity.Client;
+using Nabbit.Models;
 using Nabbit.Services;
 using Nabbit.ViewModels;
 using System;
@@ -50,9 +51,20 @@ namespace Nabbit.Views {
 
 		private async void CheckoutClicked (object sender, EventArgs e) {
 			if (LocalGlobals.User.LoggedIn == false) {
-				await DisplayAlert("Login", "Please create an account before making an order.", "OK");
-				await Navigation.PushModalAsync(new SignInPage());
-				return;
+				try {
+					// Look for existing account
+					IEnumerable<IAccount> accounts = await App.AuthenticationClient.GetAccountsAsync();
+
+					AuthenticationResult result = await App.AuthenticationClient
+						.AcquireTokenSilent(ADConstants.Scopes, accounts.FirstOrDefault())
+						.ExecuteAsync();
+
+					//await Navigation.PushAsync(new LogoutPage(result));
+				} catch {
+					await DisplayAlert("Login", "Please login or create an account before making an order.", "OK");
+					await Navigation.PushModalAsync(new SignInPage());
+					return;
+				}
 			}
 
 			viewModel.IsBusy = true;

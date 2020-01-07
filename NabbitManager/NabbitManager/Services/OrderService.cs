@@ -91,7 +91,5 @@ namespace NabbitManager.Services {
 
 			ct.ThrowIfCancellationRequested();
 		}
-
-
 	}
 }

@@ -32,7 +32,7 @@ namespace Nabbit.Functions {
 			try {
 				var payService = new PaymentMethodService();
 				var options = new PaymentMethodAttachOptions {
-					CustomerId = custId,
+					Customer = custId,
 				};
 
 				var completePaymentMethod = await payService.AttachAsync(payId, options);

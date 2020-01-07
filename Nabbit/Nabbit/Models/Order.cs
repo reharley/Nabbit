@@ -20,6 +20,7 @@ namespace Nabbit.Models {
 		public Guid RestaurantId { get; set; }
 		public Guid MenuId { get; set; }
 		public Guid UserId { get; set; }
+		public string PaymentIntentId { get; set; }
 		public int OrderNumber { get; set; }
 
 		public string FirstName { get; set; }
@@ -32,6 +33,7 @@ namespace Nabbit.Models {
 		public decimal ServiceCharge { get; set; }
 		public decimal OrderSubtotal { get; set; }
 		public decimal OrderTaxes { get; set; }
+		public decimal StripeFees { get; set; }
 
 		public List<OrderItem> OrderItems { get; set; }
 	}

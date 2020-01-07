@@ -7,7 +7,6 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Xamarin.Forms;
-using Nabbit.Services.LogOn;
 using Android.Content;
 using Microsoft.Identity.Client;
 
@@ -32,10 +31,7 @@ namespace Nabbit.Droid {
 			global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 			LoadApplication(new App());
 
-
-			var authenticationService = DependencyService.Get<IAuthenticationService>();
-			// Default system browser
-			authenticationService.SetParent(this);
+			App.UIParent = this;
 		}
 
 		public override void OnRequestPermissionsResult (int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults) {
@@ -43,7 +39,6 @@ namespace Nabbit.Droid {
 
 			base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 		}
-
 
 		protected override void OnActivityResult (int requestCode, Result resultCode, Intent data) {
 			base.OnActivityResult(requestCode, resultCode, data);

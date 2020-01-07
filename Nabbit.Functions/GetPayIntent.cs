@@ -32,8 +32,8 @@ namespace Nabbit.Functions {
 				var options = new PaymentIntentCreateOptions {
 					Amount = long.Parse(amount),
 					Currency = "usd",
-					CustomerId = customerId,
-					PaymentMethodId = paymentMethodId,
+					Customer = customerId,
+					PaymentMethod = paymentMethodId,
 				};
 				var intent = await service.CreateAsync(options);
 				return (ActionResult)new OkObjectResult(intent.ToJson());

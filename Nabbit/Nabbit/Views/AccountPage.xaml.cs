@@ -1,4 +1,5 @@
 ﻿using Microsoft.AppCenter.Auth;
+using Microsoft.Identity.Client;
 using Nabbit.Services;
 using Nabbit.ViewModels;
 using Newtonsoft.Json;
@@ -72,9 +73,18 @@ namespace Nabbit.Views {
 			if (LocalGlobals.User.LoggedIn == false) {
 				SignIn();
 			} else {
-				Auth.SignOut();
+				await AuthLogout();
 				LocalGlobals.Logout();
 				UpdatePage();
+			}
+		}
+
+		async Task AuthLogout () {
+			IEnumerable<IAccount> accounts = await App.AuthenticationClient.GetAccountsAsync();
+
+			while (accounts.Any()) {
+				await App.AuthenticationClient.RemoveAsync(accounts.First());
+				accounts = await App.AuthenticationClient.GetAccountsAsync();
 			}
 		}
 	}

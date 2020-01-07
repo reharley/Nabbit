@@ -36,7 +36,8 @@ namespace Nabbit.MenuUploader {
 		private const string postOrderUrl = "http://localhost:7071/api/PostOrder";
 		//private const string getUserUrl = "http://localhost:7071/api/GetUser/userId/{userId}"; https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==
 		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
-		private const string getRestOrdersUrl = "http://localhost:7071/api/GetRestOrders/{restaurantId}";
+		private const string getRestOrdersUrl = "https://nabbit.azurewebsites.net/api/GetRestOrders/{restaurantId}?code=ZCJqEFJhas1iI2fsO0yQq24TAXRULXzx8ebr/s8Dr43MOSYGxNlZnA==";
+		//private const string getRestOrdersUrl = "http://localhost:7071/api/GetRestOrders/{restaurantId}";
 		private const string postUserUrl = "http://localhost:7071/api/PostUser";
 		private static string getSetupIntentUrl = "http://localhost:7071/api/GetSetupIntent";
 
@@ -64,7 +65,6 @@ namespace Nabbit.MenuUploader {
 			//CreateRestaurantTableAsync().Wait();
 			//AzureFunctionTest().Wait();
 
-
 			//PullObjects().Wait();
 			//UpdateRestaurant().Wait();
 			//PushToTable().Wait();
@@ -82,10 +82,10 @@ namespace Nabbit.MenuUploader {
 			//GetQueueOrders("681a6d33-beac-4928-8172-793c3e981bd5", true).Wait();
 
 			//PullUserOrders().Wait();
-			//PullRestOrders().Wait();
-			CreateCust().Wait();
-			decimal temp = 40m;
-			Console.WriteLine(temp.ToString("00"));
+			PullRestOrders().Wait();
+			//CreateCust().Wait();
+			//decimal temp = 40m;
+			//Console.WriteLine(temp.ToString("00"));
 			//SendNotification();
 		}
 
@@ -183,7 +183,22 @@ namespace Nabbit.MenuUploader {
 					var result = await client.GetStringAsync(url);
 					if (result == "none")
 						return;
+
 					var orders = JsonConvert.DeserializeObject<List<Models.Order>>(result);
+					foreach (var order in orders.OrderByDescending(o => o.CreatedAt))
+ 						Console.WriteLine("Order total: " + order.OrderTotal);
+
+					var orderTotal = orders.Sum(o => o.OrderTotal);
+					var stripeCharges = (orderTotal * 0.029m) + (orders.Count * 0.3m);
+					var afterCharges = orderTotal - stripeCharges;
+					Console.WriteLine("Total orders: " + orders.Count);
+					Console.WriteLine("Total Sales: " + orders.Sum(o => o.OrderTotal));
+					Console.WriteLine("Subtotal: " + orders.Sum(o => o.OrderSubtotal));
+					Console.WriteLine("Taxes: " + orders.Sum(o => o.OrderTaxes));
+					Console.WriteLine("Stripe Charges: " + stripeCharges);
+					Console.WriteLine("afterCharges: " + afterCharges);
+					Console.WriteLine("Service charges: " + orders.Sum(o => o.ServiceCharge));
+					Console.WriteLine("Revunue: " + orders.Count * 0.2m);
 				}
 			} catch (Exception ex) {
 				/// TODO: Log error

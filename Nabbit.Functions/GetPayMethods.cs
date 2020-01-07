@@ -30,7 +30,7 @@ namespace Nabbit.Functions {
 			try {
 				var service = new PaymentMethodService();
 				var options = new PaymentMethodListOptions {
-					CustomerId = customerId,
+					Customer = customerId,
 					Type = "card",
 				};
 				var paymentMethods = await service.ListAsync(options);
