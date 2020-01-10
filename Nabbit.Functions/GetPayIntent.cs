@@ -9,13 +9,14 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Stripe;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace Nabbit.Functions {
 	public static class GetPayIntent {
 		[FunctionName("GetPayIntent")]
 		public static async Task<IActionResult> Run (
-			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetPayIntent/amount/{amount}/customerId/{customerId}/paymentMethodId/{paymentMethodId}")] HttpRequest req,
-			string amount, string customerId, string paymentMethodId,
+			[HttpTrigger(AuthorizationLevel.Function, "get", Route = "GetPayIntent/amount/{amount}/orderId/{orderId}/customerId/{customerId}/paymentMethodId/{paymentMethodId}")] HttpRequest req,
+			string amount, string orderId, string customerId, string paymentMethodId,
 			ILogger log,
 			ExecutionContext context) {
 			var config = new ConfigurationBuilder()
@@ -32,8 +33,11 @@ namespace Nabbit.Functions {
 				var options = new PaymentIntentCreateOptions {
 					Amount = long.Parse(amount),
 					Currency = "usd",
-					CustomerId = customerId,
-					PaymentMethodId = paymentMethodId,
+					Customer = customerId,
+					PaymentMethod = paymentMethodId,
+					Metadata = new Dictionary<string, string>() {
+						{"orderId", orderId }
+					}
 				};
 				var intent = await service.CreateAsync(options);
 				return (ActionResult)new OkObjectResult(intent.ToJson());

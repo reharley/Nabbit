@@ -7,7 +7,7 @@
              x:Class="Nabbit.Views.SignInPage">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Margin="{StaticResource PageMargin}" 
+            <StackLayout Margin="{StaticResource PageMargin}"
                      VerticalOptions="CenterAndExpand">
                 <Frame CornerRadius="180"
                    BorderColor="{StaticResource secondaryColor}"

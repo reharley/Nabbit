@@ -30,7 +30,7 @@
                                         Grid.Column="0"
                                         VerticalOptions="Center"
                                         HeightRequest="70"
-                                        d:Text="Item Name"
+                                        d:Text="Item Name: Name of special special"
                                         HorizontalOptions="FillAndExpand"
                                         FontSize="Title"
                                         Style="{StaticResource primaryDarkBoldTitleLabel}" />

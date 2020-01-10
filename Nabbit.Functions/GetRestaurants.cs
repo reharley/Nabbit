@@ -71,7 +71,6 @@ namespace Nabbit.Functions {
 			TableQuery<RestaurantEntity> query = new TableQuery<RestaurantEntity>().Where(combinedFilter);
 			List<RestaurantEntity> restaurants = new List<RestaurantEntity>();
 			
-			
 			TableContinuationToken token = null;
 			do {
 				TableQuerySegment<RestaurantEntity> resultSegment = await restaurantTable.ExecuteQuerySegmentedAsync(query, token);

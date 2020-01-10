@@ -20,6 +20,7 @@ namespace Nabbit.Models {
 		public Guid RestaurantId { get; set; }
 		public Guid MenuId { get; set; }
 		public Guid UserId { get; set; }
+		public string PaymentIntentId { get; set; }
 		public int OrderNumber { get; set; }
 
 		public string FirstName { get; set; }
@@ -32,8 +33,18 @@ namespace Nabbit.Models {
 		public decimal ServiceCharge { get; set; }
 		public decimal OrderSubtotal { get; set; }
 		public decimal OrderTaxes { get; set; }
+		public decimal StripeFees { get; set; }
 
 		public List<OrderItem> OrderItems { get; set; }
+
+		public Dictionary<string, string> GetMetaData () {
+			var metadata = new Dictionary<string, string>();
+
+			// can add order items and descriptions for email receipts another time.
+			metadata.Add("orderId", OrderId.ToString());
+			
+			return metadata;
+		}
 	}
 
 	public static class OrderStatus {

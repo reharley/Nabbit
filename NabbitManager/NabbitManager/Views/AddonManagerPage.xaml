@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="NabbitManager.Views.AddonManagerPage">
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Add Category" Clicked="AddAddonPressed">
+		<ToolbarItem Text="Add Addon" Clicked="AddAddonPressed">
 			<ToolbarItem.Icon>
 				<OnPlatform x:TypeArguments="FileImageSource">
 					<On Platform="UWP" Value="add.png"/>

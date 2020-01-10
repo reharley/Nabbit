@@ -6,6 +6,7 @@ using Nabbit.Services;
 namespace NabbitManager.Services {
 	public static class OrderService {
 		public static bool IsConnected { get; set; }
+		public static Guid DeviceId { get; set; }
 
 		private static CancellationTokenSource ctsProcessor;
 		private static Task orderTask;
@@ -31,9 +32,9 @@ namespace NabbitManager.Services {
 			if (App.Current.Properties.ContainsKey("InstallId") == false)
 				App.Current.Properties["InstallId"] = Guid.NewGuid().ToString();
 
-			var installIdString = App.Current.Properties["InstallId"] as string;
-			var installId = Guid.Parse(installIdString);
-			if (LocalGlobals.Restaurant.PrinterId == installId) {
+			var deviceIdString = App.Current.Properties["InstallId"] as string;
+			DeviceId = Guid.Parse(deviceIdString);
+			if (LocalGlobals.Restaurant.PrinterId == DeviceId) {
 				if (orderTask != null && orderTask.IsCompleted == false)
 					return true;
 
@@ -50,16 +51,24 @@ namespace NabbitManager.Services {
 
 			await OrderQueueService.GetQueueOrders(restaurantId, true);
 			while (!ct.IsCancellationRequested) {
-				if (LocalGlobals.Restaurant.IsOpen() == false)
+				if (LocalGlobals.Restaurant.IsOpen() == false) {
+					IsConnected = false;
 					continue;
+				}
 
 				var timeDiff = DateTime.Now.Subtract(lastPing);
 				if (timeDiff > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
 					IsConnected = await OrderQueueService.GetQueueOrders(restaurantId);
 					if (IsConnected) {
 						lastPing = DateTime.Now;
-						LocalGlobals.Restaurant.LastPing = lastPing;
-						IsConnected = await LocalGlobals.UpdateRestaurant(LocalGlobals.Restaurant);
+						var pingRestuarantResponse = await LocalGlobals
+							.PingRestaurant(LocalGlobals.Restaurant.RestaurantId.ToString(),
+											DeviceId.ToString());
+						if (pingRestuarantResponse.UpdateRestaurant) {
+							await LocalGlobals.GetRestaurant();
+						}
+						if (pingRestuarantResponse.IsDevice == false)
+							StopService();
 					}
 				}
 
@@ -89,7 +98,5 @@ namespace NabbitManager.Services {
 
 			ct.ThrowIfCancellationRequested();
 		}
-
-		
 	}
 }

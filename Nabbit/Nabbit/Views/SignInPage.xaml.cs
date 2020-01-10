@@ -1,4 +1,5 @@
 ﻿using Microsoft.AppCenter.Auth;
+using Microsoft.Identity.Client;
 using Nabbit.Models;
 using Nabbit.Services;
 using Nabbit.ViewModels;
@@ -20,6 +21,7 @@ namespace Nabbit.Views {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class SignInPage : ContentPage {
 		BaseViewModel viewModel;
+
 		public SignInPage () {
 			InitializeComponent();
 			BindingContext = viewModel = new BaseViewModel();
@@ -27,11 +29,17 @@ namespace Nabbit.Views {
 
 		async Task SignIn () {
 			viewModel.IsBusy = true;
+			AuthenticationResult result;
 			try {
-				// Sign-in succeeded.
-				UserInformation userInfo = await Auth.SignInAsync();
+				// Look for existing account
+				result = await App.AuthenticationClient
+								.AcquireTokenInteractive(ADConstants.Scopes)
+								.WithPrompt(Prompt.SelectAccount)
+								.WithParentActivityOrWindow(App.UIParent)
+								.ExecuteAsync();
+
 				var tokenHandler = new JwtSecurityTokenHandler();
-				var jwToken = tokenHandler.ReadJwtToken(userInfo.IdToken);
+				var jwToken = tokenHandler.ReadJwtToken(result.IdToken);
 
 				var firstNameClaim = jwToken.Claims.FirstOrDefault(t => t.Type == "given_name");
 				var lastNameClaim = jwToken.Claims.FirstOrDefault(t => t.Type == "family_name");
@@ -55,6 +63,11 @@ namespace Nabbit.Views {
 
 				signInLabel.Text = "Login Success!";
 				await App.Current.MainPage.Navigation.PopModalAsync();
+			} catch (MsalException ex) {
+				if (ex.Message != null && ex.Message.Contains("AADB2C90118")) {
+					result = await OnForgotPassword();
+					await App.Current.MainPage.Navigation.PopModalAsync();
+				}
 			} catch (Exception e) {
 				// Do something with sign-in failure.
 				signInLabel.Text = "Login Failed... Please try again.";
@@ -63,10 +76,24 @@ namespace Nabbit.Views {
 			viewModel.IsBusy = false;
 		}
 
+		async Task<AuthenticationResult> OnForgotPassword () {
+			try {
+				return await App.AuthenticationClient
+					.AcquireTokenInteractive(ADConstants.Scopes)
+					.WithPrompt(Prompt.SelectAccount)
+					.WithParentActivityOrWindow(App.UIParent)
+					.WithB2CAuthority(ADConstants.AuthorityPasswordReset)
+					.ExecuteAsync();
+			} catch (MsalException) {
+				// Do nothing - ErrorCode will be displayed in OnLoginButtonClicked
+				return null;
+			}
+		}
+
+
 		private async void SignInClicked (object sender, EventArgs e) {
 			await SignIn();
 		}
-
 
 		private async void CancelClicked (object sender, EventArgs e) {
 			await Navigation.PopModalAsync();

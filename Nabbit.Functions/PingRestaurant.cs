@@ -7,16 +7,19 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Nabbit.Models;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.Extensions.Configuration;
+using Nabbit.Models;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Nabbit.Functions {
-	public static class PostRestaurant {
-		[FunctionName("PostRestaurant")]
-		public static async Task<IActionResult> Run(
-				[HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+	public static class PingRestaurant {
+		[FunctionName("PingRestaurant")]
+		public static async Task<IActionResult> Run (
+				[HttpTrigger(AuthorizationLevel.Function, "get",
+					Route = "PingRestaurant/restaurantId/{restaurantId}/deviceId/{deviceId}")]
+					HttpRequest req,
+				string restaurantId, string deviceId,
 				ILogger log,
 				ExecutionContext context) {
 			var config = new ConfigurationBuilder()
@@ -30,31 +33,37 @@ namespace Nabbit.Functions {
 			var restaurantTableName = config["RestaurantTableName"];
 
 			try {
-				string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-				var restaurant = JsonConvert.DeserializeObject<Restaurant>(requestBody);
-
-				log.LogInformation($"PostRestaurant,{DateTime.Now},restuarantId={restaurant.RestaurantId}");
+				log.LogInformation($"PostRestaurant,{DateTime.Now},restuarantId={restaurantId}");
 				CloudStorageAccount storageAccount = new CloudStorageAccount(
 					new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials(
 						storageName, accountKey), true);
 				CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 				CloudTable restaurantTable = tableClient.GetTableReference(restaurantTableName);
 
-				TableOperation retrieveOperation = TableOperation.Retrieve<RestaurantEntity>(RestaurantEntity.PartitionKeyLabel, restaurant.RestaurantId.ToString());
+				TableOperation retrieveOperation = TableOperation.Retrieve<RestaurantEntity>(RestaurantEntity.PartitionKeyLabel, restaurantId);
 				TableResult retrievedResult = await restaurantTable.ExecuteAsync(retrieveOperation);
 				RestaurantEntity restaurantEntity = null;
 				if (retrievedResult.Result != null) {
 					restaurantEntity = (RestaurantEntity)retrievedResult.Result;
 				}
-				var restaurantOld = JsonConvert.DeserializeObject<Restaurant>(restaurantEntity.JSON);
 
-				restaurant.LastPing = restaurantOld.LastPing;
-				RestaurantEntity restEntity = new RestaurantEntity(restaurant.RestaurantId.ToString(), JsonConvert.SerializeObject(restaurant));
+				var restaurant = JsonConvert.DeserializeObject<Restaurant>(restaurantEntity.JSON);
+				if (restaurant.PrinterId.ToString() != deviceId) {
+					return new OkObjectResult(JsonConvert.SerializeObject(new PingRestaurantResponse()));
+				}
+				var updateRestaurant = restaurant.UpdateRestaurant;
+
+				restaurant.UpdateRestaurant = false;
+				restaurant.LastPing = DateTime.Now;
+
+				var restaurantJson = JsonConvert.SerializeObject(restaurant);
+				RestaurantEntity restEntity = new RestaurantEntity(restaurant.RestaurantId.ToString(), restaurantJson);
 				restEntity.ETag = "*";
 				TableOperation update = TableOperation.Replace(restEntity);
 
 				await restaurantTable.ExecuteAsync(update);
-				return (ActionResult)new OkResult();
+
+				return new OkObjectResult(JsonConvert.SerializeObject(new PingRestaurantResponse(isDevice: true, updateRestaurant)));
 			} catch (Exception ex) {
 				return new BadRequestObjectResult(ex.Message);
 			}

@@ -38,7 +38,11 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.nabbit.nabbit</string>
 	<key>CFBundleVersion</key>
+<<<<<<< HEAD
 	<string>1.0.17</string>
+=======
+	<string>1.1.0</string>
+>>>>>>> 7a89efc1139248b8f7c13bf99c357db0db8d5378
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
@@ -50,7 +54,11 @@
 		<string>fa-solid-900.ttf</string>
 	</array>
 	<key>CFBundleShortVersionString</key>
+<<<<<<< HEAD
 	<string>1.0.17</string>
+=======
+	<string>1.1.0</string>
+>>>>>>> 7a89efc1139248b8f7c13bf99c357db0db8d5378
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/NabbitIcon.appiconset</string>
 </dict>
