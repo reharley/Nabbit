@@ -70,11 +70,11 @@ namespace Nabbit.Views {
 				var payMethod = payMethodsList.SelectedItem as PaymentMethod;
 
 				var payMethodId = payMethod.PaymentMethodId;
-				var amount = ((long)Math.Ceiling(viewModel.Order.OrderTotal * 100m)).ToString();
 				var customerId = LocalGlobals.User.CustomerId;
-				string result = "failed";
+				string result = "failed", intentId;
 				try {
-					result = await StripeService.ChargeAsync(amount, customerId, payMethodId);
+					(result, intentId) = await StripeService.ChargeAsync(viewModel.Order, customerId, payMethodId);
+					viewModel.Order.PaymentIntentId = intentId;
 				} catch (Exception exc) {
 					await DisplayAlert("Payment Failed", exc.Message, "Ok");
 					result = "";

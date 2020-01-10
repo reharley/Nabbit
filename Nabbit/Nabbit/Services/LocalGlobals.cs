@@ -24,6 +24,7 @@ namespace Nabbit.Services {
 		private const string postUserUrl = "https://nabbitdev.azurewebsites.net/api/PostUser?code=stI4oljW/w4fJRBQas45SES2D54FuLWX7Rk4b6Wgl1nfBGGfvxuc4g==";
 		private const string getUserUrl = "https://nabbitdev.azurewebsites.net/api/GetUser/userId/{userId}?code=dH3WJmZ9759Z9SCNP9zsrOZHwFhXlXn048AfRypgjswv17wNkRRJng==";
 		private const string getUserOrdersUrl = "https://nabbitdev.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=sBwwBqgdOcGrdtWUFDn13d71nnoz2pMz2124c99IUHqxalN749TkFg==";
+		private const string pingRestaurantUrl = "https://nabbitdev.azurewebsites.net/api/PingRestaurant/restaurantId/{restaurantId}/deviceId/{deviceId}?code=3M2fgihbOMVXxORHAe9z0eMTmPOMuvdRjcFnnPiduvUM6dBhWGILAQ==";
 		private const string getRestOrdersUrl = "https://nabbitdev.azurewebsites.net/api/GetRestOrders/{restaurantId}?code=uxhruPqapLoeiV65pNDmN8wEEmW0/ul4Z9Q0whqohHEcYxwWUSRO4w==";
 #else
 		private const string getSchoolsUrl = "https://nabbit.azurewebsites.net/api/userId/{userId}?code=ztgeYLZ/QNjKE26BoC9fb/R6PpvL0dNAlzH3r2dC0QUtwtaKs2tWsg==";
@@ -33,6 +34,7 @@ namespace Nabbit.Services {
 		private const string postUserUrl = "https://nabbit.azurewebsites.net/api/PostUser?code=CoamMBwbH3aqVfeVzzRJuXrw2n6FVHCsT0l26phUAwL0SsTBEwTPyw==";
 		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
 		private const string getUserOrdersUrl = "https://nabbit.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=X3NJ2NZKahEziqSKZrlX/KxpoyWvuHfYE4wROOAjOLnNleMWGByFIA==";
+		private const string pingRestaurantUrl = "";
 		private const string getRestOrdersUrl = "https://nabbit.azurewebsites.net/api/GetRestOrders/{restaurantId}?code=ZCJqEFJhas1iI2fsO0yQq24TAXRULXzx8ebr/s8Dr43MOSYGxNlZnA==";
 #endif
 		public const decimal TaxRate = 0.098m;
@@ -200,6 +202,23 @@ namespace Nabbit.Services {
 					}
 				}
 			}
+		}
+
+		public static async Task<PingRestaurantResponse> PingRestaurant (string restaurantId, string deviceId) {
+			using (var client = new HttpClient()) {
+				var url = pingRestaurantUrl
+					.Replace("{restaurantId}", restaurantId)
+					.Replace("{deviceId}", deviceId);
+				using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+					var result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+					if (httpResponse.IsSuccessStatusCode) {
+						var pingRestaurantResponse = JsonConvert.DeserializeObject<PingRestaurantResponse>(result);
+						return pingRestaurantResponse;
+					}
+				}
+			}
+
+			return new PingRestaurantResponse();
 		}
 
 		public static async Task<bool> UpdateRestaurant (Restaurant rest) {

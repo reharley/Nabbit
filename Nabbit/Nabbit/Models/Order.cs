@@ -36,6 +36,15 @@ namespace Nabbit.Models {
 		public decimal StripeFees { get; set; }
 
 		public List<OrderItem> OrderItems { get; set; }
+
+		public Dictionary<string, string> GetMetaData () {
+			var metadata = new Dictionary<string, string>();
+
+			// can add order items and descriptions for email receipts another time.
+			metadata.Add("orderId", OrderId.ToString());
+			
+			return metadata;
+		}
 	}
 
 	public static class OrderStatus {

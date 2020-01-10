@@ -31,6 +31,7 @@ namespace Nabbit.Models {
 		public decimal ServiceCharge { get; set; }
 		public TimeSpan PickupDelay { get; set; }
 		public bool IsActive { get; set; }
+		public bool UpdateRestaurant { get; set; }
 		public DateTime LastPing { get; set; }
 
 		public List<Addon> Addons { get; set; }

@@ -10,7 +10,7 @@ namespace Nabbit.Services {
 #if DEBUG
 		private static string getSetupIntentUrl = "https://nabbitdev.azurewebsites.net/api/GetSetupIntent?code=gaIBcw8vXtVJpDZVwlsPq9ZYrYNfRhznNC0Y32thvXCd2JRf31Tztg==";
 		private static string getPayMethodsUrl = "https://nabbitdev.azurewebsites.net/api/GetPayMethods/customerId/{customerId}?code=Pp55GvJeqXmYe6CHumcqVCaTSnQtwMxANZchOUTrfq9dZLeH0KaArg==";
-		private static string getPayIntentUrl = "https://nabbitdev.azurewebsites.net/api/GetPayIntent/amount/{amount}/customerId/{customerId}/paymentMethodId/{paymentMethodId}?code=Y9N6KaCl8TztqghstJysL82zraCFHVddvHcbQp4GU8DBegEGn9GN5w==";
+		private static string getPayIntentUrl = "https://nabbitdev.azurewebsites.net/api/GetPayIntent/amount/{amount}/orderId/{orderId}/customerId/{customerId}/paymentMethodId/{paymentMethodId}?code=Y9N6KaCl8TztqghstJysL82zraCFHVddvHcbQp4GU8DBegEGn9GN5w==";
 		private static string getPubKeyUrl = "https://nabbitdev.azurewebsites.net/api/GetPubKey?code=Raxl0hKzCEMQnWyKiBT0NKUhaxtHU0IFL72nXugzm9BmfBwbgx2fcw==";
 		private static string attachUserPaymentUrl = "https://nabbitdev.azurewebsites.net/api/AttachUserPayment/custId/{custId}/payId/{payId}?code=KyjQKC7X/tv2JPolWqK4CaT54KjWF9voVIgLIurdafmZoyZgjRlnEw==";
 		private static string detachUserPaymentUrl = "https://nabbitdev.azurewebsites.net/api/DetachPayMethod/paymentMethodId/{paymentMethodId}?code=269Ts6EiL4gesUSJsvwwlo7EYOMNuj0irnP08EeGWluZKvkaK17k9w==";
@@ -19,7 +19,7 @@ namespace Nabbit.Services {
 		private static string getSetupIntentUrl = "https://nabbit.azurewebsites.net/api/GetSetupIntent?code=BLdO/jwQS6KaHihe1ZaVnkDhtbaUvckE6iflqNRZ9oRJgFltDdZKng==";
 		private static string getCustomerUrl = "https://nabbit.azurewebsites.net/api/GetCustomer/custId/{custId}?code=Izs5DTh9uPnD6bCipXVFWnraQ5W9ypyQFBQLQ9mXtbo6sVGDyQjf8g==";
 		private static string getPayMethodsUrl = "https://nabbit.azurewebsites.net/api/GetPayMethods/customerId/{customerId}?code=3MX6pWjMZu1iu1kNaLUVQmUOQfMSz64QBgwiyD7cU/BtBHEaQN83Yw==";
-		private static string getPayIntentUrl = "https://nabbit.azurewebsites.net/api/GetPayIntent/amount/{amount}/customerId/{customerId}/paymentMethodId/{paymentMethodId}?code=YfPY4BuJFeyECvLJXJfOd/bkWz/car8SmWlKeUBu3y0Pnl7DqvMyGA==";
+		private static string getPayIntentUrl = "https://nabbit.azurewebsites.net/api/GetPayIntent/amount/{amount}/orderId/{orderId}/customerId/{customerId}/paymentMethodId/{paymentMethodId}?code=YfPY4BuJFeyECvLJXJfOd/bkWz/car8SmWlKeUBu3y0Pnl7DqvMyGA==";
 		private static string getPubKeyUrl = "https://nabbit.azurewebsites.net/api/GetPubKey?code=mJUsrR07LfUH3haW4Lfu2SZaVHJLqtsFnFeubl9bxcpSNX4r9Ddu0Q==";
 		private static string attachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/AttachUserPayment/custId/{custId}/payId/{payId}?code=atm9rtlRkGB63oaqZakHrMDRrEJjpaJO4wYGaye/GPIRkx4kfcMRZQ==";
 		private static string detachUserPaymentUrl = "https://nabbit.azurewebsites.net/api/DetachPayMethod/paymentMethodId/{paymentMethodId}?code=2UGRo9G5mYRsOR2TEgWdktQAl9LgrAKIUJiF7NfKmZ93joPTWunJYQ==";
@@ -59,7 +59,7 @@ namespace Nabbit.Services {
 					var result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 					var customerId = result;
 					return (httpResponse.IsSuccessStatusCode, customerId);
-				}	
+				}
 			}
 		}
 
@@ -84,15 +84,18 @@ namespace Nabbit.Services {
 			}
 		}
 
-		public static async Task<string> ChargeAsync (string amount, string customerId, string paymentMethodId) {
+		public static async Task<(string, string)> ChargeAsync (Nabbit.Models.Order order, string customerId, string paymentMethodId) {
 			if (pubKey == "") {
 				if (await GetPubKey() == false)
-					return "failed";
+					return ("failed", "");
 			}
+			var amount = ((long)Math.Ceiling(order.OrderTotal * 100m)).ToString();
+
 
 			using (var client = new HttpClient()) {
 				var url = getPayIntentUrl
 					.Replace("{amount}", amount)
+					.Replace("{orderId}", order.OrderId.ToString())
 					.Replace("{customerId}", customerId)
 					.Replace("{paymentMethodId}", paymentMethodId);
 
@@ -102,26 +105,26 @@ namespace Nabbit.Services {
 						var paymentIntent = JsonConvert.DeserializeObject<PaymentIntent>(result);
 
 						if (paymentIntent.Id == null || paymentIntent.Id == "")
-							return "failed";
+							return ("failed", "");
 
 						StripeConfiguration.ApiKey = pubKey;
 						var service = new PaymentIntentService();
+						PaymentIntent intent;
+
 						var paymentIntentOptions = new PaymentIntentConfirmOptions() {
 							ClientSecret = paymentIntent.ClientSecret
 						};
-
-						PaymentIntent intent;
 						try {
 							intent = await service.ConfirmAsync(paymentIntent.Id, paymentIntentOptions);
-							return intent.Status;
+							return (intent.Status, intent.Id);
 						} catch (Exception e) {
-							return "failed";
+							return ("failed", "");
 						}
 					}
 				}
 			}
 
-			return "failed";
+			return ("failed", "");
 		}
 
 		public static async Task<List<Models.PaymentMethod>> GetPayMethodsAsync (string customerId) {
