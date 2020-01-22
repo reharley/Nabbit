@@ -22,54 +22,67 @@
                 </ActivityIndicator.Color>
             </ActivityIndicator>
 
-            <Grid VerticalOptions="EndAndExpand">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="30" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
+            <StackLayout VerticalOptions="EndAndExpand">
+                <Frame x:Name="reconnectIndicator"
+                       IsVisible="True"
+                     BackgroundColor="Black">
+                    <Label Text="Reconnect Needed"
+                       TextColor="White"
+                       FontSize="Title"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       />
+                </Frame>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
 
 
-                <Label Text="Mode:"
+                    <Label Text="Mode:"
                        Grid.Row="0" Grid.Column="0" />
-                <Label x:Name="modeLabel"
+                    <Label x:Name="modeLabel"
                        d:Text="DEBUG"
                        Grid.Row="1" Grid.Column="0"
                        FontSize="Large"
                        FontAttributes="Bold"
                        VerticalOptions="End" />
 
-                <Label Text="This Printer?"
+                    <Label Text="This Printer?"
                        Grid.Row="0" Grid.Column="1" />
-                <Label x:Name="printerLabel"
+                    <Label x:Name="printerLabel"
                        Text="{Binding PrinterStatus}"
                        Grid.Row="1" Grid.Column="1"
                        FontSize="Large"
                        FontAttributes="Bold"
                        VerticalOptions="End" />
 
-                <Label Text="Connected?"
+                    <Label Text="Connected?"
                        Grid.Row="2" Grid.Column="0" />
-                <Label d:Text="OFFLINE"
+                    <Label d:Text="OFFLINE"
                        Text="{Binding ConnectionStatus}"
                        Grid.Row="3" Grid.Column="0"
                        FontSize="Large"
                        FontAttributes="Bold"
                        VerticalOptions="End" />
 
-                <Label Text="Open?"
+                    <Label Text="Open?"
                        Grid.Row="2" Grid.Column="1" />
-                <Label d:Text="CLOSED"
+                    <Label d:Text="CLOSED"
                        Text="{Binding OpenStatus}"
                        Grid.Row="3" Grid.Column="1"
                        FontSize="Large"
                        FontAttributes="Bold"
                        VerticalOptions="End" />
-            </Grid>
+                </Grid>
+            </StackLayout>
         </StackLayout>
 
     </ContentPage.Content>

@@ -49,6 +49,7 @@ namespace Nabbit.Functions {
 				var restaurantOld = JsonConvert.DeserializeObject<Restaurant>(restaurantEntity.JSON);
 
 				restaurant.LastPing = restaurantOld.LastPing;
+				restaurant.UpdateRestaurant = true;
 				RestaurantEntity restEntity = new RestaurantEntity(restaurant.RestaurantId.ToString(), JsonConvert.SerializeObject(restaurant));
 				restEntity.ETag = "*";
 				TableOperation update = TableOperation.Replace(restEntity);

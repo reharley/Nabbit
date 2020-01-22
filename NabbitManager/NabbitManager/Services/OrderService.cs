@@ -51,51 +51,60 @@ namespace NabbitManager.Services {
 
 			await OrderQueueService.GetQueueOrders(restaurantId, true);
 			while (!ct.IsCancellationRequested) {
-				if (LocalGlobals.Restaurant.IsOpen() == false) {
-					IsConnected = false;
-					continue;
-				}
-
-				var timeDiff = DateTime.Now.Subtract(lastPing);
-				if (timeDiff > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
-					IsConnected = await OrderQueueService.GetQueueOrders(restaurantId);
-					if (IsConnected) {
-						lastPing = DateTime.Now;
-						var pingRestuarantResponse = await LocalGlobals
+				try {
+					var timeDiff = DateTime.Now.Subtract(lastPing);
+					if (timeDiff > new TimeSpan(0, LocalGlobals.PingMinuteDelay, 0)) {
+						var (pingRestuarantResponse, isConnected) = await LocalGlobals
 							.PingRestaurant(LocalGlobals.Restaurant.RestaurantId.ToString(),
 											DeviceId.ToString());
-						if (pingRestuarantResponse.UpdateRestaurant) {
+						lastPing = DateTime.Now;
+
+						if (LocalGlobals.Restaurant.IsOpen() == false) {
+							IsConnected = isConnected;
+							continue;
+						}
+
+						if (pingRestuarantResponse.UpdateRestaurant || !(pingRestuarantResponse.IsDevice)) {
 							await LocalGlobals.GetRestaurant();
 						}
-						if (pingRestuarantResponse.IsDevice == false)
+						if (pingRestuarantResponse.IsDevice == false) {
 							StopService();
-					}
-				}
+							break;
+						}
 
-				if (OrderQueueService.OrderQueue.Count > 0) {
-					var order = OrderQueueService.OrderQueue[0];
-					DateTime pickupPrintTime = order.PickupTime.AddMinutes(-10);
-					if (order.PickupTime.Minute < 10) {
-						pickupPrintTime = order.PickupTime
-							.AddHours(-1)
-							.AddMinutes(50);
+						IsConnected = await OrderQueueService.GetQueueOrders(restaurantId);
 					}
 
-					if (DateTime.Now >= pickupPrintTime) {
-						OrderQueueService.OrderNumber++;
-						order.OrderNumber = OrderQueueService.OrderNumber;
-						await PrinterService.PrinterAsync(order);
-						await Task.Delay(3000, ct);
-						IsConnected = await OrderQueueService.DeleteQueueOrder(restaurantId, order);
+					if (OrderQueueService.OrderQueue.Count > 0) {
+						var order = OrderQueueService.OrderQueue[0];
+						DateTime pickupPrintTime = order.PickupTime.AddMinutes(-10);
+						if (order.PickupTime.Minute < 10) {
+							pickupPrintTime = order.PickupTime
+								.AddHours(-1)
+								.AddMinutes(50);
+						}
+
+						if (DateTime.Now >= pickupPrintTime) {
+							OrderQueueService.OrderNumber++;
+							order.OrderNumber = OrderQueueService.OrderNumber;
+							await PrinterService.PrinterAsync(order);
+							await Task.Delay(3000, ct);
+							IsConnected = await OrderQueueService.DeleteQueueOrder(restaurantId, order);
+						}
 					}
+				} catch (Exception e) {
+					var IsHostError = e.GetType().ToString() == "Java.Net.UnknownHostException";
+					IsConnected = false;
 				}
 
 				if (IsConnected)
 					await Task.Delay(1000, ct);
 				else
 					await Task.Delay(200, ct);
+
 			}
 
+			IsConnected = false;
 			ct.ThrowIfCancellationRequested();
 		}
 	}

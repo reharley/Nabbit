@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="15" android:versionName="1.0.17" package="com.nabbit.nabbit">
-=======
+﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="16" android:versionName="1.1.0" package="com.nabbit.nabbit">
->>>>>>> 7a89efc1139248b8f7c13bf99c357db0db8d5378
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
 	<application android:label="Nabbit" android:largeHeap="true" android:icon="@mipmap/ic_launcher">
 		<activity android:name="microsoft.identity.client.BrowserTabActivity">

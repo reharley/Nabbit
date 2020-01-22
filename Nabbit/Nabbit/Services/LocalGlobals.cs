@@ -34,7 +34,7 @@ namespace Nabbit.Services {
 		private const string postUserUrl = "https://nabbit.azurewebsites.net/api/PostUser?code=CoamMBwbH3aqVfeVzzRJuXrw2n6FVHCsT0l26phUAwL0SsTBEwTPyw==";
 		private const string getUserUrl = "https://nabbit.azurewebsites.net/api/GetUser/userId/{userId}?code=Vziqr2EnpeTCyaxTQdPR49V3PMplIfhGrxjzfeZtdAwtld8sc5HtmA==";
 		private const string getUserOrdersUrl = "https://nabbit.azurewebsites.net/api/GetUserOrders/userId/{userId}?code=X3NJ2NZKahEziqSKZrlX/KxpoyWvuHfYE4wROOAjOLnNleMWGByFIA==";
-		private const string pingRestaurantUrl = "";
+		private const string pingRestaurantUrl = "https://nabbit.azurewebsites.net/api/PingRestaurant/restaurantId/{restaurantId}/deviceId/{deviceId}?code=YaiWFyQL3DE8DsLslelW/onWmSvdEAyVZFjQYH5ECHgHHlT71RMD9w==";
 		private const string getRestOrdersUrl = "https://nabbit.azurewebsites.net/api/GetRestOrders/{restaurantId}?code=ZCJqEFJhas1iI2fsO0yQq24TAXRULXzx8ebr/s8Dr43MOSYGxNlZnA==";
 #endif
 		public const decimal TaxRate = 0.098m;
@@ -204,7 +204,7 @@ namespace Nabbit.Services {
 			}
 		}
 
-		public static async Task<PingRestaurantResponse> PingRestaurant (string restaurantId, string deviceId) {
+		public static async Task<(PingRestaurantResponse, bool)> PingRestaurant (string restaurantId, string deviceId) {
 			using (var client = new HttpClient()) {
 				var url = pingRestaurantUrl
 					.Replace("{restaurantId}", restaurantId)
@@ -213,12 +213,12 @@ namespace Nabbit.Services {
 					var result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 					if (httpResponse.IsSuccessStatusCode) {
 						var pingRestaurantResponse = JsonConvert.DeserializeObject<PingRestaurantResponse>(result);
-						return pingRestaurantResponse;
+						return (pingRestaurantResponse, httpResponse.IsSuccessStatusCode);
 					}
+
 				}
 			}
-
-			return new PingRestaurantResponse();
+					return (new PingRestaurantResponse(), false);
 		}
 
 		public static async Task<bool> UpdateRestaurant (Restaurant rest) {

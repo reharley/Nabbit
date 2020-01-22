@@ -79,6 +79,8 @@ namespace NabbitManager.Views {
 			} else {
 				if (OrderService.StartOrderProcessing() == true)
 					viewModel.PrinterStatus = "Yes";
+				else
+					viewModel.PrinterStatus = "No";
 				viewModel.IsBusy = false;
 			}
 		}
@@ -116,6 +118,16 @@ namespace NabbitManager.Views {
 				} else {
 					if (viewModel.OpenStatus != "CLOSED")
 						viewModel.OpenStatus = "CLOSED";
+				}
+
+				if (viewModel.ConnectionStatus == "OFFLINE" &&
+					viewModel.OpenStatus == "OPEN") {
+					reconnectIndicator.IsVisible = true;
+
+					var currentColor = reconnectIndicator.BackgroundColor;
+					reconnectIndicator.BackgroundColor = currentColor == Color.Black ? Color.Red : Color.Black;
+				} else {
+					reconnectIndicator.IsVisible = false;
 				}
 
 				await Task.Delay(500, ct);

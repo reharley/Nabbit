@@ -90,7 +90,6 @@ namespace Nabbit.Views {
 			}
 		}
 
-
 		private async void SignInClicked (object sender, EventArgs e) {
 			await SignIn();
 		}
