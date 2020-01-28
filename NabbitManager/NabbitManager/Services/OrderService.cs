@@ -74,24 +74,22 @@ namespace NabbitManager.Services {
 
 						IsConnected = await OrderQueueService.GetQueueOrders(restaurantId);
 					}
-
+					
 					if (OrderQueueService.OrderQueue.Count > 0) {
 						var order = OrderQueueService.OrderQueue[0];
-						DateTime pickupPrintTime = order.PickupTime.AddMinutes(-10);
-						if (order.PickupTime.Minute < 10) {
-							pickupPrintTime = order.PickupTime
-								.AddHours(-1)
-								.AddMinutes(50);
-						}
+						var delay = LocalGlobals.Restaurant.PickupDelay;
+						DateTime pickupPrintTime = order.PickupTime.Subtract(delay);
 
 						if (DateTime.Now >= pickupPrintTime) {
 							OrderQueueService.OrderNumber++;
 							order.OrderNumber = OrderQueueService.OrderNumber;
 							await PrinterService.PrinterAsync(order);
+							OrderQueueService.DequeueOrder(order);
 							await Task.Delay(3000, ct);
-							IsConnected = await OrderQueueService.DeleteQueueOrder(restaurantId, order);
 						}
 					}
+
+					IsConnected = await OrderQueueService.DeleteQueueOrder();
 				} catch (Exception e) {
 					var IsHostError = e.GetType().ToString() == "Java.Net.UnknownHostException";
 					IsConnected = false;

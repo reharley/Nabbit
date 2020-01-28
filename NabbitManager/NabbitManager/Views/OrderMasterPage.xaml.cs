@@ -122,12 +122,12 @@ namespace NabbitManager.Views {
 
 				if (viewModel.ConnectionStatus == "OFFLINE" &&
 					viewModel.OpenStatus == "OPEN") {
-					reconnectIndicator.IsVisible = true;
+					actionIndicator.IsVisible = true;
 
-					var currentColor = reconnectIndicator.BackgroundColor;
-					reconnectIndicator.BackgroundColor = currentColor == Color.Black ? Color.Red : Color.Black;
+					var currentColor = actionIndicator.BackgroundColor;
+					actionIndicator.BackgroundColor = currentColor == Color.Black ? Color.Red : Color.Black;
 				} else {
-					reconnectIndicator.IsVisible = false;
+					actionIndicator.IsVisible = false;
 				}
 
 				await Task.Delay(500, ct);

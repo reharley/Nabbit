@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              x:Class="NabbitManager.Views.OrderMasterPage">
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Margin="{StaticResource PageMargin}">
             <StackLayout x:Name="navButtons" Margin="{StaticResource PageMargin}">
             </StackLayout>
 
@@ -22,16 +22,16 @@
                 </ActivityIndicator.Color>
             </ActivityIndicator>
 
+
             <StackLayout VerticalOptions="EndAndExpand">
-                <Frame x:Name="reconnectIndicator"
+                <Frame x:Name="actionIndicator"
                        IsVisible="True"
-                     BackgroundColor="Black">
+                       BackgroundColor="Black">
                     <Label Text="Reconnect Needed"
                        TextColor="White"
                        FontSize="Title"
                        FontAttributes="Bold"
-                       HorizontalOptions="Center"
-                       />
+                       HorizontalOptions="Center"/>
                 </Frame>
 
                 <Grid>
@@ -51,6 +51,7 @@
                     <Label x:Name="modeLabel"
                        d:Text="DEBUG"
                        Grid.Row="1" Grid.Column="0"
+                           TextColor="Black"
                        FontSize="Large"
                        FontAttributes="Bold"
                        VerticalOptions="End" />
@@ -59,7 +60,9 @@
                        Grid.Row="0" Grid.Column="1" />
                     <Label x:Name="printerLabel"
                        Text="{Binding PrinterStatus}"
+                           d:Text="Yes"
                        Grid.Row="1" Grid.Column="1"
+                           TextColor="Black"
                        FontSize="Large"
                        FontAttributes="Bold"
                        VerticalOptions="End" />
@@ -70,6 +73,7 @@
                        Text="{Binding ConnectionStatus}"
                        Grid.Row="3" Grid.Column="0"
                        FontSize="Large"
+                           TextColor="Black"
                        FontAttributes="Bold"
                        VerticalOptions="End" />
 
@@ -78,12 +82,12 @@
                     <Label d:Text="CLOSED"
                        Text="{Binding OpenStatus}"
                        Grid.Row="3" Grid.Column="1"
+                           TextColor="Black"
                        FontSize="Large"
                        FontAttributes="Bold"
                        VerticalOptions="End" />
                 </Grid>
             </StackLayout>
         </StackLayout>
-
     </ContentPage.Content>
 </ContentPage>

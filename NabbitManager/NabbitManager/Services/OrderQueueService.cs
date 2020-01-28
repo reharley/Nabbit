@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Nabbit.Services;
 
 namespace NabbitManager.Services {
 	public static class OrderQueueService {
@@ -19,6 +20,12 @@ namespace NabbitManager.Services {
 
 		public static int OrderNumber = 0;
 
+		/// <summary>
+		/// Indicates the duration the action/new order indication
+		/// Should take place
+		/// </summary>
+		public static TimeSpan NewOrderTimer { get; set; }
+
 		static List<Order> orderQueue;
 		public static List<Order> OrderQueue {
 			get {
@@ -30,6 +37,15 @@ namespace NabbitManager.Services {
 			set {
 				orderQueue = value;
 			}
+		}
+
+		static List<Order> DeleteQueue = new List<Order>();
+		public static List<Order> LiveOrders = new List<Order>();
+
+		public static void DequeueOrder (Order order) {
+			OrderQueue.Remove(order);
+			LiveOrders.Add(order);
+			NewOrderTimer = new TimeSpan(0, 0, 5);
 		}
 
 		public static async Task<bool> GetQueueOrders (string restaurantId, bool allOrders = false) {
@@ -46,45 +62,64 @@ namespace NabbitManager.Services {
 							var orderList = JsonConvert.DeserializeObject<List<Order>>(result).ToList();
 							if (allOrders)
 								OrderQueue = orderList;
-							else if (orderList.Count > 0)
+							else if (orderList.Count > 0) {
 								OrderQueue.AddRange(orderList);
+							}
 
 							OrderQueue = OrderQueue.OrderBy(x => x.PickupTime).ToList();
-
-
 						}
 
 						return httpResponse.IsSuccessStatusCode;
 					}
 				}
 			} catch (Exception ex) {
-				/// TODO: Log error
-				Console.WriteLine("Something is missing...", "The app was unable to load data. Please check the your connections and try again.");
-				Console.WriteLine(ex.Message);
+				var IsHostError = ex.GetType().ToString() == "Java.Net.UnknownHostException";
 			}
 
 			return false;
 		}
 
-		public static async Task<bool> DeleteQueueOrder (string restaurantId, Order order) {
-			try {
-				using (var client = new HttpClient()) {
-					var url = deleteQueueOrdersUrl.Replace("{restaurantId}", restaurantId)
-						.Replace("{orderId}", order.OrderId.ToString())
-						.Replace("{orderNumber}", order.OrderNumber.ToString());
-					string result = "";
-					using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
-						result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-						if (httpResponse.IsSuccessStatusCode)
-							OrderQueue.Remove(order);
+		public static void RemoveExpiredOrders () {
+			var delay = new TimeSpan(0, 0, 15);
 
-						return httpResponse.IsSuccessStatusCode;
-					}
+			foreach (var order in LiveOrders) {
+				DateTime pickupPrintTime = order.PickupTime.Add(delay);
+				if (DateTime.Now >= pickupPrintTime) {
+					DeleteQueue.Add(order);
 				}
-			} catch (Exception ex) {
-				/// TODO: Log error
-				Console.WriteLine("Something is missing...", "The app was unable to load data. Please check the your connections and try again.");
-				Console.WriteLine(ex.Message);
+			}
+
+			foreach (var order in DeleteQueue) {
+				LiveOrders.Remove(order);
+			}
+		}
+
+		public static async Task<bool> DeleteQueueOrder () {
+			RemoveExpiredOrders();
+
+			if (DeleteQueue.Count == 0)
+				return true;
+
+
+			foreach (var order in DeleteQueue) {
+				try {
+					using (var client = new HttpClient()) {
+						var url = deleteQueueOrdersUrl.Replace("{restaurantId}", order.RestaurantId.ToString())
+							.Replace("{orderId}", order.OrderId.ToString())
+							.Replace("{orderNumber}", order.OrderNumber.ToString());
+						string result = "";
+						using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false)) {
+							result = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+							if (httpResponse.IsSuccessStatusCode) {
+								DeleteQueue.Remove(order);
+							}
+
+							return httpResponse.IsSuccessStatusCode;
+						}
+					}
+				} catch (Exception ex) {
+					var IsHostError = ex.GetType().ToString() == "Java.Net.UnknownHostException";
+				}
 			}
 
 			return false;

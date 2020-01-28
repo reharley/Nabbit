@@ -7,40 +7,93 @@
              x:Class="NabbitManager.Views.LiveOrdersPage">
     <ContentPage.Content>
         <StackLayout Margin="{StaticResource PageMargin}">
-            <Frame x:Name="stateIndicator"
-                   HeightRequest="100"
-                   BackgroundColor="White"/>
-            <ListView x:Name="orderList"
-                      ItemTapped="OrderPressed"
-                      ItemsSource="{Binding Orders}"
-                      CachingStrategy="RecycleElement"
-					  HasUnevenRows="True">
+            <CollectionView x:Name="orderList"
+                            SelectionMode="Single"
+                            SelectionChanged="OrderPressed"
+                            ItemsSource="{Binding Orders}"
+                            d:ItemsSource="{StaticResource testArray}">
 
-                <ListView.ItemTemplate>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
+                                       ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
+                        <Frame Padding="0,5,0,5"
+                               BorderColor="Black"
+                               PropertyChanged="FrameChanged"
+                               BackgroundColor="{Binding CardColor}">
                             <StackLayout>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding FirstName}" 
-								   Style="{DynamicResource ListItemTextStyle}" />
-                                    <Label Text="{Binding LastName}" 
-								   Style="{DynamicResource ListItemDetailTextStyle}"/>
-                                </StackLayout>
-                                <Label Text="{Binding PickupTime, StringFormat='{0:ddd, MMM d, hh:mm tt}'}"
-							   Style="{DynamicResource ListItemDetailTextStyle}"/>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                <Label Text="Order Number"
+                                        HorizontalTextAlignment="Center"
+                                       TextColor="Black"
+                                        FontSize="30"/>
+                                <Label Text="{Binding OrderNumber}"
+                                        d:Text="9999"
+                                       TextColor="Black"
+                                        HorizontalTextAlignment="Center"
+                                        FontAttributes="Bold"
+                                        FontSize="50"/>
 
-            <Button x:Name="stopStartButton" 
+                                <Label Text="Pickup Time"
+                                       TextColor="Black"
+                                        HorizontalTextAlignment="Center"
+                                        FontSize="30"/>
+                                <Label Text="{Binding PickupCountdown}"
+                                        HorizontalTextAlignment="Center"
+                                        d:Text="-8:53"
+                                       TextColor="Black"
+                                        FontSize="80"
+                                        FontAttributes="Bold"/>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <StackLayout VerticalOptions="EndAndExpand">
+                <Frame x:Name="actionIndicator"
+                       IsVisible="True"
+                       BackgroundColor="Black">
+                    <Label x:Name="actionText"
+                           Text="Reconnect Needed"
+                       TextColor="White"
+                       FontSize="Title"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+                </Frame>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+
+                    <Label Text="Orders:"
+                       Grid.Row="0" Grid.Column="0" />
+                    <Label x:Name="modeLabel"
+                           Text="{Binding OrderCount}"
+                       d:Text="999"
+                       Grid.Row="1" Grid.Column="0"
+                           TextColor="Black"
+                       FontSize="Large"
+                       FontAttributes="Bold"
+                       VerticalOptions="End" />
+                </Grid>
+            </StackLayout>
+
+            <Button x:Name="stopStartButton"
+                    HeightRequest="38"
                     BackgroundColor="Red"
                     TextColor="White"
                     Font="Subtitle"
                     FontAttributes="Bold"
                     HorizontalOptions="FillAndExpand" Text="Stop Orders" Clicked="StartStopClicked" />
-            <Button Text="Refresh" Clicked="RefreshQueue" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

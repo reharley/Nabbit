@@ -13,7 +13,7 @@ namespace NabbitManager.ViewModels {
 			}
 		}
 
-		string connectionStatus = "Offline";
+		string connectionStatus = "OFFLINE";
 		public string ConnectionStatus {
 			get {
 				return connectionStatus;
